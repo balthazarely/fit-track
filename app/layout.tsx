@@ -1,18 +1,24 @@
-import './globals.css'
+import getCurrentUser from "./actions/getCurrentUser";
+import LoginModal from "./components/modals/LoginModal";
+import RegisterModal from "./components/modals/RegisterModal";
+import Navbar from "./components/navigation/Navbar";
+import "./globals.css";
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
-  children: React.ReactNode
+  children: React.ReactNode;
 }) {
+  const currentUser = await getCurrentUser();
   return (
     <html lang="en">
-      {/*
-        <head /> will contain the components returned by the nearest parent
-        head.tsx. Find out more at https://beta.nextjs.org/docs/api-reference/file-conventions/head
-      */}
       <head />
-      <body>{children}</body>
+      <body>
+        <Navbar currentUser={currentUser} />
+        <div>{children}</div>
+        <RegisterModal />
+        <LoginModal />
+      </body>
     </html>
-  )
+  );
 }
