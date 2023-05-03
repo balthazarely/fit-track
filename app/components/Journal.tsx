@@ -1,9 +1,10 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import axios from "axios";
+import { useCallback, useEffect, useState } from "react";
 
 const initWorkout = {
-  name: "workout-01",
+  workoutName: "workout-01",
   exercises: [],
 };
 
@@ -28,6 +29,8 @@ const muscleGroups = [
 
 export default function journal() {
   const [workout, setWorkout] = useState<any>(initWorkout);
+  const [newExerciseModalOpen, setNewExerciseModalOpen] =
+    useState<boolean>(false);
 
   const addNewExercise = (exerciseName: string) => {
     setWorkout({
@@ -36,7 +39,7 @@ export default function journal() {
         ...workout.exercises,
         {
           name: exerciseName,
-          sets: [{ reps: 0, weight: 0 }],
+          Sets: [{ reps: 0, weight: 0 }],
         },
       ],
     });
@@ -50,19 +53,41 @@ export default function journal() {
 
   const addSet = (index: number) => {
     const newWorkout = { ...workout };
-    newWorkout.exercises[index].sets.push({ reps: 0, weight: 0 });
+    newWorkout.exercises[index].Sets.push({ reps: 0, weight: 0 });
     setWorkout(newWorkout);
   };
 
   const removeSet = (idx: number, index: number) => {
     const newWorkout = { ...workout };
-    newWorkout.exercises[index].sets.splice(idx, 1);
+    newWorkout.exercises[index].Sets.splice(idx, 1);
     setWorkout(newWorkout);
+  };
+
+  const saveWorkoutToDB = () => {
+    console.log(workout);
+
+    axios
+      .post("/api/workout", workout)
+      .then(() => {
+        console.log(workout, "hit api folder sucessifully");
+        //   toast.success('Listing created!');
+        //   router.refresh();
+        //   reset();
+        //   setStep(STEPS.CATEGORY)
+        //   rentModal.onClose();
+      })
+      .catch(() => {
+        console.log("error");
+        //   toast.error('Something went wrong.');
+      })
+      .finally(() => {
+        //   setIsLoading(false);
+      });
   };
 
   return (
     <div className="max-w-xl mx-auto px-4">
-      {JSON.stringify(workout)}
+      {/* {JSON.stringify(workout)} */}
 
       <h1 className="font-bold text-3xl text-purple-500">Workout Journal</h1>
       <div className="flex gap-2 flex-col">
@@ -79,7 +104,7 @@ export default function journal() {
                 </button>
               </div>
               <div>
-                {exercises.sets.map((set: any, idx: number) => (
+                {exercises.Sets.map((set: any, idx: number) => (
                   <div className="text-sm" key={idx}>
                     <input
                       className="border-2 border-gray-300 w-12"
@@ -89,7 +114,7 @@ export default function journal() {
                       value={set.reps}
                       onChange={(event) => {
                         const newWorkout = { ...workout };
-                        newWorkout.exercises[index].sets[idx].reps = parseInt(
+                        newWorkout.exercises[index].Sets[idx].reps = parseInt(
                           event.target.value
                         );
                         setWorkout(newWorkout);
@@ -103,7 +128,7 @@ export default function journal() {
                       value={set.weight}
                       onChange={(event) => {
                         const newWorkout = { ...workout };
-                        newWorkout.exercises[index].sets[idx].weight = parseInt(
+                        newWorkout.exercises[index].Sets[idx].weight = parseInt(
                           event.target.value
                         );
                         setWorkout(newWorkout);
@@ -125,16 +150,32 @@ export default function journal() {
           );
         })}
       </div>
-
-      <label htmlFor="my-modal" className="btn">
+      <button
+        className="bg-gray-500 btn px-2 py-1 text-white"
+        onClick={() => setNewExerciseModalOpen(true)}
+      >
         add new exercise
-      </label>
-      <AddExerciseModal addNewExercise={addNewExercise} />
+      </button>
+      <AddExerciseModal
+        setNewExerciseModalOpen={setNewExerciseModalOpen}
+        newExerciseModalOpen={newExerciseModalOpen}
+        addNewExercise={addNewExercise}
+      />
+      <button
+        className="bg-purple-500 px-2 py-1 text-white"
+        onClick={saveWorkoutToDB}
+      >
+        Save Workout to DB
+      </button>
     </div>
   );
 }
 
-function AddExerciseModal({ addNewExercise }: any) {
+function AddExerciseModal({
+  addNewExercise,
+  setNewExerciseModalOpen,
+  newExerciseModalOpen,
+}: any) {
   const key = process.env.NEXT_PUBLIC_API_NINJA_API_KEY;
   const [selectedMuscleGroup, setSelectedMuscleGroups] = useState("");
   const [selectedExercise, setSelectedExercise] = useState();
@@ -166,10 +207,20 @@ function AddExerciseModal({ addNewExercise }: any) {
 
   return (
     <>
-      <input type="checkbox" id="my-modal" className="modal-toggle" />
+      <input
+        type="checkbox"
+        checked={newExerciseModalOpen}
+        id="my-modal-6"
+        className="modal-toggle"
+        readOnly
+      />
+      {/* <input type="checkbox" id="my-modal" className="modal-toggle" /> */}
       <div className="modal">
         <div className="modal-box">
-          <h3 className="font-bold text-lg">Add Exercise</h3>
+          <div className="flex justify-between">
+            <h3 className="font-bold text-lg">Add Exercise</h3>
+            <button onClick={() => setNewExerciseModalOpen(false)}>X</button>
+          </div>
           <select
             value={selectedMuscleGroup}
             onChange={handleSelectChange}
@@ -187,24 +238,24 @@ function AddExerciseModal({ addNewExercise }: any) {
               onClick={() => setSelectedExercise(result.name)}
               className={`${
                 selectedExercise === result.name && "bg-purple-500 text-white "
-              }border-2 border-gray-100 py-1 px-2 cursor-pointer `}
+              } border-2 border-gray-100 py-1 px-2 cursor-pointer `}
             >
               {result.name}
             </button>
           ))}
 
           <div className="modal-action">
-            <label
-              htmlFor="my-modal"
-              className="btn"
+            <button
+              className="bg-purple-500 btn px-2 py-1 text-white"
               onClick={() => {
                 if (selectedExercise) {
                   addNewExercise(selectedExercise);
+                  setNewExerciseModalOpen(false);
                 }
               }}
             >
               Create
-            </label>
+            </button>
           </div>
         </div>
       </div>
