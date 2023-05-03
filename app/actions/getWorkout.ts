@@ -8,28 +8,36 @@ export default async function getWorkout(params: string) {
     include: {
       exercises: {
         include: {
-          Sets: true,
+          sets: true,
         },
       },
     },
   });
 
+  // console.log(workout, "look");
+
   if (workout) {
     const exercises = workout.exercises;
     const exerciseData = exercises.map((exercise) => {
-      const setsData = exercise.Sets.map((set) => {
+      const setsData = exercise.sets.map((set) => {
         return {
           reps: set.reps,
           weight: set.weight,
+          id: set.id,
+          createdAt: set.createdAt,
         };
       });
       return {
         name: exercise.name,
         sets: setsData,
+        id: exercise.id,
       };
     });
     return {
-      workoutTitle: workout.title,
+      title: workout.title,
+      id: workout.id,
+      createdAt: workout.createdAt,
+      userId: workout.userId,
       exercises: exerciseData,
     };
   } else {

@@ -11,16 +11,18 @@ datasource db {
 }
 
 model User {
-  id             String    @id @default(auto()) @map("_id") @db.ObjectId
+  id             String     @id @default(auto()) @map("_id") @db.ObjectId
   name           String?
-  email          String?   @unique
+  email          String?    @unique
   emailVerified  DateTime?
   image          String?
   hashedPassword String?
-  createdAt      DateTime  @default(now())
-  updatedAt      DateTime  @updatedAt
+  createdAt      DateTime   @default(now())
+  updatedAt      DateTime   @updatedAt
   accounts       Account[]
   workouts       Workout[]
+  Exercise       Exercise[]
+  Sets           Sets[]
 }
 
 model Account {
@@ -53,10 +55,11 @@ model Workout {
 model Exercise {
   id        String  @id @default(auto()) @map("_id") @db.ObjectId
   name      String
-  // sets      Int
   workoutId String  @db.ObjectId
   workout   Workout @relation("WorkoutExercise", fields: [workoutId], references: [id])
-  Sets      Sets[]
+  sets      Sets[]
+  userId    String  @db.ObjectId
+  user      User    @relation(fields: [userId], references: [id])
 }
 
 model Sets {
@@ -65,4 +68,7 @@ model Sets {
   weight     Int
   Exercise   Exercise? @relation(fields: [exerciseId], references: [id])
   exerciseId String?   @db.ObjectId
+  user       User      @relation(fields: [userId], references: [id])
+  userId     String    @db.ObjectId
+  createdAt  DateTime? @default(now())
 }

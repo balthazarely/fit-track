@@ -4,11 +4,9 @@ import History from "@/components/workout/History";
 import Workout from "@/components/workout/Workout";
 
 export default async function Page({ params }: any) {
-  const workout = await getWorkout(params.id);
-  console.log(workout);
-
-  // const curlData = await getExerciseData("Zottman Curl");
-  // console.log(curlData, "curlData");
+  const decodedString = decodeURIComponent(params.id);
+  const exerciseData = await getExerciseData(decodedString);
+  //   console.log(exerciseData, "exerciseData");
 
   // const updatedWorkout = JSON.parse(
   //   JSON.stringify(workout).replace(/"sets"/g, '"Sets"')
@@ -22,8 +20,8 @@ export default async function Page({ params }: any) {
       {/* <div className="border-2 border-red-500"></div>
       {updatedWorkout && JSON.stringify(updatedWorkout)} */}
 
-      <Workout initlWorkout={workout} />
-      {/* <History data={curlData} /> */}
+      {/* <Workout initlWorkout={workout} /> */}
+      <History data={exerciseData} />
     </div>
   );
 }

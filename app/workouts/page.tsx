@@ -14,7 +14,7 @@ export default async function Page() {
       <div>
         {myWorkouts?.map((workout: any) => (
           <Link className="flex flex-col" href={`workout/${workout.id}`}>
-            {workout.title}
+            {workout.title} + {JSON.stringify(workout.createdAt)}
           </Link>
         ))}
       </div>

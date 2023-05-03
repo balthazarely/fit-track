@@ -1,10 +1,13 @@
 "use client";
 
 import axios from "axios";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import Exercise from "./Exercise";
+import { AnyARecord } from "dns";
+import getZottmanCurlExercises from "@/actions/getExerciseData";
 
-const initWorkout = {
-  workoutName: "workout-01",
+const defaultWorkout = {
+  title: "workout-01",
   exercises: [],
 };
 
@@ -27,10 +30,45 @@ const muscleGroups = [
   "triceps",
 ];
 
-export default function journal() {
-  const [workout, setWorkout] = useState<any>(initWorkout);
+export default function Workout({ initlWorkout = defaultWorkout }: any) {
+  const [workout, setWorkout] = useState<any>(initlWorkout);
   const [newExerciseModalOpen, setNewExerciseModalOpen] =
     useState<boolean>(false);
+
+  const editWorkoutName = (newTitle: string) => {
+    setWorkout((prevWorkout: any) => {
+      return {
+        ...prevWorkout,
+        title: newTitle,
+      };
+    });
+  };
+
+  const saveNewWorkoutNameToDB = () => {
+    const flattenedArray = workout.exercises.flatMap(
+      (exercise: any) => exercise.sets
+    );
+    console.log(flattenedArray, "setsToKill edit");
+
+    axios
+      //   .post("/api/deleteSets", flattenedArray)
+      .post("/api/editWorkout", workout)
+      .then(() => {
+        // console.log(workout, "hit api folder sucessifully FOR EDIT ROUT");
+        //   toast.success('Listing created!');
+        //   router.refresh();
+        //   reset();
+        //   setStep(STEPS.CATEGORY)
+        //   rentModal.onClose();
+      })
+      .catch(() => {
+        console.log("error");
+        //   toast.error('Something went wrong.');
+      })
+      .finally(() => {
+        //   setIsLoading(false);
+      });
+  };
 
   const addNewExercise = (exerciseName: string) => {
     setWorkout({
@@ -39,7 +77,7 @@ export default function journal() {
         ...workout.exercises,
         {
           name: exerciseName,
-          Sets: [{ reps: 0, weight: 0 }],
+          sets: [{ reps: 0, weight: 0 }],
         },
       ],
     });
@@ -53,13 +91,13 @@ export default function journal() {
 
   const addSet = (index: number) => {
     const newWorkout = { ...workout };
-    newWorkout.exercises[index].Sets.push({ reps: 0, weight: 0 });
+    newWorkout.exercises[index].sets.push({ reps: 0, weight: 0 });
     setWorkout(newWorkout);
   };
 
   const removeSet = (idx: number, index: number) => {
     const newWorkout = { ...workout };
-    newWorkout.exercises[index].Sets.splice(idx, 1);
+    newWorkout.exercises[index].sets.splice(idx, 1);
     setWorkout(newWorkout);
   };
 
@@ -85,68 +123,38 @@ export default function journal() {
       });
   };
 
+  console.log(workout, "this");
+
   return (
     <div className="max-w-xl mx-auto px-4">
-      {/* {JSON.stringify(workout)} */}
-
       <h1 className="font-bold text-3xl text-purple-500">Workout Journal</h1>
       <div className="flex gap-2 flex-col">
+        {/* <div>{workout?.workoutTitle}</div> */}
+        <div className="flex py-2">
+          <input
+            className="w-full border-2"
+            value={workout?.title}
+            onChange={(e) => editWorkoutName(e.target.value)}
+          />
+          <button
+            onClick={() => saveNewWorkoutNameToDB()}
+            className="btn btn-primary btn-sm"
+          >
+            update
+          </button>
+        </div>
         {workout.exercises.map((exercises: any, index: number) => {
           return (
-            <div className="bg-gray-100" key={index}>
-              <div className="flex justify-between">
-                <div>{exercises.name}</div>
-                <button
-                  className="bg-purple-400 text-xs px-2 py-1 mt-2 text-white"
-                  onClick={() => deleteExercise(index)}
-                >
-                  Del
-                </button>
-              </div>
-              <div>
-                {exercises.Sets.map((set: any, idx: number) => (
-                  <div className="text-sm" key={idx}>
-                    <input
-                      className="border-2 border-gray-300 w-12"
-                      name="reps"
-                      type="number"
-                      placeholder="reps"
-                      value={set.reps}
-                      onChange={(event) => {
-                        const newWorkout = { ...workout };
-                        newWorkout.exercises[index].Sets[idx].reps = parseInt(
-                          event.target.value
-                        );
-                        setWorkout(newWorkout);
-                      }}
-                    />
-                    <input
-                      className="border-2 border-gray-300  w-16"
-                      name="weight"
-                      type="number"
-                      placeholder="weight"
-                      value={set.weight}
-                      onChange={(event) => {
-                        const newWorkout = { ...workout };
-                        newWorkout.exercises[index].Sets[idx].weight = parseInt(
-                          event.target.value
-                        );
-                        setWorkout(newWorkout);
-                      }}
-                    />
-                    <button onClick={() => removeSet(idx, index)}>
-                      remove
-                    </button>
-                  </div>
-                ))}
-              </div>
-              <button
-                className="bg-purple-400 text-xs px-2 py-1 mt-2 text-white "
-                onClick={() => addSet(index)}
-              >
-                add set
-              </button>
-            </div>
+            <Exercise
+              key={index}
+              index={index}
+              exercises={exercises}
+              workout={workout}
+              setWorkout={setWorkout}
+              addSet={addSet}
+              removeSet={removeSet}
+              deleteExercise={deleteExercise}
+            />
           );
         })}
       </div>
@@ -233,8 +241,9 @@ function AddExerciseModal({
               <option key={group}>{group}</option>
             ))}
           </select>
-          {apiResults.map((result: any) => (
+          {apiResults.map((result: any, idx: number) => (
             <button
+              key={idx}
               onClick={() => setSelectedExercise(result.name)}
               className={`${
                 selectedExercise === result.name && "bg-purple-500 text-white "

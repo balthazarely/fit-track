@@ -1,9 +1,9 @@
-import Journal from "./components/Journal";
+import Workout from "./components/workout/Workout";
 
 export default function Home() {
   return (
     <div>
-      <Journal />
+      <Workout />
     </div>
   );
 }
