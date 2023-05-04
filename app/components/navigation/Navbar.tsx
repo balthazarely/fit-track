@@ -5,6 +5,8 @@ import useRegisterModal from "@/hooks/useRegisterModal";
 import { SafeUser } from "@/types";
 import { signOut } from "next-auth/react";
 import Link from "next/link";
+import { signIn } from "next-auth/react";
+import Image from "next/image";
 
 interface NavbarProps {
   currentUser: SafeUser | null;
@@ -87,11 +89,26 @@ export default function Navbar({ currentUser }: NavbarProps) {
             >
               Login
             </button>
+            <button
+              onClick={() => signIn("google")}
+              className=" px-2 py-1 text-white"
+            >
+              Login with Google
+            </button>
           </div>
         ) : (
-          <button onClick={() => signOut()} className=" px-2 py-1 text-white">
-            Sign out
-          </button>
+          <>
+            <button onClick={() => signOut()} className=" px-2 py-1 text-white">
+              Sign out
+            </button>
+            <Image
+              className="rounded-full"
+              height="30"
+              width="30"
+              alt="Avatar"
+              src={currentUser?.image || "/images/placeholder.jpg"}
+            />
+          </>
         )}
 
         {currentUser && `logged in as ${currentUser.name} `}
