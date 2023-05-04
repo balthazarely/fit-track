@@ -3,8 +3,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import Exercise from "./Exercise";
-import { AnyARecord } from "dns";
-import getZottmanCurlExercises from "@/actions/getExerciseData";
 
 const defaultWorkout = {
   title: "workout-01",
@@ -44,21 +42,27 @@ export default function Workout({ initlWorkout = defaultWorkout }: any) {
     });
   };
 
-  const saveNewWorkoutNameToDB = () => {
-    const flattenedArray = workout.exercises.flatMap(
-      (exercise: any) => exercise.sets
-    );
-    console.log(flattenedArray, "setsToKill edit");
-
+  const deleteAllRecords = () => {
+    console.log("deleteAllRecords, deleteAllRecords");
     axios
-      //   .post("/api/deleteSets", flattenedArray)
+      .post("/api/deleteWorkout", { data: workout.id })
+      .then(() => {})
+      .catch(() => {
+        console.log("error");
+      })
+      .finally(() => {});
+    // axios.post("/api/editWorkout", workout)
+  };
+
+  const saveNewWorkoutNameToDB = () => {
+    axios
       .post("/api/editWorkout", workout)
+      // .post("/api/editWorkout", workout)
       .then(() => {
         // console.log(workout, "hit api folder sucessifully FOR EDIT ROUT");
         //   toast.success('Listing created!');
         //   router.refresh();
         //   reset();
-        //   setStep(STEPS.CATEGORY)
         //   rentModal.onClose();
       })
       .catch(() => {
@@ -123,10 +127,11 @@ export default function Workout({ initlWorkout = defaultWorkout }: any) {
       });
   };
 
-  console.log(workout, "this");
+  // console.log(workout, "this");
 
   return (
     <div className="max-w-xl mx-auto px-4">
+      {JSON.stringify(workout)}
       <h1 className="font-bold text-3xl text-purple-500">Workout Journal</h1>
       <div className="flex gap-2 flex-col">
         {/* <div>{workout?.workoutTitle}</div> */}
@@ -141,6 +146,12 @@ export default function Workout({ initlWorkout = defaultWorkout }: any) {
             className="btn btn-primary btn-sm"
           >
             update
+          </button>
+          <button
+            onClick={() => deleteAllRecords()}
+            className="btn btn-danger btn-sm"
+          >
+            Delete + create new
           </button>
         </div>
         {workout.exercises.map((exercises: any, index: number) => {

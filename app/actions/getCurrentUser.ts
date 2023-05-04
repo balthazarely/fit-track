@@ -17,7 +17,7 @@ export default async function getCurrentUser() {
         email: session.user.email as string,
       },
     });
-    console.log("currentUser", currentUser);
+    // console.log("currentUser", currentUser);
 
     if (!currentUser) {
       console.log("NOT currentUser");

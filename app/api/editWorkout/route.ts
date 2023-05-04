@@ -3,39 +3,50 @@ import prisma from "@/libs/prismadb";
 import getCurrentUser from "@/actions/getCurrentUser";
 
 export async function POST(request: Request) {
-  const body = await request.json();
-  const { title, id, exercises } = body;
-  const setsforDeleting = exercises.flatMap((exercise: any) => exercise.sets);
-
   const currentUser = await getCurrentUser();
-  console.log(exercises, "these need deletino");
+  const body = await request.json();
+  const { title, createdAt, id, exercises } = body;
+  console.log(title, id, exercises);
 
-  //   const setsToDelete = await prisma.sets.findMany({
-  //     where: {
-  //       id: { in: setsforDeleting.id },
-  //     },
-  //   });
+  const existingWorkout = await prisma.workout.findUnique({
+    where: {
+      id: id,
+    },
+    include: {
+      exercises: {
+        include: {
+          sets: true,
+        },
+      },
+    },
+  });
 
-  //   if (setsToDelete.length === 0) {
-  //     return new Response(`No sets found with the given IDs.`, { status: 404 });
-  //   }
+  if (!existingWorkout) {
+    return {
+      status: 404,
+      body: "Workout not found",
+    };
+  }
 
-  //   await prisma.sets.deleteMany({
-  //     where: {
-  //       id: { in: setsforDeleting.id },
-  //     },
-  //   });
+  await prisma.sets.deleteMany({
+    where: {
+      exerciseId: {
+        in: existingWorkout.exercises.map((exercise) => exercise.id),
+      },
+    },
+  });
 
-  //   return new Response(`${setsToDelete.length} set(s) deleted.`, {
-  //     status: 200,
-  //   });
+  await prisma.exercise.deleteMany({
+    where: {
+      workoutId: existingWorkout.id,
+    },
+  });
 
   const workout = await prisma.workout.update({
     where: { id: id },
     data: {
       title: title,
       exercises: {
-        deleteMany: {},
         create: exercises.map((exercise: any) => ({
           name: exercise.name,
           userId: currentUser?.id,
@@ -44,7 +55,7 @@ export async function POST(request: Request) {
               reps: set.reps,
               weight: set.weight,
               userId: currentUser?.id,
-              createdAt: set.createdAt,
+              createdAt: createdAt,
             })),
           },
         })),

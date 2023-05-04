@@ -62,6 +62,7 @@ export default function Exercise({
                   setWorkout(newWorkout);
                 }}
               />
+              <div>{set.id}</div>
               <button onClick={() => removeSet(idx, index)}>remove</button>
             </div>
           ))}

@@ -10,6 +10,18 @@ module.exports = {
   },
   plugins: [require("daisyui")],
   daisyui: {
-    themes: ["light"],
+    themes: [
+      {
+        light: {
+          ...require("daisyui/src/colors/themes")["[data-theme=light]"],
+        },
+      },
+      {
+        dracula: {
+          ...require("daisyui/src/colors/themes")["[data-theme=dracula]"],
+          primary: "#E2FF12",
+        },
+      },
+    ],
   },
 };

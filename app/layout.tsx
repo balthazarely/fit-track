@@ -14,9 +14,8 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <head />
-      <body>
-        <Navbar currentUser={currentUser} />
-        <div>{children}</div>
+      <body className="r">
+        <Navbar currentUser={currentUser}>{children}</Navbar>
         <RegisterModal />
         <LoginModal />
       </body>

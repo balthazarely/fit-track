@@ -14,8 +14,6 @@ export default async function getWorkout(params: string) {
     },
   });
 
-  // console.log(workout, "look");
-
   if (workout) {
     const exercises = workout.exercises;
     const exerciseData = exercises.map((exercise) => {
