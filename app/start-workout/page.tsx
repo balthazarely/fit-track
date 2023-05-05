@@ -1,5 +1,8 @@
 import Heading from "@/components/UI/Heading";
+import NewWorkoutButton from "@/components/workout/NewWorkoutButton";
+import WorkoutTemplateCard from "@/components/workout/WorkoutTemplateCard";
 import Link from "next/link";
+import { IoBarbell } from "react-icons/io5";
 
 export default function StartWorkout() {
   const workouts = [
@@ -18,25 +21,13 @@ export default function StartWorkout() {
         subheading="Start a blank template or select a premade workout"
       />
       <div className="mt-8">
-        <Link href="/new-workout/default">
-          <button className="btn-primary btn">Start Blank Workout</button>
-        </Link>
+        <NewWorkoutButton />
       </div>
 
       <div className="mt-8 font-bold">Templates</div>
       <div className="grid md:grid-cols-3 grid-cols-2 gap-2 ">
         {workouts.map((workout: any) => (
-          <div className="bg-base-200 rounded-lg p-4">
-            <div className="font-bold">{workout.name}</div>
-            <div className="font-xs">
-              this will be something here but not toasf
-            </div>
-            <Link href={`/new-workout/${workout.id}`}>
-              <button className="btn-primary btn-sm btn flex mt-1  items-center justify-center rounded-lg ">
-                Start
-              </button>
-            </Link>
-          </div>
+          <WorkoutTemplateCard workout={workout} />
         ))}
       </div>
     </div>

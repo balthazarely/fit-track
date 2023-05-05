@@ -8,7 +8,7 @@ import moment from "moment";
 import { FaWeightHanging } from "react-icons/fa";
 import { workoutTemplates } from "@/utils/workoutTemplates";
 
-export default function WorkoutHistory({ workouts }: any) {
+export default function WorkoutHistoryFull({ workouts }: any) {
   const [value, onChange] = useState<any>(new Date());
   const [selectedDay, setSelectedDay] = useState<any>("");
 
@@ -32,7 +32,6 @@ export default function WorkoutHistory({ workouts }: any) {
 
   return (
     <div className="my-4">
-      <div className="text-xl font-bold">Recent Workouts</div>
       <div className="my-4 flex flex-col sm:flex-row gap-4 justify-between h-72">
         <div className="flex justify-center">
           <Calendar
@@ -65,13 +64,6 @@ export default function WorkoutHistory({ workouts }: any) {
               .map((workout: any) => {
                 return <WorkoutCard workout={workout} />;
               })}
-          </div>
-          <div className="w-full flex justify-center my-4">
-            <Link href={"/profile/workouts"}>
-              <button className="btn btn-ghost btn-sm ">
-                See all {workouts.length} workouts
-              </button>
-            </Link>
           </div>
         </div>
       </div>

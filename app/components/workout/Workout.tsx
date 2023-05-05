@@ -50,6 +50,7 @@ export default function Workout({
       ],
     });
     setwWorkoutEditted(true);
+    updateLocalStorage();
   };
 
   const deleteExercise = (index: number) => {
@@ -57,6 +58,7 @@ export default function Workout({
     newWorkout.exercises.splice(index, 1);
     setWorkout(newWorkout);
     setwWorkoutEditted(true);
+    updateLocalStorage();
   };
 
   const updateWorkoutInfo = (value: any, field: string) => {
@@ -64,6 +66,7 @@ export default function Workout({
     newWorkout[field] = value;
     setWorkout(newWorkout);
     setwWorkoutEditted(true);
+    updateLocalStorage();
   };
 
   const addSet = (index: number) => {
@@ -75,6 +78,7 @@ export default function Workout({
     });
     setWorkout(newWorkout);
     setwWorkoutEditted(true);
+    updateLocalStorage();
   };
 
   const removeSet = (idx: number, index: number) => {
@@ -82,6 +86,7 @@ export default function Workout({
     newWorkout.exercises[index].sets.splice(idx, 1);
     setWorkout(newWorkout);
     setwWorkoutEditted(true);
+    updateLocalStorage();
   };
 
   const saveWorkoutToDB = () => {
@@ -101,6 +106,7 @@ export default function Workout({
       .finally(() => {
         setwWorkoutEditted(false);
         setDbUpdateing(false);
+        setCompleteModalOpen(false);
       });
   };
 
@@ -137,6 +143,28 @@ export default function Workout({
         setDeleteModalOpen(false);
       });
   };
+
+  const updateLocalStorage = () => {
+    window.localStorage.setItem(
+      "fit-track-current-workout",
+      JSON.stringify(workout)
+    );
+  };
+  // useEffect(() => {
+  //   window.localStorage.setItem(
+  //     "fit-track-current-workout",
+  //     JSON.stringify(workout)
+  //   );
+  // }, [workout]);
+
+  useEffect(() => {
+    const data = window.localStorage.getItem("fit-track-current-workout");
+    if (data) {
+      let reveredStr = JSON.parse(data);
+      setWorkout(reveredStr);
+      console.log(reveredStr);
+    }
+  }, []);
 
   return (
     <>

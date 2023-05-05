@@ -5,5 +5,5 @@ interface WrapperProps {
 }
 
 export default function PageWrapper({ children }: WrapperProps) {
-  return <div className="mx-auto px-4 max-w-5xl">{children}</div>;
+  return <div className="mx-auto px-4 max-w-4xl">{children}</div>;
 }

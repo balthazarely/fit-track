@@ -3,6 +3,7 @@ import getWorkouts from "@/actions/getWorkouts";
 import Heading from "@/components/UI/Heading";
 import WorkoutHistory from "@/components/profile/WorkoutHistory";
 import Stats from "@/components/profile/Stats";
+import WorkoutHistoryFull from "@/components/profile/WorkoutHistoryFull";
 
 export default async function Page() {
   const currentUser = await getCurrentUser();
@@ -12,9 +13,8 @@ export default async function Page() {
   }
   return (
     <div>
-      <Heading heading="Profile" />
-      <Stats myWorkouts={myWorkouts} />
-      <WorkoutHistory workouts={myWorkouts} />
+      <Heading heading="All Workouts" />
+      <WorkoutHistoryFull workouts={myWorkouts} />
     </div>
   );
 }
