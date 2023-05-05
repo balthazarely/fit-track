@@ -1,6 +1,7 @@
 import getCurrentUser from "@/actions/getCurrentUser";
 import getWorkouts from "@/actions/getWorkouts";
 import WorkoutCard from "@/components/UI/WorkoutCard";
+import WorkoutHistory from "@/components/profile/WorkoutHistory";
 
 export default async function Page() {
   const currentUser = await getCurrentUser();
@@ -11,11 +12,7 @@ export default async function Page() {
   return (
     <div>
       <div className="font-bold text-2xl">Workouts</div>
-      <div>
-        {myWorkouts?.map((workout: any) => (
-          <WorkoutCard workout={workout} />
-        ))}
-      </div>
+      <WorkoutHistory workouts={myWorkouts} />
     </div>
   );
 }

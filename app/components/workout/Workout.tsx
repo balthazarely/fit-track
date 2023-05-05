@@ -11,7 +11,6 @@ import "react-date-range/dist/theme/default.css";
 import { muscleGroups } from "@/utils/muscleGroups";
 import { useRouter } from "next/navigation";
 import { HiDotsHorizontal, HiX } from "react-icons/hi";
-import Modal from "../UI/Modal";
 
 const defaultWorkout = {
   title: "workout-01",
@@ -37,6 +36,7 @@ export default function Workout({
   const [exerciseModalOpen, setExerciseModalOpen] = useState<boolean>(false);
   const [dateModalOpen, setDateModalOpen] = useState<boolean>(false);
   const [deleteModalOpen, setDeleteModalOpen] = useState<boolean>(false);
+  const [completeModalOpen, setCompleteModalOpen] = useState<boolean>(false);
 
   const addNewExercise = (exerciseName: string) => {
     setWorkout({
@@ -59,9 +59,9 @@ export default function Workout({
     setwWorkoutEditted(true);
   };
 
-  const updateDate = (date: any) => {
+  const updateWorkoutInfo = (value: any, field: string) => {
     const newWorkout = { ...workout };
-    newWorkout.createdAt = date;
+    newWorkout[field] = value;
     setWorkout(newWorkout);
     setwWorkoutEditted(true);
   };
@@ -70,8 +70,8 @@ export default function Workout({
     const prevWeightReps = workout.exercises[index].sets.slice(-1)[0];
     const newWorkout = { ...workout };
     newWorkout.exercises[index].sets.push({
-      reps: prevWeightReps.reps,
-      weight: prevWeightReps.weight,
+      reps: prevWeightReps?.reps || 0,
+      weight: prevWeightReps?.weight || 0,
     });
     setWorkout(newWorkout);
     setwWorkoutEditted(true);
@@ -137,6 +137,7 @@ export default function Workout({
         setDeleteModalOpen(false);
       });
   };
+
   return (
     <>
       <div className="max-w-md mx-auto px-4">
@@ -148,7 +149,7 @@ export default function Workout({
             <div className="flex items-center">
               <button
                 className={`btn btn-primary px-2 py-1 
-              ${dbUpdating ? "loading" : ""} 
+              ${dbUpdating ? "loading btn-disabled" : ""} 
               ${workoutEditted ? "" : "btn-disabled"}`}
                 onClick={updateWorkoutInDb}
               >
@@ -183,15 +184,7 @@ export default function Workout({
               <input
                 className="font-bold text-xl bg-base-200 p-2 input-bordered input-primary "
                 value={workout?.title}
-                onChange={(e) => {
-                  setWorkout((prevWorkout: any) => {
-                    return {
-                      ...prevWorkout,
-                      title: e.target.value,
-                    };
-                  });
-                  setwWorkoutEditted(true);
-                }}
+                onChange={(e) => updateWorkoutInfo(e.target.value, "title")}
               />
             )}
             <div>
@@ -242,8 +235,10 @@ export default function Workout({
           </button>
           {!editWorkout && (
             <button
-              className="btn btn-primary px-2 py-1  w-full"
-              onClick={saveWorkoutToDB}
+              className={`btn btn-primary px-2 py-1  w-full ${
+                workout.exercises?.length === 0 ? "btn-disabled" : ""
+              } ${dbUpdating ? "loading btn-disabled" : ""}`}
+              onClick={() => setCompleteModalOpen(true)}
             >
               Save Workout
             </button>
@@ -259,7 +254,7 @@ export default function Workout({
           dateModalOpen={dateModalOpen}
           setDateModalOpen={setDateModalOpen}
           workout={workout}
-          updateDate={updateDate}
+          updateWorkoutInfo={updateWorkoutInfo}
         />
         <ConfrimDeleteModal
           deleteModalOpen={deleteModalOpen}
@@ -267,6 +262,51 @@ export default function Workout({
           dbUpdating={dbUpdating}
           deleteWorkout={deleteWorkout}
         />
+        <ConfrimCompleteModal
+          completeModalOpen={completeModalOpen}
+          setCompleteModalOpen={setCompleteModalOpen}
+          dbUpdating={dbUpdating}
+          saveWorkoutToDB={saveWorkoutToDB}
+        />
+      </div>
+    </>
+  );
+}
+
+function ConfrimCompleteModal({
+  completeModalOpen,
+  setCompleteModalOpen,
+  dbUpdating,
+  saveWorkoutToDB,
+}: any) {
+  return (
+    <>
+      <input
+        type="checkbox"
+        checked={completeModalOpen}
+        id="my-modal-6"
+        className="modal-toggle"
+        readOnly
+      />
+      <div className="modal left-0 lg:left-56 absolute">
+        <div className="modal-box flex flex-col justify-center items-center relative">
+          <button
+            className="absolute top-2 right-2 btn btn-sm btn-ghost"
+            onClick={() => setCompleteModalOpen(false)}
+          >
+            <HiX />
+          </button>
+          <div className="mb-2 text-xl">
+            Are you sure you want to finish this workout?
+          </div>
+          <button
+            className={`btn btn-primary px-2 py-1 
+              ${dbUpdating ? "loading" : ""}`}
+            onClick={saveWorkoutToDB}
+          >
+            Complete
+          </button>
+        </div>
       </div>
     </>
   );
@@ -287,7 +327,7 @@ function ConfrimDeleteModal({
         className="modal-toggle"
         readOnly
       />
-      <div className="modal">
+      <div className="modal left-0 lg:left-56 absolute">
         <div className="modal-box flex flex-col justify-center items-center relative">
           <button
             className="absolute top-2 right-2 btn btn-sm btn-ghost"
@@ -315,7 +355,7 @@ function ChangeDateModal({
   dateModalOpen,
   setDateModalOpen,
   workout,
-  updateDate,
+  updateWorkoutInfo,
 }: any) {
   return (
     <>
@@ -326,7 +366,7 @@ function ChangeDateModal({
         className="modal-toggle"
         readOnly
       />
-      <div className="modal">
+      <div className="modal left-0 lg:left-56 absolute">
         <div className="modal-box relative flex justify-center items-center">
           <button
             className="absolute top-2 right-2 btn btn-sm btn-ghost"
@@ -336,7 +376,8 @@ function ChangeDateModal({
           </button>
           <Calendar
             date={workout.createdAt}
-            onChange={(date) => updateDate(date)}
+            onChange={(date) => updateWorkoutInfo(date, "createdAt")}
+            // onChange={(date) => updateDate(date)}
           />
         </div>
       </div>
@@ -384,11 +425,11 @@ function AddExerciseModal({
         type="checkbox"
         checked={exerciseModalOpen}
         id="my-modal-6"
-        className="modal-toggle"
+        className="modal-toggle relative"
         readOnly
       />
       {/* <input type="checkbox" id="my-modal" className="modal-toggle" /> */}
-      <div className="modal">
+      <div className="modal left-0 lg:left-56 absolute">
         <div className="modal-box relative">
           <button
             className="absolute top-2 right-2 btn btn-sm btn-ghost"
