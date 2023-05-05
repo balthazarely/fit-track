@@ -42,21 +42,18 @@ export async function POST(request: Request) {
       },
     });
 
-    // await prisma.workout.delete({
-    //   where: {
-    //     id: workout.id,
-    //   },
-    // });
+    await prisma.workout.delete({
+      where: {
+        id: workout.id,
+      },
+    });
 
-    return {
-      status: 200,
-      body: "Workout and associated exercises and sets deleted successfully",
-    };
+    return NextResponse.json(workout);
   } catch (error) {
     console.error(error);
-    return {
-      status: 500,
-      body: "Internal server error",
-    };
+    // return {
+    //   status: 500,
+    //   body: "Internal server error",
+    // };
   }
 }

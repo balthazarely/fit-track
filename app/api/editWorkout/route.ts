@@ -46,6 +46,7 @@ export async function POST(request: Request) {
     where: { id: id },
     data: {
       title: title,
+      createdAt: createdAt,
       exercises: {
         create: exercises.map((exercise: any) => ({
           name: exercise.name,
@@ -54,6 +55,7 @@ export async function POST(request: Request) {
             create: exercise.sets.map((set: any) => ({
               reps: set.reps,
               weight: set.weight,
+              rpe: set.rpe,
               userId: currentUser?.id,
               createdAt: createdAt,
             })),

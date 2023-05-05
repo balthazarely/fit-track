@@ -22,7 +22,7 @@ export default async function Page({ params }: any) {
       {/* <div className="border-2 border-red-500"></div>
       {updatedWorkout && JSON.stringify(updatedWorkout)} */}
 
-      <Workout initlWorkout={workout} />
+      <Workout editWorkout={true} initlWorkout={workout} />
       {/* <History data={curlData} /> */}
     </div>
   );

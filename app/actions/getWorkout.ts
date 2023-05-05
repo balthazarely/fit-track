@@ -21,6 +21,7 @@ export default async function getWorkout(params: string) {
         return {
           reps: set.reps,
           weight: set.weight,
+          rpe: set.rpe,
           id: set.id,
           createdAt: set.createdAt,
         };

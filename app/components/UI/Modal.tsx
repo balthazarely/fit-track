@@ -1,6 +1,6 @@
 "use client";
 
-export default function Modal({ children, isModalOpen }: any) {
+export default function Modal({ children, isModalOpen, setModal }: any) {
   return (
     <div className="">
       <input

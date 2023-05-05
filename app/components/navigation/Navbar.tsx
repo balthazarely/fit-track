@@ -164,7 +164,7 @@ export default function Navbar({ currentUser, children }: NavbarProps) {
           ) : (
             <div>
               <li>
-                <Link href={"/journal"}>Workout</Link>
+                <Link href={"/new-workout"}>New Workout</Link>
               </li>
               <li>
                 <Link href={"/workouts"}>Profile</Link>

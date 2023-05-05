@@ -3,76 +3,40 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import Exercise from "./Exercise";
+import toast from "react-hot-toast";
+import { AiTwotoneEdit, AiOutlineCheck, AiFillCalendar } from "react-icons/ai";
+import { Calendar } from "react-date-range";
+import "react-date-range/dist/styles.css";
+import "react-date-range/dist/theme/default.css";
+import { muscleGroups } from "@/utils/muscleGroups";
+import { useRouter } from "next/navigation";
+import { HiDotsHorizontal, HiX } from "react-icons/hi";
+import Modal from "../UI/Modal";
 
 const defaultWorkout = {
   title: "workout-01",
   exercises: [],
 };
 
-const muscleGroups = [
-  "abdominals",
-  "abductors",
-  "adductors",
-  "biceps",
-  "calves",
-  "chest",
-  "forearms",
-  "glutes",
-  "hamstrings",
-  "lats",
-  "lower_back",
-  "middle_back",
-  "neck",
-  "quadriceps",
-  "traps",
-  "triceps",
-];
+interface WorkoutProps {
+  initlWorkout?: any;
+  editWorkout?: boolean;
+}
 
-export default function Workout({ initlWorkout = defaultWorkout }: any) {
+export default function Workout({
+  initlWorkout = defaultWorkout,
+  editWorkout = false,
+}: WorkoutProps) {
+  const router = useRouter();
   const [workout, setWorkout] = useState<any>(initlWorkout);
-  const [newExerciseModalOpen, setNewExerciseModalOpen] =
-    useState<boolean>(false);
+  const [nameEdit, setNameEdit] = useState<boolean>(false);
+  const [workoutEditted, setwWorkoutEditted] = useState<boolean>(false);
+  const [dbUpdating, setDbUpdateing] = useState<boolean>(false);
 
-  const editWorkoutName = (newTitle: string) => {
-    setWorkout((prevWorkout: any) => {
-      return {
-        ...prevWorkout,
-        title: newTitle,
-      };
-    });
-  };
-
-  const deleteAllRecords = () => {
-    console.log("deleteAllRecords, deleteAllRecords");
-    axios
-      .post("/api/deleteWorkout", { data: workout.id })
-      .then(() => {})
-      .catch(() => {
-        console.log("error");
-      })
-      .finally(() => {});
-    // axios.post("/api/editWorkout", workout)
-  };
-
-  const saveNewWorkoutNameToDB = () => {
-    axios
-      .post("/api/editWorkout", workout)
-      // .post("/api/editWorkout", workout)
-      .then(() => {
-        // console.log(workout, "hit api folder sucessifully FOR EDIT ROUT");
-        //   toast.success('Listing created!');
-        //   router.refresh();
-        //   reset();
-        //   rentModal.onClose();
-      })
-      .catch(() => {
-        console.log("error");
-        //   toast.error('Something went wrong.');
-      })
-      .finally(() => {
-        //   setIsLoading(false);
-      });
-  };
+  // MODAL
+  const [exerciseModalOpen, setExerciseModalOpen] = useState<boolean>(false);
+  const [dateModalOpen, setDateModalOpen] = useState<boolean>(false);
+  const [deleteModalOpen, setDeleteModalOpen] = useState<boolean>(false);
 
   const addNewExercise = (exerciseName: string) => {
     setWorkout({
@@ -85,115 +49,305 @@ export default function Workout({ initlWorkout = defaultWorkout }: any) {
         },
       ],
     });
+    setwWorkoutEditted(true);
   };
 
   const deleteExercise = (index: number) => {
     const newWorkout = { ...workout };
     newWorkout.exercises.splice(index, 1);
     setWorkout(newWorkout);
+    setwWorkoutEditted(true);
+  };
+
+  const updateDate = (date: any) => {
+    const newWorkout = { ...workout };
+    newWorkout.createdAt = date;
+    setWorkout(newWorkout);
+    setwWorkoutEditted(true);
   };
 
   const addSet = (index: number) => {
+    const prevWeightReps = workout.exercises[index].sets.slice(-1)[0];
     const newWorkout = { ...workout };
-    newWorkout.exercises[index].sets.push({ reps: 0, weight: 0 });
+    newWorkout.exercises[index].sets.push({
+      reps: prevWeightReps.reps,
+      weight: prevWeightReps.weight,
+    });
     setWorkout(newWorkout);
+    setwWorkoutEditted(true);
   };
 
   const removeSet = (idx: number, index: number) => {
     const newWorkout = { ...workout };
     newWorkout.exercises[index].sets.splice(idx, 1);
     setWorkout(newWorkout);
+    setwWorkoutEditted(true);
   };
 
   const saveWorkoutToDB = () => {
+    setDbUpdateing(true);
     console.log(workout);
-
     axios
       .post("/api/workout", workout)
       .then(() => {
         console.log(workout, "hit api folder sucessifully");
-        //   toast.success('Listing created!');
+        toast.success(`Workout Saved`);
         //   router.refresh();
-        //   reset();
-        //   setStep(STEPS.CATEGORY)
-        //   rentModal.onClose();
       })
       .catch(() => {
         console.log("error");
-        //   toast.error('Something went wrong.');
+        toast.error("Something went wrong.");
       })
       .finally(() => {
-        //   setIsLoading(false);
+        setwWorkoutEditted(false);
+        setDbUpdateing(false);
       });
   };
 
-  // console.log(workout, "this");
+  const updateWorkoutInDb = () => {
+    setDbUpdateing(true);
+    axios
+      .post("/api/editWorkout", workout)
+      .then(() => {
+        toast.success(`Workout Updated`);
+      })
+      .catch(() => {
+        console.log("error");
+        toast.error("Something went wrong.");
+      })
+      .finally(() => {
+        setwWorkoutEditted(false);
+        setDbUpdateing(false);
+      });
+  };
 
+  const deleteWorkout = () => {
+    setDbUpdateing(true);
+    axios
+      .post("/api/deleteWorkout", { data: workout.id })
+      .then(() => {
+        router.push("/workouts");
+        toast.success(`Workout deleted`);
+      })
+      .catch(() => {
+        console.log("error");
+      })
+      .finally(() => {
+        setDbUpdateing(false);
+        setDeleteModalOpen(false);
+      });
+  };
   return (
-    <div className="max-w-xl mx-auto px-4">
-      {JSON.stringify(workout)}
-      <h1 className="font-bold text-3xl text-purple-500">Workout Journal</h1>
-      <div className="flex gap-2 flex-col">
-        {/* <div>{workout?.workoutTitle}</div> */}
-        <div className="flex py-2">
-          <input
-            className="w-full border-2"
-            value={workout?.title}
-            onChange={(e) => editWorkoutName(e.target.value)}
-          />
+    <>
+      <div className="max-w-md mx-auto px-4">
+        <div className="flex justify-between mb-4">
+          <h1 className="font-bold text-2xl ">
+            {editWorkout ? "Edit Workout" : "Create Workout"}
+          </h1>
+          {editWorkout && (
+            <div className="flex items-center">
+              <button
+                className={`btn btn-primary px-2 py-1 
+              ${dbUpdating ? "loading" : ""} 
+              ${workoutEditted ? "" : "btn-disabled"}`}
+                onClick={updateWorkoutInDb}
+              >
+                Save Changes
+              </button>
+              <div className="dropdown dropdown-bottom dropdown-end">
+                <label tabIndex={0} className="btn btn-ghost  ">
+                  <HiDotsHorizontal className="text-xl" />
+                </label>
+                <ul
+                  tabIndex={0}
+                  className="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52"
+                >
+                  <li>
+                    <div
+                      className="text-xs font-bold"
+                      onClick={() => setDeleteModalOpen(true)}
+                    >
+                      Delete Workout
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          )}
+        </div>
+        <div className="flex gap-2 flex-col">
+          <div className="flex py-2 gap-2  justify-between items-center pr-2">
+            {!nameEdit ? (
+              <div className="font-bold text-xl p-2">{workout?.title}</div>
+            ) : (
+              <input
+                className="font-bold text-xl bg-base-200 p-2 input-bordered input-primary "
+                value={workout?.title}
+                onChange={(e) => {
+                  setWorkout((prevWorkout: any) => {
+                    return {
+                      ...prevWorkout,
+                      title: e.target.value,
+                    };
+                  });
+                  setwWorkoutEditted(true);
+                }}
+              />
+            )}
+            <div>
+              {!nameEdit ? (
+                <button
+                  className="btn btn-ghost"
+                  onClick={() => setNameEdit(!nameEdit)}
+                >
+                  <AiTwotoneEdit className="text-xl cursor-pointer" />
+                </button>
+              ) : (
+                <button
+                  className="btn btn-ghost"
+                  onClick={() => setNameEdit(!nameEdit)}
+                >
+                  <AiOutlineCheck className="text-xl cursor-pointer" />
+                </button>
+              )}
+              <button
+                className="btn btn-ghost"
+                onClick={() => setDateModalOpen(true)}
+              >
+                <AiFillCalendar className="text-xl cursor-pointer" />
+              </button>
+            </div>
+          </div>
+          {workout.exercises.map((exercises: any, index: number) => {
+            return (
+              <Exercise
+                key={index}
+                index={index}
+                exercises={exercises}
+                workout={workout}
+                setWorkout={setWorkout}
+                addSet={addSet}
+                removeSet={removeSet}
+                deleteExercise={deleteExercise}
+              />
+            );
+          })}
+        </div>
+        <div className="my-2 flex flex-col w-full gap-2">
           <button
-            onClick={() => saveNewWorkoutNameToDB()}
-            className="btn btn-primary btn-sm"
+            className="btn-outline btn px-2 py-1   w-full"
+            onClick={() => setExerciseModalOpen(true)}
           >
-            update
+            add new exercise
           </button>
+          {!editWorkout && (
+            <button
+              className="btn btn-primary px-2 py-1  w-full"
+              onClick={saveWorkoutToDB}
+            >
+              Save Workout
+            </button>
+          )}
+        </div>
+
+        <AddExerciseModal
+          setExerciseModalOpen={setExerciseModalOpen}
+          exerciseModalOpen={exerciseModalOpen}
+          addNewExercise={addNewExercise}
+        />
+        <ChangeDateModal
+          dateModalOpen={dateModalOpen}
+          setDateModalOpen={setDateModalOpen}
+          workout={workout}
+          updateDate={updateDate}
+        />
+        <ConfrimDeleteModal
+          deleteModalOpen={deleteModalOpen}
+          setDeleteModalOpen={setDeleteModalOpen}
+          dbUpdating={dbUpdating}
+          deleteWorkout={deleteWorkout}
+        />
+      </div>
+    </>
+  );
+}
+
+function ConfrimDeleteModal({
+  deleteModalOpen,
+  setDeleteModalOpen,
+  dbUpdating,
+  deleteWorkout,
+}: any) {
+  return (
+    <>
+      <input
+        type="checkbox"
+        checked={deleteModalOpen}
+        id="my-modal-6"
+        className="modal-toggle"
+        readOnly
+      />
+      <div className="modal">
+        <div className="modal-box flex flex-col justify-center items-center relative">
           <button
-            onClick={() => deleteAllRecords()}
-            className="btn btn-danger btn-sm"
+            className="absolute top-2 right-2 btn btn-sm btn-ghost"
+            onClick={() => setDeleteModalOpen(false)}
           >
-            Delete + create new
+            <HiX />
+          </button>
+          <div className="mb-2 text-xl">
+            Are you sure you want to delete this workout?{" "}
+          </div>
+          <button
+            className={`btn btn-primary px-2 py-1 
+              ${dbUpdating ? "loading" : ""}`}
+            onClick={deleteWorkout}
+          >
+            Delete
           </button>
         </div>
-        {workout.exercises.map((exercises: any, index: number) => {
-          return (
-            <Exercise
-              key={index}
-              index={index}
-              exercises={exercises}
-              workout={workout}
-              setWorkout={setWorkout}
-              addSet={addSet}
-              removeSet={removeSet}
-              deleteExercise={deleteExercise}
-            />
-          );
-        })}
       </div>
-      <button
-        className="bg-gray-500 btn px-2 py-1 text-white"
-        onClick={() => setNewExerciseModalOpen(true)}
-      >
-        add new exercise
-      </button>
-      <AddExerciseModal
-        setNewExerciseModalOpen={setNewExerciseModalOpen}
-        newExerciseModalOpen={newExerciseModalOpen}
-        addNewExercise={addNewExercise}
+    </>
+  );
+}
+
+function ChangeDateModal({
+  dateModalOpen,
+  setDateModalOpen,
+  workout,
+  updateDate,
+}: any) {
+  return (
+    <>
+      <input
+        type="checkbox"
+        checked={dateModalOpen}
+        id="my-modal-6"
+        className="modal-toggle"
+        readOnly
       />
-      <button
-        className="bg-purple-500 px-2 py-1 text-white"
-        onClick={saveWorkoutToDB}
-      >
-        Save Workout to DB
-      </button>
-    </div>
+      <div className="modal">
+        <div className="modal-box relative flex justify-center items-center">
+          <button
+            className="absolute top-2 right-2 btn btn-sm btn-ghost"
+            onClick={() => setDateModalOpen(false)}
+          >
+            <HiX />
+          </button>
+          <Calendar
+            date={workout.createdAt}
+            onChange={(date) => updateDate(date)}
+          />
+        </div>
+      </div>
+    </>
   );
 }
 
 function AddExerciseModal({
   addNewExercise,
-  setNewExerciseModalOpen,
-  newExerciseModalOpen,
+  setExerciseModalOpen,
+  exerciseModalOpen,
 }: any) {
   const key = process.env.NEXT_PUBLIC_API_NINJA_API_KEY;
   const [selectedMuscleGroup, setSelectedMuscleGroups] = useState("");
@@ -228,17 +382,22 @@ function AddExerciseModal({
     <>
       <input
         type="checkbox"
-        checked={newExerciseModalOpen}
+        checked={exerciseModalOpen}
         id="my-modal-6"
         className="modal-toggle"
         readOnly
       />
       {/* <input type="checkbox" id="my-modal" className="modal-toggle" /> */}
       <div className="modal">
-        <div className="modal-box">
-          <div className="flex justify-between">
+        <div className="modal-box relative">
+          <button
+            className="absolute top-2 right-2 btn btn-sm btn-ghost"
+            onClick={() => setExerciseModalOpen(false)}
+          >
+            <HiX />
+          </button>
+          <div className="flex justify-between ">
             <h3 className="font-bold text-lg">Add Exercise</h3>
-            <button onClick={() => setNewExerciseModalOpen(false)}>X</button>
           </div>
           <select
             value={selectedMuscleGroup}
@@ -270,7 +429,7 @@ function AddExerciseModal({
               onClick={() => {
                 if (selectedExercise) {
                   addNewExercise(selectedExercise);
-                  setNewExerciseModalOpen(false);
+                  setExerciseModalOpen(false);
                 }
               }}
             >

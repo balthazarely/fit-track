@@ -1,6 +1,6 @@
 import getCurrentUser from "@/actions/getCurrentUser";
 import getWorkouts from "@/actions/getWorkouts";
-import Link from "next/link";
+import WorkoutCard from "@/components/UI/WorkoutCard";
 
 export default async function Page() {
   const currentUser = await getCurrentUser();
@@ -13,9 +13,7 @@ export default async function Page() {
       <div className="font-bold text-2xl">Workouts</div>
       <div>
         {myWorkouts?.map((workout: any) => (
-          <Link className="flex flex-col" href={`workout/${workout.id}`}>
-            {workout.title} + {JSON.stringify(workout.createdAt)}
-          </Link>
+          <WorkoutCard workout={workout} />
         ))}
       </div>
     </div>

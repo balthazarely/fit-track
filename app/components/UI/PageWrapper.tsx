@@ -5,5 +5,5 @@ interface WrapperProps {
 }
 
 export default function PageWrapper({ children }: WrapperProps) {
-  return <div className="border-2 border-red-500 max-w-5xl">{children}</div>;
+  return <div className=" max-w-5xl">{children}</div>;
 }
