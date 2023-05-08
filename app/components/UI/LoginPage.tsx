@@ -1,6 +1,6 @@
 "use client";
 
-import useLoginModal from "@/hooks/useLoginModal";
+import { BiDumbbell } from "react-icons/bi";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -53,8 +53,8 @@ export default function LoginPage() {
 
   return (
     <div className="mx-auto mt-16 max-w-sm flex justify-center flex-col ">
-      <div className="font-bold text-3xl text-primary mb-6 ">
-        Welcome to Fit-Track
+      <div className="font-bold flex gap-2 text-3xl text-primary mb-6 ">
+        <BiDumbbell className="text-4xl text-primary" /> Welcome to Fit-Track
       </div>
       <div className="w-full relative overflow-hidden ">
         <div

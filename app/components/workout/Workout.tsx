@@ -153,14 +153,14 @@ export default function Workout({
                 {editWorkout && (
                   <div className="flex items-center">
                     <button
-                      className={`btn btn-primary px-2 btn-sm py-1 
+                      className={`btn btn-outline btn-success btn-xs px-2 py-1 
                     ${dbUpdating ? "loading btn-disabled" : ""}  `}
                       onClick={updateWorkoutInDb}
                     >
                       Save Changes
                     </button>
                     <button
-                      className={`btn btn-danger btn-sm px-2 py-1  `}
+                      className={`btn btn-outline btn-error btn-xs px-2 py-1  `}
                       onClick={() => setDeleteModalOpen(true)}
                     >
                       Delete

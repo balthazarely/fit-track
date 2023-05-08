@@ -6,9 +6,10 @@ import Image from "next/image";
 import PageWrapper from "../UI/PageWrapper";
 import Link from "next/link";
 import { signOut } from "next-auth/react";
-import { IoBarbell, IoPersonCircle, IoExitOutline } from "react-icons/io5";
-// import { useRouter } from "next/router";
+import { IoPersonCircle, IoExitOutline } from "react-icons/io5";
+import { BiDumbbell } from "react-icons/bi";
 import { useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 
 interface NavbarProps {
   currentUser: SafeUser | null;
@@ -18,10 +19,11 @@ interface NavbarProps {
 export default function Navbar({ currentUser, children }: NavbarProps) {
   const toggleDrawer = useToggleDrawer();
   const router = useRouter();
+  const pathname = usePathname();
+  console.log(pathname);
 
   const handleSignOut = async () => {
     await signOut({ redirect: true });
-    // router.push("/");
   };
 
   return (
@@ -60,7 +62,7 @@ export default function Navbar({ currentUser, children }: NavbarProps) {
             </button>
           </div>
           <div className="flex-1">
-            <a className="btn-ghost btn text-xl normal-case">daisyUI</a>
+            <a className="btn-ghost btn text-xl normal-case">Fit-Track</a>
           </div>
           <div className="flex-none"></div>
         </div>
@@ -92,20 +94,26 @@ export default function Navbar({ currentUser, children }: NavbarProps) {
               </div>
             </div>
             <li>
-              <Link href={"/start-workout"}>
-                <IoBarbell />
+              <Link
+                href={"/"}
+                className={pathname === "/" ? "text-primary" : ""}
+              >
+                <BiDumbbell className="text-xl" />
                 <div>Workout</div>
               </Link>
             </li>
             <li>
-              <Link href={"/profile"}>
-                <IoPersonCircle />
+              <Link
+                href={"/profile"}
+                className={pathname === "/profile" ? "text-primary" : ""}
+              >
+                <IoPersonCircle className="text-xl" />
                 <div>Profile</div>
               </Link>
             </li>
             <li>
               <button onClick={handleSignOut}>
-                <IoExitOutline />
+                <IoExitOutline className="text-xl" />
                 <div>Sign Out</div>
               </button>
             </li>

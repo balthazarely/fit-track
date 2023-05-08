@@ -5,8 +5,6 @@ import { useState } from "react";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import moment from "moment";
-import { FaWeightHanging } from "react-icons/fa";
-import { workoutTemplates } from "@/utils/workoutTemplates";
 import WorkoutCard from "./WorkoutCard";
 
 export default function WorkoutHistory({ workouts }: any) {
@@ -28,11 +26,17 @@ export default function WorkoutHistory({ workouts }: any) {
     setSelectedDay(formattedDate);
   }
 
-  const limitTotalWorkouts = (workouts: any) =>
-    selectedDay === "" ? workouts.slice(0, 15) : workouts;
+  const limitAndSortTotalWorkouts = (workouts: any) =>
+    workouts
+      .sort((a: any, b: any) =>
+        moment(b.createdAt, "DD-MM-YYYY").diff(
+          moment(a.createdAt, "DD-MM-YYYY")
+        )
+      )
+      .slice(0, 4);
 
   return (
-    <div className="my-4">
+    <div className="my-8">
       <div className="text-xl font-bold">Recent Workouts</div>
       <div className="my-4 flex flex-col sm:flex-row gap-4 justify-between h-72">
         <div className="flex justify-center">
@@ -48,14 +52,14 @@ export default function WorkoutHistory({ workouts }: any) {
               <div className="font-bold  text-sm flex justify-between p-2 mb-1">
                 {moment(selectedDay).format("dddd DD/YYYY")}
                 <button
-                  className="btn btn-neutral btn-xs"
+                  className="btn btn-xs btn-outline"
                   onClick={() => setSelectedDay("")}
                 >
                   clear
                 </button>
               </div>
             )}
-            {limitTotalWorkouts(workouts)
+            {limitAndSortTotalWorkouts(workouts)
               .filter((workout: any) => {
                 if (selectedDay !== "") {
                   return workout.createdAtFormatted === selectedDay;

@@ -1,6 +1,5 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { HiX } from "react-icons/hi";
 import ExerciseHistoryModal from "./workoutModals/ExerciseHistoryModal";
@@ -14,7 +13,6 @@ export default function Exercise({
   removeSet,
   deleteExercise,
 }: any) {
-  const router = useRouter();
   const [exerciseHistoryModalOpen, setExerciseHistoryModalOpen] =
     useState<boolean>(false);
 

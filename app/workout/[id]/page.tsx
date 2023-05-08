@@ -18,12 +18,7 @@ export default async function Page({ params }: any) {
 
   return (
     <div>
-      {/* {workout && JSON.stringify(workout)} */}
-      {/* <div className="border-2 border-red-500"></div>
-      {updatedWorkout && JSON.stringify(updatedWorkout)} */}
-
       <Workout editWorkout={true} initlWorkout={workout} />
-      {/* <History data={curlData} /> */}
     </div>
   );
 }
