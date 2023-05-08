@@ -12,5 +12,6 @@ export default async function getExerciseData(exerciseName: string) {
       sets: true,
     },
   });
+
   return exerciseData;
 }

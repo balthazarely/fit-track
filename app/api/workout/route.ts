@@ -20,12 +20,14 @@ export async function POST(request: Request) {
         create: exercises.map((exercise: any) => ({
           name: exercise.name,
           userId: currentUser.id,
+          createdAt: createdAt,
           sets: {
             create: exercise.sets.map((set: any) => ({
               reps: set.reps,
               weight: set.weight,
               rpe: set.rpe,
               userId: currentUser.id,
+              createdAt: createdAt,
             })),
           },
         })),

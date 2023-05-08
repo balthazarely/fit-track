@@ -11,6 +11,7 @@ import "react-date-range/dist/theme/default.css";
 import { muscleGroups } from "@/utils/muscleGroups";
 import { useRouter } from "next/navigation";
 import { HiDotsHorizontal, HiX } from "react-icons/hi";
+import MemoTest from "./MemoTest";
 
 const defaultWorkout = {
   title: "workout-01",
@@ -26,10 +27,9 @@ export default function Workout({
   initlWorkout = defaultWorkout,
   editWorkout = false,
 }: WorkoutProps) {
-  const router = useRouter();
   const [workout, setWorkout] = useState<any>(initlWorkout);
   const [nameEdit, setNameEdit] = useState<boolean>(false);
-  const [workoutEditted, setwWorkoutEditted] = useState<boolean>(false);
+  const [workoutEditted, setWorkoutEditted] = useState<boolean>(false);
   const [dbUpdating, setDbUpdateing] = useState<boolean>(false);
 
   // MODAL
@@ -37,6 +37,16 @@ export default function Workout({
   const [dateModalOpen, setDateModalOpen] = useState<boolean>(false);
   const [deleteModalOpen, setDeleteModalOpen] = useState<boolean>(false);
   const [completeModalOpen, setCompleteModalOpen] = useState<boolean>(false);
+
+  /// TES
+  // const [testModalOpen, setTestModalOpen] = useState<boolean>(false);
+  const [value, setvalue] = useState<string>("ttesttest");
+
+  const router = useRouter();
+
+  // const toggleDateModal = useCallback(() => {
+  //   setDateModalOpen(!dateModalOpen);
+  // }, []);
 
   const addNewExercise = (exerciseName: string) => {
     setWorkout({
@@ -49,24 +59,23 @@ export default function Workout({
         },
       ],
     });
-    setwWorkoutEditted(true);
-    updateLocalStorage();
+    setWorkoutEditted(true);
   };
 
   const deleteExercise = (index: number) => {
     const newWorkout = { ...workout };
     newWorkout.exercises.splice(index, 1);
     setWorkout(newWorkout);
-    setwWorkoutEditted(true);
-    updateLocalStorage();
+    setWorkoutEditted(true);
   };
 
   const updateWorkoutInfo = (value: any, field: string) => {
     const newWorkout = { ...workout };
     newWorkout[field] = value;
     setWorkout(newWorkout);
-    setwWorkoutEditted(true);
-    updateLocalStorage();
+    console.log(newWorkout);
+
+    setWorkoutEditted(true);
   };
 
   const addSet = (index: number) => {
@@ -77,21 +86,20 @@ export default function Workout({
       weight: prevWeightReps?.weight || 0,
     });
     setWorkout(newWorkout);
-    setwWorkoutEditted(true);
-    updateLocalStorage();
+    setWorkoutEditted(true);
   };
 
   const removeSet = (idx: number, index: number) => {
     const newWorkout = { ...workout };
     newWorkout.exercises[index].sets.splice(idx, 1);
     setWorkout(newWorkout);
-    setwWorkoutEditted(true);
-    updateLocalStorage();
+    setWorkoutEditted(true);
   };
 
   const saveWorkoutToDB = () => {
-    setDbUpdateing(true);
     console.log(workout);
+
+    setDbUpdateing(true);
     axios
       .post("/api/workout", workout)
       .then(() => {
@@ -104,7 +112,7 @@ export default function Workout({
         toast.error("Something went wrong.");
       })
       .finally(() => {
-        setwWorkoutEditted(false);
+        setWorkoutEditted(false);
         setDbUpdateing(false);
         setCompleteModalOpen(false);
       });
@@ -122,7 +130,7 @@ export default function Workout({
         toast.error("Something went wrong.");
       })
       .finally(() => {
-        setwWorkoutEditted(false);
+        setWorkoutEditted(false);
         setDbUpdateing(false);
       });
   };
@@ -144,32 +152,33 @@ export default function Workout({
       });
   };
 
-  const updateLocalStorage = () => {
-    window.localStorage.setItem(
-      "fit-track-current-workout",
-      JSON.stringify(workout)
-    );
-  };
-  // useEffect(() => {
-  //   window.localStorage.setItem(
-  //     "fit-track-current-workout",
-  //     JSON.stringify(workout)
-  //   );
-  // }, [workout]);
+  // Need to create a useEFfect that will update this whenever the workout changes
+  // const updateLocalStorage = () => {
+  //   if (!editWorkout) {
+  //     window.localStorage.setItem(
+  //       "fit-track-current-workout",
+  //       JSON.stringify(workout)
+  //     );
+  //   }
+  // };
 
-  useEffect(() => {
-    const data = window.localStorage.getItem("fit-track-current-workout");
-    if (data) {
-      let reveredStr = JSON.parse(data);
-      setWorkout(reveredStr);
-      console.log(reveredStr);
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (!editWorkout) {
+  //     const data = window.localStorage.getItem("fit-track-current-workout");
+  //     if (data) {
+  //       let reveredStr = JSON.parse(data);
+  //       setWorkout(reveredStr);
+  //       console.log(reveredStr);
+  //     }
+  //   }
+  // }, []);
 
   return (
     <>
       <div className="max-w-md mx-auto px-4">
         <div className="flex justify-between mb-4">
+          {/* <button onClick={() => setvalue("new text")}>change memo text</button> */}
+          {/* <MemoTest value={value} /> */}
           <h1 className="font-bold text-2xl ">
             {editWorkout ? "Edit Workout" : "Create Workout"}
           </h1>
@@ -278,6 +287,10 @@ export default function Workout({
           exerciseModalOpen={exerciseModalOpen}
           addNewExercise={addNewExercise}
         />
+        {/* <TestModal
+          testModalOpen={testModalOpen}
+          setTestModalOpen={setTestModalOpen}
+        /> */}
         <ChangeDateModal
           dateModalOpen={dateModalOpen}
           setDateModalOpen={setDateModalOpen}
@@ -301,12 +314,40 @@ export default function Workout({
   );
 }
 
+function TestModal({ testModalOpen, setTestModalOpen }: any) {
+  console.log("TestModal rerender");
+  return (
+    <>
+      <input
+        type="checkbox"
+        checked={testModalOpen}
+        id="my-modal-6"
+        className="modal-toggle"
+        readOnly
+      />
+      <div className="modal left-0 lg:left-56 absolute">
+        <div className="modal-box relative flex justify-center items-center">
+          <button
+            className="absolute top-2 right-2 btn btn-sm btn-ghost"
+            onClick={() => setTestModalOpen(false)}
+          >
+            <HiX />
+          </button>
+          <div>ttest</div>
+        </div>
+      </div>
+    </>
+  );
+}
+
 function ConfrimCompleteModal({
   completeModalOpen,
   setCompleteModalOpen,
   dbUpdating,
   saveWorkoutToDB,
 }: any) {
+  console.log("ConfrimCompleteModal rerender");
+
   return (
     <>
       <input
@@ -346,6 +387,7 @@ function ConfrimDeleteModal({
   dbUpdating,
   deleteWorkout,
 }: any) {
+  console.log("ConfrimDeleteModal rerender");
   return (
     <>
       <input
@@ -385,6 +427,7 @@ function ChangeDateModal({
   workout,
   updateWorkoutInfo,
 }: any) {
+  console.log("ChangeDateModal rerender");
   return (
     <>
       <input
@@ -418,6 +461,7 @@ function AddExerciseModal({
   setExerciseModalOpen,
   exerciseModalOpen,
 }: any) {
+  console.log("AddExerciseModal rerender");
   const key = process.env.NEXT_PUBLIC_API_NINJA_API_KEY;
   const [selectedMuscleGroup, setSelectedMuscleGroups] = useState("");
   const [selectedExercise, setSelectedExercise] = useState();

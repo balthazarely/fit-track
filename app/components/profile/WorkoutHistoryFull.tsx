@@ -7,6 +7,7 @@ import "react-calendar/dist/Calendar.css";
 import moment from "moment";
 import { FaWeightHanging } from "react-icons/fa";
 import { workoutTemplates } from "@/utils/workoutTemplates";
+import WorkoutCard from "../UI/WorkoutCard";
 
 export default function WorkoutHistoryFull({ workouts }: any) {
   const [value, onChange] = useState<any>(new Date());
@@ -67,39 +68,6 @@ export default function WorkoutHistoryFull({ workouts }: any) {
           </div>
         </div>
       </div>
-    </div>
-  );
-}
-
-function WorkoutCard({ workout }: any) {
-  const formattedDate = moment(workout.createdAt).format("dddd MM/DD");
-  const weightTotal = workout.exercises.reduce((total: any, exercise: any) => {
-    exercise.sets.forEach((set: any) => {
-      total += set.weight;
-    });
-    return total;
-  }, 0);
-
-  return (
-    <div className="border-2 p-3 rounded-lg">
-      <Link className="" href={`workout/${workout.id}`}>
-        <div className="font-bold text-sm">{workout.title}</div>
-      </Link>
-      <div className="flex gap-4">
-        <div className="text-sm">{formattedDate}</div>
-        <div className="text-sm flex items-center gap-1">
-          <FaWeightHanging className="text-xs" />
-          {weightTotal} lb
-        </div>
-      </div>
-
-      {/* <div>
-        {workout.exercises.map((exercises: any) => (
-          <div>
-            {exercises.sets.length} x {exercises.name}
-          </div>
-        ))}
-      </div> */}
     </div>
   );
 }

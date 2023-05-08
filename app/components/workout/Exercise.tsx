@@ -1,7 +1,10 @@
 "use client";
 
+import axios from "axios";
 import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 import { HiX, HiDotsHorizontal } from "react-icons/hi";
+import ExerciseHistoryModal from "./ExerciseHistoryModal";
 
 export default function Exercise({
   index,
@@ -13,6 +16,8 @@ export default function Exercise({
   deleteExercise,
 }: any) {
   const router = useRouter();
+  const [exerciseHistoryModalOpen, setExerciseHistoryModalOpen] =
+    useState<boolean>(false);
 
   const linkToExcersiseHistory = () => {
     router.push(`/history/${encodeURIComponent(exercises.name)}`);
@@ -49,6 +54,12 @@ export default function Exercise({
                 >
                   Exercise History
                 </div>
+                <div
+                  className="text-xs font-bold"
+                  onClick={() => setExerciseHistoryModalOpen(true)}
+                >
+                  See Exercise
+                </div>
               </li>
             </ul>
           </div>
@@ -67,20 +78,6 @@ export default function Exercise({
               {idx + 1}
             </div>
             <input
-              className="bg-base-100 h-10 w-16  text-center rounded-md"
-              name="reps"
-              type="number"
-              placeholder="reps"
-              value={set.reps}
-              onChange={(event) => {
-                const newWorkout = { ...workout };
-                newWorkout.exercises[index].sets[idx].reps = parseInt(
-                  event.target.value
-                );
-                setWorkout(newWorkout);
-              }}
-            />
-            <input
               className="bg-base-100 h-10 w-16 text-center rounded-md"
               name="weight"
               type="number"
@@ -89,6 +86,20 @@ export default function Exercise({
               onChange={(event) => {
                 const newWorkout = { ...workout };
                 newWorkout.exercises[index].sets[idx].weight = parseInt(
+                  event.target.value
+                );
+                setWorkout(newWorkout);
+              }}
+            />
+            <input
+              className="bg-base-100 h-10 w-16  text-center rounded-md"
+              name="reps"
+              type="number"
+              placeholder="reps"
+              value={set.reps}
+              onChange={(event) => {
+                const newWorkout = { ...workout };
+                newWorkout.exercises[index].sets[idx].reps = parseInt(
                   event.target.value
                 );
                 setWorkout(newWorkout);
@@ -134,6 +145,56 @@ export default function Exercise({
         >
           add set
         </button>
+      </div>
+      <ExerciseHisotryModal
+        exerciseHistoryModalOpen={exerciseHistoryModalOpen}
+        setExerciseHistoryModalOpen={setExerciseHistoryModalOpen}
+      />
+    </>
+  );
+}
+
+function ExerciseHisotryModal({
+  exerciseHistoryModalOpen,
+  setExerciseHistoryModalOpen,
+}: any) {
+  const [fetchedData, setFetchedData] = useState();
+
+  useEffect(() => {
+    if (exerciseHistoryModalOpen) {
+      axios
+        .post("/api/getWorkoutHistory")
+        .then((response) => {
+          const data = response.data; // Extract the data from the response
+          console.log(data, "hit api folder successfully");
+          setFetchedData(data);
+          // Update the state or do other things with the data
+        })
+        .catch((error) => {
+          console.error(error); // Handle the error
+        });
+    }
+  }, [exerciseHistoryModalOpen]);
+
+  return (
+    <>
+      <input
+        type="checkbox"
+        checked={exerciseHistoryModalOpen}
+        id="my-modal-6"
+        className="modal-toggle"
+        readOnly
+      />
+      <div className="modal left-0 lg:left-56 absolute">
+        <div className="modal-box relative flex justify-center items-center">
+          <button
+            className="absolute top-2 right-2 btn btn-sm btn-ghost"
+            onClick={() => setExerciseHistoryModalOpen(false)}
+          >
+            <HiX />
+          </button>
+          {fetchedData && <ExerciseHistoryModal data={fetchedData} />}
+        </div>
       </div>
     </>
   );

@@ -31,6 +31,7 @@ export default function Navbar({ currentUser, children }: NavbarProps) {
       <input
         id="my-drawer-2"
         type="checkbox"
+        readOnly
         checked={toggleDrawer.isOpen}
         className="drawer-toggle"
       />

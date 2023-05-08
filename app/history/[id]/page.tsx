@@ -1,7 +1,8 @@
 import getWorkout from "@/actions/getWorkout";
 import getExerciseData from "@/actions/getExerciseData";
-import History from "@/components/workout/History";
+import ExerciseHistory from "@/components/workout/ExerciseHistory";
 import Workout from "@/components/workout/Workout";
+import Exercise from "@/components/workout/Exercise";
 
 export default async function Page({ params }: any) {
   const decodedString = decodeURIComponent(params.id);
@@ -21,7 +22,7 @@ export default async function Page({ params }: any) {
       {updatedWorkout && JSON.stringify(updatedWorkout)} */}
 
       {/* <Workout initlWorkout={workout} /> */}
-      <History data={exerciseData} />
+      <ExerciseHistory data={exerciseData} />
     </div>
   );
 }

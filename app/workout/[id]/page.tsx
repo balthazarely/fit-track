@@ -1,6 +1,6 @@
 import getWorkout from "@/actions/getWorkout";
 import getExerciseData from "@/actions/getExerciseData";
-import History from "@/components/workout/History";
+import History from "@/components/workout/ExerciseHistory";
 import Workout from "@/components/workout/Workout";
 
 export default async function Page({ params }: any) {
