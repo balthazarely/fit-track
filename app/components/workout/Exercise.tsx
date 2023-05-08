@@ -1,10 +1,9 @@
 "use client";
 
-import axios from "axios";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
-import { HiX, HiDotsHorizontal } from "react-icons/hi";
-import ExerciseHistoryModal from "./ExerciseHistoryModal";
+import { useState } from "react";
+import { HiX } from "react-icons/hi";
+import ExerciseHistoryModal from "./workoutModals/ExerciseHistoryModal";
 
 export default function Exercise({
   index,
@@ -19,10 +18,6 @@ export default function Exercise({
   const [exerciseHistoryModalOpen, setExerciseHistoryModalOpen] =
     useState<boolean>(false);
 
-  const linkToExcersiseHistory = () => {
-    router.push(`/history/${encodeURIComponent(exercises.name)}`);
-  };
-
   return (
     <>
       <div
@@ -30,38 +25,20 @@ export default function Exercise({
         key={index}
       >
         <div className="flex w-full justify-between items-center ">
-          <div className="font-bold text-sm">{exercises.name}</div>
-          <div className="dropdown dropdown-bottom dropdown-end">
-            <label tabIndex={0} className="btn btn-ghost btn-sm ">
-              <HiDotsHorizontal className="text-xl" />
-            </label>
-            <ul
-              tabIndex={0}
-              className="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52"
+          <div className="font-bold text-sm ">{exercises.name}</div>
+          <div className="flex items-center gap-1">
+            <button
+              onClick={() => setExerciseHistoryModalOpen(true)}
+              className="btn btn-xs btn-outline btn-secondary"
             >
-              <li>
-                <div
-                  className="text-xs font-bold"
-                  onClick={() => deleteExercise(index)}
-                >
-                  Remove Exercise
-                </div>
-              </li>
-              <li>
-                <div
-                  className="text-xs font-bold"
-                  onClick={() => linkToExcersiseHistory()}
-                >
-                  Exercise History
-                </div>
-                <div
-                  className="text-xs font-bold"
-                  onClick={() => setExerciseHistoryModalOpen(true)}
-                >
-                  See Exercise
-                </div>
-              </li>
-            </ul>
+              history
+            </button>
+            <button
+              onClick={() => deleteExercise(index)}
+              className="btn btn-xs btn-outline btn-secondary"
+            >
+              <HiX />
+            </button>
           </div>
         </div>
 
@@ -146,56 +123,11 @@ export default function Exercise({
           add set
         </button>
       </div>
-      <ExerciseHisotryModal
+      <ExerciseHistoryModal
+        exercisesName={exercises.name}
         exerciseHistoryModalOpen={exerciseHistoryModalOpen}
         setExerciseHistoryModalOpen={setExerciseHistoryModalOpen}
       />
-    </>
-  );
-}
-
-function ExerciseHisotryModal({
-  exerciseHistoryModalOpen,
-  setExerciseHistoryModalOpen,
-}: any) {
-  const [fetchedData, setFetchedData] = useState();
-
-  useEffect(() => {
-    if (exerciseHistoryModalOpen) {
-      axios
-        .post("/api/getWorkoutHistory")
-        .then((response) => {
-          const data = response.data; // Extract the data from the response
-          console.log(data, "hit api folder successfully");
-          setFetchedData(data);
-          // Update the state or do other things with the data
-        })
-        .catch((error) => {
-          console.error(error); // Handle the error
-        });
-    }
-  }, [exerciseHistoryModalOpen]);
-
-  return (
-    <>
-      <input
-        type="checkbox"
-        checked={exerciseHistoryModalOpen}
-        id="my-modal-6"
-        className="modal-toggle"
-        readOnly
-      />
-      <div className="modal left-0 lg:left-56 absolute">
-        <div className="modal-box relative flex justify-center items-center">
-          <button
-            className="absolute top-2 right-2 btn btn-sm btn-ghost"
-            onClick={() => setExerciseHistoryModalOpen(false)}
-          >
-            <HiX />
-          </button>
-          {fetchedData && <ExerciseHistoryModal data={fetchedData} />}
-        </div>
-      </div>
     </>
   );
 }

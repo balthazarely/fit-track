@@ -4,6 +4,7 @@ import RegisterModal from "./components/modals/RegisterModal";
 import Navbar from "./components/navigation/Navbar";
 import { Toaster } from "react-hot-toast";
 import "./globals.css";
+import LoginPage from "./components/UI/LoginPage";
 
 export default async function RootLayout({
   children,
@@ -16,9 +17,11 @@ export default async function RootLayout({
     <html lang="en">
       <head />
       <body className="r">
-        <Navbar currentUser={currentUser}>
-          {currentUser ? children : <>pls log in</>}
-        </Navbar>
+        {currentUser ? (
+          <Navbar currentUser={currentUser}>{children}</Navbar>
+        ) : (
+          <LoginPage />
+        )}
         <RegisterModal />
         <LoginModal />
         <Toaster position="top-center" toastOptions={toastConfig} />

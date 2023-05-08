@@ -1,20 +1,14 @@
 "use client";
 
-import useLoginModal from "@/hooks/useLoginModal";
-import useRegisterModal from "@/hooks/useRegisterModal";
 import useToggleDrawer from "@/hooks/useToggleDrawer";
 import { SafeUser } from "@/types";
 import Image from "next/image";
 import PageWrapper from "../UI/PageWrapper";
 import Link from "next/link";
-import { signIn, signOut } from "next-auth/react";
-import {
-  IoBarbell,
-  IoPersonCircle,
-  IoExitOutline,
-  IoEnterOutline,
-} from "react-icons/io5";
-import { FaGoogle } from "react-icons/fa";
+import { signOut } from "next-auth/react";
+import { IoBarbell, IoPersonCircle, IoExitOutline } from "react-icons/io5";
+// import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 
 interface NavbarProps {
   currentUser: SafeUser | null;
@@ -22,9 +16,13 @@ interface NavbarProps {
 }
 
 export default function Navbar({ currentUser, children }: NavbarProps) {
-  const registerModal = useRegisterModal();
-  const loginModal = useLoginModal();
   const toggleDrawer = useToggleDrawer();
+  const router = useRouter();
+
+  const handleSignOut = async () => {
+    await signOut({ redirect: true });
+    // router.push("/");
+  };
 
   return (
     <div className="drawer-mobile drawer ">
@@ -77,74 +75,51 @@ export default function Navbar({ currentUser, children }: NavbarProps) {
           className="drawer-overlay"
         ></label>
         <ul className="menu w-56 bg-base-100 p-4 text-base-content">
-          {!currentUser ? (
-            <div>
-              <li>
-                <button onClick={() => registerModal.onOpen()}>
-                  <IoEnterOutline />
-                  <div>Register</div>
-                </button>
-              </li>
-              <li>
-                <button onClick={() => loginModal.onOpen()}>
-                  <IoEnterOutline />
-                  <div>Login</div>
-                </button>
-              </li>
-              <li>
-                <button onClick={() => signIn("google")}>
-                  <FaGoogle />
-                  <div> Login with Google</div>
-                </button>
-              </li>
-            </div>
-          ) : (
-            <div>
-              <div className="flex items-center gap-2 mb-6">
-                <div className="w-12 h-12 rounded-full">
-                  <Image
-                    className="rounded-full"
-                    height="50"
-                    width="50"
-                    alt="Avatar"
-                    src={currentUser?.image || "/images/placeholder.jpg"}
-                  />
-                </div>
-                <div className="flex flex-col h-full justify-center">
-                  <div className="text-xs ">logged in as</div>
-                  <div className="text-xs font-bold">{currentUser.name}</div>
-                </div>
-              </div>
-              <li>
-                <Link href={"/start-workout"}>
-                  <IoBarbell />
-                  <div>Workout</div>
-                </Link>
-              </li>
-              <li>
-                <Link href={"/profile"}>
-                  <IoPersonCircle />
-                  <div>Profile</div>
-                </Link>
-              </li>
-              <li>
-                <button onClick={() => signOut()} className="">
-                  <IoExitOutline />
-                  <div>Sign Out</div>
-                </button>
-              </li>
-
-              <li>
+          <div>
+            <div className="flex items-center gap-2 mb-6">
+              <div className="w-12 h-12 rounded-full">
                 <Image
                   className="rounded-full"
-                  height="30"
-                  width="30"
+                  height="50"
+                  width="50"
                   alt="Avatar"
                   src={currentUser?.image || "/images/placeholder.jpg"}
                 />
-              </li>
+              </div>
+              <div className="flex flex-col h-full justify-center">
+                <div className="text-xs ">logged in as</div>
+                <div className="text-xs font-bold">{currentUser?.name}</div>
+              </div>
             </div>
-          )}
+            <li>
+              <Link href={"/start-workout"}>
+                <IoBarbell />
+                <div>Workout</div>
+              </Link>
+            </li>
+            <li>
+              <Link href={"/profile"}>
+                <IoPersonCircle />
+                <div>Profile</div>
+              </Link>
+            </li>
+            <li>
+              <button onClick={handleSignOut}>
+                <IoExitOutline />
+                <div>Sign Out</div>
+              </button>
+            </li>
+
+            <li>
+              <Image
+                className="rounded-full"
+                height="30"
+                width="30"
+                alt="Avatar"
+                src={currentUser?.image || "/images/placeholder.jpg"}
+              />
+            </li>
+          </div>
         </ul>
       </div>
     </div>

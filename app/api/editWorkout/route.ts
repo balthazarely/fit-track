@@ -6,7 +6,6 @@ export async function POST(request: Request) {
   const currentUser = await getCurrentUser();
   const body = await request.json();
   const { title, createdAt, id, exercises } = body;
-  console.log(title, id, exercises);
 
   const existingWorkout = await prisma.workout.findUnique({
     where: {
