@@ -98,7 +98,7 @@ export default function Workout({
         setDbUpdateing(false);
         setCompleteModalOpen(false);
       });
-  }, [workout]);
+  }, [workout, router]);
 
   const updateWorkoutInDb = useCallback(() => {
     setDbUpdateing(true);
@@ -115,7 +115,7 @@ export default function Workout({
       .finally(() => {
         setDbUpdateing(false);
       });
-  }, [workout]);
+  }, [workout, router]);
 
   const deleteWorkout = useCallback(() => {
     setDbDeleting(true);
@@ -132,7 +132,7 @@ export default function Workout({
         setDbDeleting(false);
         setDeleteModalOpen(false);
       });
-  }, []);
+  }, [router]);
 
   return (
     <>

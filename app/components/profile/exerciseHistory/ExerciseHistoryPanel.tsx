@@ -38,7 +38,7 @@ export default function ExerciseHistoryPanel() {
     };
 
     fetchData();
-  }, [selectedMuscleGroup]);
+  }, [selectedMuscleGroup, key]);
 
   return (
     <div className="my-6">

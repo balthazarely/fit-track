@@ -49,4 +49,5 @@ const ConfrimCompleteModal = memo(
   }
 );
 
+ConfrimCompleteModal.displayName = "ConfrimCompleteModal";
 export default ConfrimCompleteModal;

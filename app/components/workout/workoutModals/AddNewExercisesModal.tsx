@@ -44,7 +44,7 @@ const AddNewExercisesModal = memo(
       if (selectedMuscleGroup) {
         fetchData();
       }
-    }, [selectedMuscleGroup]);
+    }, [selectedMuscleGroup, key]);
 
     return (
       <>
@@ -87,6 +87,7 @@ const AddNewExercisesModal = memo(
                   instructionsOpen={instructionsOpen}
                   result={result}
                   idx={idx}
+                  key={idx}
                 />
               ))}
             </div>
@@ -112,6 +113,7 @@ const AddNewExercisesModal = memo(
   }
 );
 
+AddNewExercisesModal.displayName = "AddNewExercisesModal";
 export default AddNewExercisesModal;
 
 interface ExerciseProps {

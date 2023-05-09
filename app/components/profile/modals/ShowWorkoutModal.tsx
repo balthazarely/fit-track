@@ -36,7 +36,7 @@ export default function ShowWorkoutModal({
           setIsLoading(false);
         });
     }
-  }, [showWorkoutModal]);
+  }, [showWorkoutModal, workoutId]);
 
   return (
     <div className="">

@@ -70,9 +70,9 @@ export default function ExerciseHistory({ data }: any) {
                 moment(a.createdAt, "DD-MM-YYYY")
               )
             )
-            .map((workout: any) => {
+            .map((workout: any, idx: number) => {
               return (
-                <div className="border-2 mb-4 py-1 pl-1 pr-4">
+                <div key={idx} className="border-2 mb-4 py-1 pl-1 pr-4">
                   <div className="text-sm font-bold grid grid-cols-2 mb-1">
                     <div>
                       {moment(workout.createdAt).format("MMM DD, YYYY")}

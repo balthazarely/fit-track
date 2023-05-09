@@ -59,7 +59,7 @@ export default function ExerciseHistoryModal({
           setIsLoading(false);
         });
     }
-  }, [exerciseHistoryModalOpen]);
+  }, [exerciseHistoryModalOpen, exercisesName]);
 
   return (
     <div className="">

@@ -74,7 +74,7 @@ export default function LoginPage() {
                 onClick={() => setLoginShowing(false)}
                 className="btn-link w-full text-sm  text-center mt-4 border-2"
               >
-                Don't have an account? Sign up for a one.
+                Don&apos;t have an account? Sign up for a one.
               </button>
               <div className=" px-3">
                 <div className="divider my-4 text-xs font-bold">OR</div>

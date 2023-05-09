@@ -51,4 +51,5 @@ const ChangeDateModal = memo(
   }
 );
 
+ChangeDateModal.displayName = "ChangeDateModal";
 export default ChangeDateModal;

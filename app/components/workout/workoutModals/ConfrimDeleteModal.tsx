@@ -48,4 +48,6 @@ const ConfrimDeleteModal = memo(
     );
   }
 );
+
+ConfrimDeleteModal.displayName = "ConfrimDeleteModal";
 export default ConfrimDeleteModal;
