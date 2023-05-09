@@ -7,7 +7,6 @@ export async function POST(request: Request) {
 
   const body = await request.json();
   const { name } = body;
-  console.log(currentUser);
 
   const exerciseData = await prisma.exercise.findMany({
     where: {

@@ -24,6 +24,8 @@ ChartJS.register(
   Tooltip,
   Legend
 );
+import tailwindConfig from "../../../../../tailwind.config"; // adjust the path to your actual tailwind.config.js file
+import { log } from "console";
 
 export default function BestSetGraph({ data }: any) {
   const options = {
@@ -65,7 +67,7 @@ export default function BestSetGraph({ data }: any) {
         label: `Best Set`,
         data: data?.map((item: any) => item.bestSet.weight),
         fill: false,
-        borderColor: "rgba(75,192,192,1)",
+        borderColor: "rgba(169,221,61,1)",
         tension: 0.2,
         pointRadius: 8,
       },

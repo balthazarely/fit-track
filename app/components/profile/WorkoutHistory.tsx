@@ -6,18 +6,18 @@ import ExerciseHistoryPanel from "./exerciseHistory/ExerciseHistoryPanel";
 import Overview from "./overview/Overview";
 
 export default function WorkoutHistory({ workouts }: any) {
-  const [tabSelected, setSelectedTab] = useState("Overview");
+  const [tabSelected, setSelectedTab] = useState("Recent Workouts");
 
-  const menuTabs = ["Overview", "Recent Workouts", "Exercise History"];
+  const menuTabs = ["Recent Workouts", "Stats", "Exercise History"];
 
   return (
     <div className="mt-4">
-      <div className="tabs">
-        {menuTabs.map((item: any) => (
-          <button onClick={() => setSelectedTab(item)}>
+      <div className="tabs tabs-boxed">
+        {menuTabs.map((item: any, idx: number) => (
+          <button key={idx} onClick={() => setSelectedTab(item)}>
             <a
-              className={`tab tab-bordered ${
-                tabSelected === item ? "tab-active" : ""
+              className={`tab tab-lifted   ${
+                tabSelected === item ? "tab-active  " : ""
               }`}
             >
               {item}
@@ -25,7 +25,7 @@ export default function WorkoutHistory({ workouts }: any) {
           </button>
         ))}
       </div>
-      <div className={`${tabSelected === "Overview" ? "block" : "hidden"}`}>
+      <div className={`${tabSelected === "Stats" ? "block" : "hidden"}`}>
         <Overview workouts={workouts} />
       </div>
       <div

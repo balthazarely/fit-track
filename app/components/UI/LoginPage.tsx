@@ -10,6 +10,7 @@ import RegisterForm from "./forms/RegisterForm";
 import { FcGoogle } from "react-icons/fc";
 import axios from "axios";
 import { toast } from "react-hot-toast";
+import Image from "next/image";
 
 export default function LoginPage() {
   const [loginShowing, setLoginShowing] = useState(true);
@@ -39,7 +40,6 @@ export default function LoginPage() {
     axios
       .post("/api/register", data)
       .then(() => {
-        console.log("logged in");
         toast.success("Registered! Please sign in");
       })
       .catch((error) => {
@@ -52,52 +52,61 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="mx-auto mt-16 max-w-xs flex justify-center flex-col ">
-      <div className="font-bold flex flex-col gap-2 text-3xl text-primary mb-8 justify-center items-center ">
-        <BiDumbbell className="text-5xl text-white rounded-full  p-1 bg-primary" />
-        <div>Welcome to Fit-Track</div>
-      </div>
-      <div className="w-full relative overflow-hidden ">
-        <div
-          className={`transform transition-transform duration-200 px-3 py-6 ${
-            loginShowing ? "translate-x-0" : "-translate-x-full"
-          }`}
-        >
-          <div className="font-bold text-xl">Sign in to your account</div>
-          <LoginForm onSubmit={onLoginSubmit} isLoading={isLoading} />
-          <button
-            onClick={() => setLoginShowing(false)}
-            className="btn-link w-full text-sm  text-center mt-4 border-2"
-          >
-            Don't have an account? Sign up for a one.
-          </button>
-          <div className=" px-3">
-            <div className="divider my-4 text-xs font-bold">OR</div>
-            <button
-              className="btn btn-outline btn-ghost w-full"
-              onClick={() => signIn("google")}
+    <>
+      <div className="bg-lifter-image-wrap">
+        <div className="mx-auto pt-16 max-w-xs flex justify-center flex-col ">
+          {/* Content goes here */}
+          <div className="font-bold flex flex-col gap-2 text-3xl text-primary mb-8 justify-center items-center ">
+            <BiDumbbell className="text-5xl text-base-100 rounded-full  p-1 bg-primary" />
+            <div>Welcome to Fit-Stack</div>
+          </div>
+          <div className="w-full relative overflow-hidden ">
+            <div
+              className={`transform transition-transform duration-200 px-3 py-6 ${
+                loginShowing ? "translate-x-0" : "-translate-x-full"
+              }`}
             >
-              <FcGoogle className="mr-2 text-lg" />
-              Login In with Google
-            </button>
+              <div className="font-bold text-xl text-center">
+                Sign in to your account
+              </div>
+              <LoginForm onSubmit={onLoginSubmit} isLoading={isLoading} />
+              <button
+                onClick={() => setLoginShowing(false)}
+                className="btn-link w-full text-sm  text-center mt-4 border-2"
+              >
+                Don't have an account? Sign up for a one.
+              </button>
+              <div className=" px-3">
+                <div className="divider my-4 text-xs font-bold">OR</div>
+                <button
+                  className="btn btn-outline btn-ghost w-full"
+                  onClick={() => signIn("google")}
+                >
+                  <FcGoogle className="mr-2 text-lg" />
+                  Login In with Google
+                </button>
+              </div>
+            </div>
+
+            <div
+              className={`w-full  px-3 py-6 absolute top-0 left-0 transform transition-transform duration-200 ${
+                loginShowing ? "translate-x-full" : " translate-x-0"
+              }`}
+            >
+              <div className="font-bold text-xl text-center">
+                Create account
+              </div>
+              <RegisterForm onSubmit={onRegisterSubmit} isLoading={isLoading} />
+              <button
+                onClick={() => setLoginShowing(true)}
+                className="btn-link text-sm w-full text-center mt-4 border-2"
+              >
+                Already have an account? Sign in here
+              </button>
+            </div>
           </div>
         </div>
-
-        <div
-          className={`w-full  px-3 py-6 absolute top-0 left-0 transform transition-transform duration-200 ${
-            loginShowing ? "translate-x-full" : " translate-x-0"
-          }`}
-        >
-          <div className="font-bold text-xl">Create account</div>
-          <RegisterForm onSubmit={onRegisterSubmit} isLoading={isLoading} />
-          <button
-            onClick={() => setLoginShowing(true)}
-            className="btn-link text-sm w-full text-center mt-4 border-2"
-          >
-            Already have an account? Sign in here
-          </button>
-        </div>
       </div>
-    </div>
+    </>
   );
 }

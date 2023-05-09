@@ -3,8 +3,6 @@ import { HiX } from "react-icons/hi";
 
 const ConfrimDeleteModal = memo(
   ({ deleteModalOpen, setDeleteModalOpen, dbUpdating, deleteWorkout }: any) => {
-    console.log("ConfrimDeleteModal rerender");
-
     return (
       <>
         <input

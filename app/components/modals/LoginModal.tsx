@@ -35,15 +35,11 @@ export default function LoginModal() {
       setIsLoading(false);
 
       if (callback?.ok) {
-        console.log("login worked!");
-
-        // toast.success("Logged in");
         router.refresh();
         loginModal.onClose();
       }
       if (callback?.error) {
         console.log("login ERROROORR!");
-        // toast.error(callback.error);
       }
     });
   };

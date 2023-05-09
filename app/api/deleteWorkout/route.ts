@@ -5,7 +5,6 @@ import getCurrentUser from "@/actions/getCurrentUser";
 export async function POST(request: Request) {
   const body = await request.json();
   const id = body.data;
-  console.log(id);
 
   try {
     const workout = await prisma.workout.findUnique({

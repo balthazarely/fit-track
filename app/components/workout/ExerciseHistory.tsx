@@ -98,7 +98,7 @@ function Workout({ workout }: any) {
     parseFloat((weight / (1.0278 - 0.0278 * reps)).toFixed(1));
 
   return workout.sets.map((set: any, idx: number) => (
-    <div className="grid grid-cols-2">
+    <div className="grid grid-cols-2" key={idx}>
       <div className="text-sm">
         {idx} : {set.reps} x {set.weight}
       </div>

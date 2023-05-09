@@ -23,7 +23,7 @@ export default function RegisterForm({ onSubmit, isLoading }: any) {
         disabled={isLoading}
         {...register("name", { required: true })}
         type="text"
-        className="border-2 mt-1 py-1 px-2 bg-base-200 "
+        className="input input-bordered input-primary  mt-1 py-1 px-2 bg-base-200 "
       />
       <label className="text-sm mt-4  ">Email</label>
       <input
@@ -31,7 +31,7 @@ export default function RegisterForm({ onSubmit, isLoading }: any) {
         disabled={isLoading}
         {...register("email", { required: true })}
         type="email"
-        className="border-2 mt-1 py-1 px-2 bg-base-200 "
+        className="input input-bordered input-primary  mt-1 py-1 px-2 bg-base-200 "
       />
       <label className="text-sm mt-4 ">Password</label>
       <input
@@ -39,7 +39,7 @@ export default function RegisterForm({ onSubmit, isLoading }: any) {
         disabled={isLoading}
         {...register("password", { required: true })}
         type="password"
-        className="border-2 mt-1 py-1 px-2 bg-base-200 "
+        className="input input-bordered input-primary  mt-1 py-1 px-2 bg-base-200 "
       />
       <button
         type="submit"

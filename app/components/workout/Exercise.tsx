@@ -25,19 +25,17 @@ export default function Exercise({
       >
         <div className="flex w-full justify-between items-center ">
           <div className="font-bold text-sm ">{exercises.name}</div>
-          <div className="flex items-center gap-1">
+          <div className="flex btn-group items-center">
             <button
               onClick={() => setExerciseHistoryModalOpen(true)}
-              className="btn btn-xs btn-outline btn-secondary"
+              className="btn btn-xs btn-outline "
             >
               history
             </button>
-            <Link href={`/history/${exercises.name}`}>
-              <button className="btn btn-xs btn-outline">test</button>
-            </Link>
+
             <button
               onClick={() => deleteExercise(index)}
-              className="btn btn-xs btn-outline btn-secondary"
+              className="btn btn-xs btn-outline "
             >
               <HiX />
             </button>

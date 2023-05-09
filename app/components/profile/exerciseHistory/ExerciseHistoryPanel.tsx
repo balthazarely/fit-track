@@ -1,8 +1,5 @@
 import { muscleGroups } from "@/utils/muscleGroups";
-import axios from "axios";
 import React, { useEffect, useState } from "react";
-import moment from "moment";
-import BestSetGraph from "./graphs/BestSetGraph";
 import { Loader } from "../../UI/Loader";
 import ExerciseResultCard from "./ExerciseResultCard";
 import ExerciseData from "./ExerciseData";
@@ -43,22 +40,25 @@ export default function ExerciseHistoryPanel() {
 
   return (
     <div className="my-6">
-      <div className="grid grid-cols-1 md:grid-cols-5  gap-0 md:gap-6">
+      <div className="text-xl font-bold">Exercise History</div>
+      <div className="grid grid-cols-1 md:grid-cols-5  mt-4 gap-0 md:gap-6">
         <div className="col-span-2 w-full">
           <select
             value={selectedMuscleGroup}
             onChange={handleSelectChange}
-            className="select select-bordered w-full mb-2 "
+            className="select  select-primary w-full mb-2 "
           >
             <option disabled value="">
               Choose Muscle Group
             </option>
             {muscleGroups.map((group: string) => (
-              <option key={group}>{group}</option>
+              <option key={group} className=" ">
+                {group}
+              </option>
             ))}
           </select>
 
-          <div className="flex flex-col h-96 overflow-y-scroll ">
+          <div className="flex flex-col h-96 overflow-y-scroll  bg-base-200">
             {loadingAPI && <Loader />}
             {!loadingAPI &&
               selectedMuscleGroup &&

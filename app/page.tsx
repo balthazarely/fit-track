@@ -1,8 +1,11 @@
 import Heading from "@/components/UI/Heading";
 import NewWorkoutButton from "@/components/workout/NewWorkoutButton";
 import WorkoutTemplateCard from "@/components/workout/WorkoutTemplateCard";
-import Link from "next/link";
-import { IoBarbell } from "react-icons/io5";
+
+type workoutTemplates = {
+  name: string;
+  id: string;
+};
 
 export default function Home() {
   const workouts = [
@@ -26,8 +29,8 @@ export default function Home() {
 
       <div className="mt-8 font-bold">Templates</div>
       <div className="grid md:grid-cols-3 grid-cols-2 gap-2 ">
-        {workouts.map((workout: any) => (
-          <WorkoutTemplateCard workout={workout} />
+        {workouts.map((workout: workoutTemplates, idx: number) => (
+          <WorkoutTemplateCard key={idx} workout={workout} />
         ))}
       </div>
     </div>

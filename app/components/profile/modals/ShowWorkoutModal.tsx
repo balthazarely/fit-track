@@ -44,7 +44,6 @@ export default function ShowWorkoutModal({
         .then((response) => {
           const data = response.data; // Extract the data from the response
           setFetchedData(data);
-          console.log(data);
         })
         .catch((error) => {
           console.error(error); // Handle the error
@@ -87,14 +86,14 @@ export default function ShowWorkoutModal({
                   {moment(fetchedData.createdAt).format("MMM DD, YYYY")}
                 </div>
               </div>
-              {fetchedData.exercises.map((exercise: any) => {
+              {fetchedData.exercises.map((exercise: any, idx: number) => {
                 return (
-                  <div className=" p-2">
+                  <div className=" p-2" key={idx}>
                     <div>{exercise.name}</div>
                     {exercise.sets.map((set: any, idx: number) => (
-                      <div className="grid grid-cols-2">
+                      <div className="grid grid-cols-2" key={idx}>
                         <div className="text-sm">
-                          {idx} : {set.reps} x {set.weight}
+                          {idx} : {set.weight} lbs x {set.reps}
                         </div>
                         <div className="text-sm text-right">
                           {oneRepMaxFormula(set.weight, set.reps)} 1RM
@@ -123,7 +122,7 @@ export default function ShowWorkoutModal({
 
 function Workout({ workout }: any) {
   return workout.sets.map((set: any, idx: number) => (
-    <div className="grid grid-cols-2">
+    <div className="grid grid-cols-2" key={idx}>
       <div className="text-sm">
         {idx} : {set.reps} x {set.weight}
       </div>

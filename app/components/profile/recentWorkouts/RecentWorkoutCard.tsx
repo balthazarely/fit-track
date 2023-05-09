@@ -9,8 +9,6 @@ import { useState } from "react";
 export default function RecentWorkoutCard({ workout }: any) {
   const [showWorkoutModal, setShowWorkoutModal] = useState<boolean>(false);
 
-  console.log(workout);
-
   const formattedDate = moment(workout.createdAt).format("dddd MM/DD");
   const weightTotal = workout.exercises.reduce((total: any, exercise: any) => {
     exercise.sets.forEach((set: any) => {
@@ -21,7 +19,7 @@ export default function RecentWorkoutCard({ workout }: any) {
 
   return (
     <>
-      <div className=" p-3 cursor-pointer rounded-lg hover:bg-base-200">
+      <div className=" p-3 cursor-pointer rounded-lg hover:bg-base-200 ">
         <div className="flex justify-between">
           <div>
             <div className="font-bold text-sm">{workout.title}</div>

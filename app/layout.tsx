@@ -16,7 +16,7 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <head />
-      <body className="r">
+      <body>
         {currentUser ? (
           <Navbar currentUser={currentUser}>{children}</Navbar>
         ) : (
@@ -24,7 +24,7 @@ export default async function RootLayout({
         )}
         <RegisterModal />
         <LoginModal />
-        <Toaster position="top-center" toastOptions={toastConfig} />
+        <Toaster position="top-right" toastOptions={toastConfig} />
       </body>
     </html>
   );

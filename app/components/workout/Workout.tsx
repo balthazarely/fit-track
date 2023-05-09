@@ -63,7 +63,6 @@ export default function Workout({
     const newWorkout = { ...workout };
     newWorkout[field] = value;
     setWorkout(newWorkout);
-    console.log(newWorkout);
   };
 
   const addSet = (index: number) => {
@@ -87,7 +86,6 @@ export default function Workout({
     axios
       .post("/api/workout", workout)
       .then(() => {
-        console.log(workout, "hit api folder sucessifully");
         toast.success(`Workout Saved`);
         router.refresh();
       })
@@ -103,7 +101,6 @@ export default function Workout({
 
   const updateWorkoutInDb = useCallback(() => {
     setDbUpdateing(true);
-    console.log(workout);
     axios
       .post("/api/editWorkout", workout)
       .then(() => {
@@ -141,7 +138,7 @@ export default function Workout({
       <div className="max-w-md mx-auto px-4">
         <div className="flex justify-between mb-4">
           {!editWorkout && (
-            <h1 className="font-bold text-center w-full text-2xl ">
+            <h1 className="font-bold text-center w-full text-2xl text-primary">
               Create Workout
             </h1>
           )}
@@ -153,14 +150,14 @@ export default function Workout({
                 {editWorkout && (
                   <div className="flex items-center">
                     <button
-                      className={`btn btn-outline btn-success btn-xs px-2 py-1 
+                      className={`btn btn-outline  btn-xs px-2 py-1 
                     ${dbUpdating ? "loading btn-disabled" : ""}  `}
                       onClick={updateWorkoutInDb}
                     >
                       Save Changes
                     </button>
                     <button
-                      className={`btn btn-outline btn-error btn-xs px-2 py-1  `}
+                      className={`btn btn-outline btn-xs px-2 py-1  `}
                       onClick={() => setDeleteModalOpen(true)}
                     >
                       Delete
@@ -270,24 +267,3 @@ export default function Workout({
     </>
   );
 }
-
-// Need to create a useEFfect that will update this whenever the workout changes
-// const updateLocalStorage = () => {
-//   if (!editWorkout) {
-//     window.localStorage.setItem(
-//       "fit-track-current-workout",
-//       JSON.stringify(workout)
-//     );
-//   }
-// };
-
-// useEffect(() => {
-//   if (!editWorkout) {
-//     const data = window.localStorage.getItem("fit-track-current-workout");
-//     if (data) {
-//       let reveredStr = JSON.parse(data);
-//       setWorkout(reveredStr);
-//       console.log(reveredStr);
-//     }
-//   }
-// }, []);

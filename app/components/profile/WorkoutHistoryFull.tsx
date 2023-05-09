@@ -36,8 +36,8 @@ export default function WorkoutHistoryFull({ workouts }: any) {
                   return workout;
                 }
               })
-              .map((workout: any) => {
-                return <WorkoutCard workout={workout} />;
+              .map((workout: any, idx: number) => {
+                return <WorkoutCard key={idx} workout={workout} />;
               })}
           </div>
         </div>

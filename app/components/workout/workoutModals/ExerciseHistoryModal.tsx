@@ -87,9 +87,9 @@ export default function ExerciseHistoryModal({
                     moment(a.createdAt, "DD-MM-YYYY")
                   )
                 )
-                .map((workout: any) => {
+                .map((workout: any, idx: number) => {
                   return (
-                    <div className=" mb-4 py-1 pl-1 pr-4">
+                    <div key={idx} className=" mb-4 py-1 pl-1 pr-4">
                       <div className="text-sm font-bold grid grid-cols-2 mb-1">
                         <div>
                           {moment(workout.createdAt).format("MMM DD, YYYY")}
@@ -119,7 +119,7 @@ export default function ExerciseHistoryModal({
 
 function Workout({ workout }: any) {
   return workout.sets.map((set: any, idx: number) => (
-    <div className="grid grid-cols-2">
+    <div className="grid grid-cols-2" key={idx}>
       <div className="text-sm">
         {idx} : {set.reps} x {set.weight}
       </div>

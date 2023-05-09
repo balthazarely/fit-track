@@ -46,7 +46,7 @@ export default function RecentWorkouts({ workouts }: any) {
             tileClassName={tileClassName}
           ></Calendar>
         </div>
-        <div className="w-full flex justify-between flex-col  ">
+        <div className="w-full flex justify-between flex-col   ">
           <div>
             {selectedDay !== "" && (
               <div className="font-bold  text-sm flex justify-between p-2 mb-1">
@@ -67,13 +67,13 @@ export default function RecentWorkouts({ workouts }: any) {
                   return workout;
                 }
               })
-              .map((workout: any) => {
-                return <RecentWorkoutCard workout={workout} />;
+              .map((workout: any, idx: number) => {
+                return <RecentWorkoutCard key={idx} workout={workout} />;
               })}
           </div>
           <div className="w-full flex justify-center my-4">
             <Link href={"/profile/workouts"}>
-              <button className="btn btn-ghost btn-sm ">
+              <button className="btn btn-primary btn-sm ">
                 See all {workouts.length} workouts
               </button>
             </Link>

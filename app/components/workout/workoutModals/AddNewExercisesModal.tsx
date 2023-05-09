@@ -25,7 +25,6 @@ const AddNewExercisesModal = memo(
           }
         );
         const jsonData = await response.json();
-        console.log(jsonData);
         setApiResults(jsonData);
       };
 
@@ -57,7 +56,7 @@ const AddNewExercisesModal = memo(
             <select
               value={selectedMuscleGroup}
               onChange={handleSelectChange}
-              className="select select-bordered w-full mb-2 "
+              className="select select-primary w-full mb-2 "
             >
               <option disabled value="">
                 Choose Muscle Group
@@ -82,7 +81,7 @@ const AddNewExercisesModal = memo(
             <div className="modal-action">
               <button
                 disabled={!selectedExercise}
-                className={`btn-primary btn px-2 py-1 text-white `}
+                className={`btn-primary btn px-2 py-1 `}
                 onClick={() => {
                   if (selectedExercise) {
                     addNewExercise(selectedExercise);

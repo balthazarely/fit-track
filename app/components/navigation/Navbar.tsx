@@ -8,7 +8,6 @@ import Link from "next/link";
 import { signOut } from "next-auth/react";
 import { IoPersonCircle, IoExitOutline } from "react-icons/io5";
 import { BiDumbbell } from "react-icons/bi";
-import { useRouter } from "next/navigation";
 import { usePathname } from "next/navigation";
 import { FaInfoCircle } from "react-icons/fa";
 
@@ -19,9 +18,7 @@ interface NavbarProps {
 
 export default function Navbar({ currentUser, children }: NavbarProps) {
   const toggleDrawer = useToggleDrawer();
-  const router = useRouter();
   const pathname = usePathname();
-  console.log(pathname);
 
   const handleSignOut = async () => {
     await signOut({ redirect: true });
@@ -81,13 +78,19 @@ export default function Navbar({ currentUser, children }: NavbarProps) {
           <div>
             <div className="flex items-center gap-2 mb-6">
               <div className="w-12 h-12 rounded-full">
-                <Image
-                  className="rounded-full"
-                  height="50"
-                  width="50"
-                  alt="Avatar"
-                  src={currentUser?.image || "/images/placeholder.jpg"}
-                />
+                {currentUser?.image ? (
+                  <Image
+                    className="rounded-full"
+                    height="50"
+                    width="50"
+                    alt="Avatar"
+                    src={currentUser?.image || "/images/placeholder.jpg"}
+                  />
+                ) : (
+                  <div className="rounded-full h-[50px] w-[50px] bg-primary flex justify-center items-center text-base-100  text-2xl">
+                    {currentUser?.name?.slice(0, 1)}
+                  </div>
+                )}
               </div>
               <div className="flex flex-col h-full justify-center">
                 <div className="text-xs ">logged in as</div>
@@ -98,6 +101,7 @@ export default function Navbar({ currentUser, children }: NavbarProps) {
               <Link
                 href={"/"}
                 className={pathname === "/" ? "text-primary" : ""}
+                onClick={() => toggleDrawer.onClose()}
               >
                 <BiDumbbell className="text-xl" />
                 <div>Workout</div>
@@ -107,6 +111,7 @@ export default function Navbar({ currentUser, children }: NavbarProps) {
               <Link
                 href={"/profile"}
                 className={pathname === "/profile" ? "text-primary" : ""}
+                onClick={() => toggleDrawer.onClose()}
               >
                 <IoPersonCircle className="text-xl" />
                 <div>Profile</div>
@@ -116,6 +121,7 @@ export default function Navbar({ currentUser, children }: NavbarProps) {
               <Link
                 href={"/about"}
                 className={pathname === "/about" ? "text-primary" : ""}
+                onClick={() => toggleDrawer.onClose()}
               >
                 <FaInfoCircle className="text-xl" />
                 <div>About</div>
