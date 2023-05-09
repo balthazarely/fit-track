@@ -36,7 +36,7 @@ export default function Overview({ workouts }: OverviewProps) {
     "Sunday",
   ];
 
-  const workoutsWithDayOfWeek = workouts.map((workout: Workout) => ({
+  const workoutsWithDayOfWeek = workoutsThisWeek.map((workout: Workout) => ({
     createdAt: moment(workout.createdAt).format("dddd") || "No date available",
   }));
 
@@ -52,7 +52,7 @@ export default function Overview({ workouts }: OverviewProps) {
 
   const weightTotal = (workouts: Workout[]) => {
     let total = 0;
-    workouts.forEach((workout) => {
+    workoutsThisWeek.forEach((workout) => {
       workout.exercises.forEach((exercise: Exercises) => {
         exercise.sets.forEach((set: Sets) => {
           total += set.weight * set.reps;

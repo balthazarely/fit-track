@@ -1,7 +1,7 @@
 "use client";
 
 import axios from "axios";
-import { useCallback, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import Exercise from "./Exercise";
 import toast from "react-hot-toast";
 import { AiTwotoneEdit, AiOutlineCheck, AiFillCalendar } from "react-icons/ai";
@@ -40,6 +40,7 @@ export default function Workout({
   const [completeModalOpen, setCompleteModalOpen] = useState<boolean>(false);
 
   const router = useRouter();
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const addNewExercise = (exerciseName: string) => {
     setWorkout({
@@ -149,7 +150,7 @@ export default function Workout({
               <h1 className="font-bold text-center  text-2xl ">Edit Workout</h1>
               <div>
                 {editWorkout && (
-                  <div className="flex items-center">
+                  <div className="flex items-center btn-group">
                     <button
                       className={`btn btn-outline  btn-xs px-2 py-1 
                     ${dbUpdating ? "loading btn-disabled" : ""}  `}
@@ -170,24 +171,35 @@ export default function Workout({
           )}
         </div>
         <div className="flex gap-2 flex-col">
-          <div className="flex py-2 gap-2  justify-between items-center pr-2">
-            <div>
-              <div className="text-xs mb-1">workout name</div>
+          <div className="flex py-2 gap-2  h-24  justify-between items-center pr-2">
+            <div className=" h-full">
+              <div className="text-xs mt-1">workout name</div>
               {!nameEdit ? (
-                <div className="font-bold text-xl">{workout?.title}</div>
+                <input
+                  readOnly
+                  className="font-bold text-xl bg-base-200 input "
+                  value={workout?.title}
+                />
               ) : (
                 <input
-                  className="font-bold text-xl bg-base-200  input-bordered input-primary "
+                  ref={inputRef}
+                  className="font-bold text-xl bg-base-200 input input-bordered input-primary "
                   value={workout?.title}
                   onChange={(e) => updateWorkoutInfo(e.target.value, "title")}
                 />
               )}
             </div>
-            <div>
+            <div className="">
               {!nameEdit ? (
                 <button
                   className="btn btn-ghost"
-                  onClick={() => setNameEdit(!nameEdit)}
+                  onClick={() => {
+                    setNameEdit(!nameEdit);
+                    if (inputRef.current) {
+                      inputRef.current.focus();
+                      inputRef.current.select();
+                    }
+                  }}
                 >
                   <AiTwotoneEdit className="text-xl cursor-pointer" />
                 </button>

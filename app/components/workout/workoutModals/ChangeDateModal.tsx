@@ -39,7 +39,7 @@ const ChangeDateModal = memo(
               onChange={(date) => updateWorkoutInfo(date, "createdAt")}
             />
             <button
-              className={`btn btn-primary px-2 py-1 `}
+              className={`btn btn-primary px-2 py-1 mt-2 `}
               onClick={() => setDateModalOpen(false)}
             >
               Change Date

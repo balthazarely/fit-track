@@ -75,11 +75,12 @@ export default function Exercise({
               placeholder="weight"
               value={set.weight}
               onChange={(event) => {
-                const newWorkout = { ...workout };
-                newWorkout.exercises[index].sets[idx].weight = parseInt(
-                  event.target.value
-                );
-                setWorkout(newWorkout);
+                const newValue = parseInt(event.target.value);
+                if (newValue >= 0) {
+                  const newWorkout = { ...workout };
+                  newWorkout.exercises[index].sets[idx].weight = newValue;
+                  setWorkout(newWorkout);
+                }
               }}
             />
             <input
@@ -89,11 +90,14 @@ export default function Exercise({
               placeholder="reps"
               value={set.reps}
               onChange={(event) => {
-                const newWorkout = { ...workout };
-                newWorkout.exercises[index].sets[idx].reps = parseInt(
-                  event.target.value
-                );
-                setWorkout(newWorkout);
+                const newValue = parseInt(event.target.value);
+                if (newValue >= 0) {
+                  const newWorkout = { ...workout };
+                  newWorkout.exercises[index].sets[idx].reps = parseInt(
+                    event.target.value
+                  );
+                  setWorkout(newWorkout);
+                }
               }}
             />
             <select

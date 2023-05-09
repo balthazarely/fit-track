@@ -40,7 +40,7 @@ export default function RecentWorkoutCard({ workout }: RecentWorkoutCardProps) {
               </div>
             </div>
           </div>
-          <div className="flex items-center gap-1">
+          <div className="flex items-center  btn-group">
             <button
               onClick={() => setShowWorkoutModal(true)}
               className="btn btn-xs btn-outline"

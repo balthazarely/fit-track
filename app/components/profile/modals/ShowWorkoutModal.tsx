@@ -78,8 +78,12 @@ export default function ShowWorkoutModal({
                     <div>{exercise.name}</div>
                     {exercise.sets.map((set: Sets, idx: number) => (
                       <div className="grid grid-cols-2" key={idx}>
-                        <div className="text-sm">
-                          {idx} : {set.weight} lbs x {set.reps}
+                        <div className="text-sm flex gap-3 items-center">
+                          <span className="bg-base-100 text-opacity-60 text-white font-bold w-5 h-5  rounded-full flex justify-center items-center text-xs">
+                            {" "}
+                            {idx + 1}
+                          </span>{" "}
+                          {set.weight} lbs x {set.reps}
                         </div>
                         <div className="text-sm text-right">
                           {oneRepMaxFormula(set.weight, set.reps)} 1RM

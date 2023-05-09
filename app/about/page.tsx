@@ -1,3 +1,9 @@
+"use client";
+
+import { workoutDataDemo } from "@/utils/demoWorkoutData";
+import axios from "axios";
+import { useState } from "react";
+import { toast } from "react-hot-toast";
 import {
   SiTailwindcss,
   SiDaisyui,
@@ -7,6 +13,25 @@ import {
 } from "react-icons/si";
 
 export default function About() {
+  const [loading, setLoading] = useState<boolean>(false);
+
+  const saveWorkoutToDB = () => {
+    setLoading(true);
+    const requests = workoutDataDemo.map((demo: any, index: number) => {
+      return axios.post("/api/workout", demo);
+    });
+    Promise.all(requests)
+      .then(() => {
+        toast.success(`Workout Saved`);
+        setLoading(false);
+      })
+      .catch(() => {
+        console.log("error");
+        toast.error("Something went wrong.");
+        setLoading(false);
+      });
+  };
+
   return (
     <>
       <div className="">
@@ -30,6 +55,20 @@ export default function About() {
               Repo Link
             </a>
           </button>
+          <div className="mt-16 flex justify-center items-center flex-col max-w-md">
+            <div className="text-center mb-2">
+              If you would just like to see data without entering workouts,
+              click below:
+            </div>
+            <div>
+              <button
+                className={`btn btn-primary ${loading ? "loading" : ""}`}
+                onClick={saveWorkoutToDB}
+              >
+                Create Sample Data
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </>
