@@ -33,8 +33,6 @@ export default function ExerciseHistoryPanel() {
         }
       );
       const jsonData = await response.json();
-      console.log(jsonData);
-
       setApiResults(jsonData);
       setLoadingAPI(false);
     };

@@ -50,8 +50,6 @@ export default function Overview({ workouts }: OverviewProps) {
     };
   });
 
-  console.log(daysWithWorkouts);
-
   const weightTotal = (workouts: Workout[]) => {
     let total = 0;
     workouts.forEach((workout) => {

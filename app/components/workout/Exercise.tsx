@@ -30,7 +30,6 @@ export default function Exercise({
 }: ExerciseProps) {
   const [exerciseHistoryModalOpen, setExerciseHistoryModalOpen] =
     useState<boolean>(false);
-  console.log(workout);
 
   return (
     <>
