@@ -11,13 +11,11 @@ import {
   Legend,
 } from "chart.js";
 
-import BestSetGraph from "../profile/graphs/BestSetGraph";
+import BestSetGraph from "../profile/exerciseHistory/graphs/BestSetGraph";
 import moment from "moment";
-import VolumeGraph from "../profile/graphs/VolumeGraph.";
+import VolumeGraph from "../profile/exerciseHistory/graphs/VolumeGraph.";
 import Heading from "../UI/Heading";
-import getExerciseData from "@/actions/getExerciseData";
-import { useEffect } from "react";
-import axios from "axios";
+
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -30,19 +28,6 @@ ChartJS.register(
 );
 
 export default function ExerciseHistory({ data }: any) {
-  // useEffect(() => {
-  //   axios
-  //     .post("/api/getWorkoutHistory")
-  //     .then((response) => {
-  //       const data = response.data; // Extract the data from the response
-  //       console.log(data, "hit api folder successfully");
-  //       // Update the state or do other things with the data
-  //     })
-  //     .catch((error) => {
-  //       console.error(error); // Handle the error
-  //     });
-  // }, []);
-
   const oneRMFormula = (weight: number, reps: number) =>
     parseFloat((weight / (1.0278 - 0.0278 * reps)).toFixed(1));
 

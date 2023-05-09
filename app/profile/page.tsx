@@ -2,7 +2,7 @@ import getCurrentUser from "@/actions/getCurrentUser";
 import getWorkouts from "@/actions/getWorkouts";
 import Heading from "@/components/UI/Heading";
 import WorkoutHistory from "@/components/profile/WorkoutHistory";
-import Stats from "@/components/profile/Stats";
+import Stats from "@/components/profile/overview/Overview";
 
 export default async function Page() {
   const currentUser = await getCurrentUser();
@@ -13,7 +13,6 @@ export default async function Page() {
   return (
     <div>
       <Heading heading="Profile" />
-      <Stats myWorkouts={myWorkouts} />
       <WorkoutHistory workouts={myWorkouts} />
     </div>
   );

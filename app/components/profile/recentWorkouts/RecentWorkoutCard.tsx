@@ -3,10 +3,10 @@
 import { FaWeightHanging } from "react-icons/fa";
 import Link from "next/link";
 import moment from "moment";
-import ShowWorkoutModal from "./modals/ShowWorkoutModal";
+import ShowWorkoutModal from "../modals/ShowWorkoutModal";
 import { useState } from "react";
 
-export default function WorkoutCard({ workout }: any) {
+export default function RecentWorkoutCard({ workout }: any) {
   const [showWorkoutModal, setShowWorkoutModal] = useState<boolean>(false);
 
   console.log(workout);
@@ -40,6 +40,7 @@ export default function WorkoutCard({ workout }: any) {
             >
               View
             </button>
+
             <button className="btn btn-xs btn-outline">
               <Link href={`workout/${workout.id}`}>Edit</Link>
             </button>

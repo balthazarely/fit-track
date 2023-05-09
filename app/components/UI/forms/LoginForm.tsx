@@ -23,7 +23,7 @@ export default function LoginForm({ onSubmit, isLoading }: any) {
         disabled={isLoading}
         {...register("email", { required: true })}
         type="email"
-        className="border-2 mt-1 py-1 px-2 bg-base-200 "
+        className="border-2 mt-1 py-1 px-2 bg-base-100 "
       />
       <label className="text-sm mt-4 ">Password</label>
       <input
@@ -31,7 +31,7 @@ export default function LoginForm({ onSubmit, isLoading }: any) {
         disabled={isLoading}
         {...register("password", { required: true })}
         type="password"
-        className="border-2 mt-1 py-1 px-2 bg-base-200 "
+        className="border-2 mt-1 py-1 px-2 bg-base-100 "
       />
       <button
         type="submit"

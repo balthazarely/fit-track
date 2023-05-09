@@ -52,17 +52,18 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="mx-auto mt-16 max-w-sm flex justify-center flex-col ">
-      <div className="font-bold flex gap-2 text-3xl text-primary mb-6 ">
-        <BiDumbbell className="text-4xl text-primary" /> Welcome to Fit-Track
+    <div className="mx-auto mt-16 max-w-xs flex justify-center flex-col ">
+      <div className="font-bold flex flex-col gap-2 text-3xl text-primary mb-8 justify-center items-center ">
+        <BiDumbbell className="text-5xl text-white rounded-full  p-1 bg-primary" />
+        <div>Welcome to Fit-Track</div>
       </div>
       <div className="w-full relative overflow-hidden ">
         <div
-          className={`transform transition-transform duration-200 px-3 ${
+          className={`transform transition-transform duration-200 px-3 py-6 ${
             loginShowing ? "translate-x-0" : "-translate-x-full"
           }`}
         >
-          <div className="font-bold text-xl  ">Sign in to your account</div>
+          <div className="font-bold text-xl">Sign in to your account</div>
           <LoginForm onSubmit={onLoginSubmit} isLoading={isLoading} />
           <button
             onClick={() => setLoginShowing(false)}
@@ -70,10 +71,20 @@ export default function LoginPage() {
           >
             Don't have an account? Sign up for a one.
           </button>
+          <div className=" px-3">
+            <div className="divider my-4 text-xs font-bold">OR</div>
+            <button
+              className="btn btn-outline btn-ghost w-full"
+              onClick={() => signIn("google")}
+            >
+              <FcGoogle className="mr-2 text-lg" />
+              Login In with Google
+            </button>
+          </div>
         </div>
 
         <div
-          className={`w-full px-3 absolute top-0 left-0 transform transition-transform duration-200 ${
+          className={`w-full  px-3 py-6 absolute top-0 left-0 transform transition-transform duration-200 ${
             loginShowing ? "translate-x-full" : " translate-x-0"
           }`}
         >
@@ -84,16 +95,6 @@ export default function LoginPage() {
             className="btn-link text-sm w-full text-center mt-4 border-2"
           >
             Already have an account? Sign in here
-          </button>
-        </div>
-        <div className="mt-24 px-3">
-          <div className="divider my-4 text-xs font-bold">OR</div>
-          <button
-            className="btn btn-outline btn-ghost w-full"
-            onClick={() => signIn("google")}
-          >
-            <FcGoogle className="mr-2 text-lg" />
-            Login In with Google
           </button>
         </div>
       </div>

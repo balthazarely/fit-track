@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { HiX } from "react-icons/hi";
 import ExerciseHistoryModal from "./workoutModals/ExerciseHistoryModal";
+import Link from "next/link";
 
 export default function Exercise({
   index,
@@ -31,6 +32,9 @@ export default function Exercise({
             >
               history
             </button>
+            <Link href={`/history/${exercises.name}`}>
+              <button className="btn btn-xs btn-outline">test</button>
+            </Link>
             <button
               onClick={() => deleteExercise(index)}
               className="btn btn-xs btn-outline btn-secondary"

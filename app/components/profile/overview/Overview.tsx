@@ -4,9 +4,9 @@ import moment from "moment";
 import { FaRegGrinBeamSweat, FaWeightHanging } from "react-icons/fa";
 import { GiWeightLiftingUp } from "react-icons/gi";
 
-export default function Stats({ myWorkouts }: any) {
-  const totalWorkouts = myWorkouts.length;
-  const workoutsThisWeek = myWorkouts.filter((workout: any) =>
+export default function Overview({ workouts }: any) {
+  const totalWorkouts = workouts.length;
+  const workoutsThisWeek = workouts.filter((workout: any) =>
     moment(workout.createdAt).isSame(new Date(), "week")
   ).length;
 
@@ -54,7 +54,7 @@ export default function Stats({ myWorkouts }: any) {
             </div>
             <div className="stat-title">Weight lifted this week</div>
             <div className="stat-value text-primary">
-              {weightTotal(myWorkouts)}
+              {weightTotal(workouts)}
             </div>
             {/* <div className="stat-desc">21% more than last month</div> */}
           </div>

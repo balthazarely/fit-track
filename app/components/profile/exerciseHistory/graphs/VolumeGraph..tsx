@@ -11,7 +11,6 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
-import moment from "moment";
 import "chartjs-adapter-moment";
 import { Line } from "react-chartjs-2";
 
@@ -42,22 +41,19 @@ export default function VolumeGraph({ data }: any) {
       x: {
         type: "time",
         time: {
-          unit: "day",
-          displayFormats: {
-            month: "MMM",
-          },
-          parser: "DD-MM-YYYY",
+          tooltipFormat: "MMM DD",
+          parser: "MM-DD-YYYY",
         },
       },
     },
   };
 
   const chartData = {
-    labels: data.map((item: any) => item.createdAt),
+    labels: data?.map((item: any) => item.createdAt),
     datasets: [
       {
         label: "Total Volume",
-        data: data.map((item: any) => item.totalVolume),
+        data: data?.map((item: any) => item.totalVolume),
         fill: false,
         borderColor: "rgba(192,72,192,1)",
         tension: 0.4,
@@ -66,7 +62,7 @@ export default function VolumeGraph({ data }: any) {
   };
 
   return (
-    <div className="border-2 relative border-red-700 w-full">
+    <div className="relative w-full overflow-hidden">
       {/* @ts-ignore */}
       <Line options={options} data={chartData} />
     </div>

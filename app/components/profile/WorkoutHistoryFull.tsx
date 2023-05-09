@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import moment from "moment";
-import WorkoutCard from "./WorkoutCard";
+import WorkoutCard from "./recentWorkouts/RecentWorkoutCard";
 
 export default function WorkoutHistoryFull({ workouts }: any) {
   const [selectedDay, setSelectedDay] = useState<any>("");

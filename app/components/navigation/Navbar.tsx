@@ -10,6 +10,7 @@ import { IoPersonCircle, IoExitOutline } from "react-icons/io5";
 import { BiDumbbell } from "react-icons/bi";
 import { useRouter } from "next/navigation";
 import { usePathname } from "next/navigation";
+import { FaInfoCircle } from "react-icons/fa";
 
 interface NavbarProps {
   currentUser: SafeUser | null;
@@ -62,7 +63,7 @@ export default function Navbar({ currentUser, children }: NavbarProps) {
             </button>
           </div>
           <div className="flex-1">
-            <a className="btn-ghost btn text-xl normal-case">Fit-Track</a>
+            <a className="btn-ghost btn text-xl normal-case">Fit-Stack</a>
           </div>
           <div className="flex-none"></div>
         </div>
@@ -76,7 +77,7 @@ export default function Navbar({ currentUser, children }: NavbarProps) {
           }
           className="drawer-overlay"
         ></label>
-        <ul className="menu w-56 bg-base-100 p-4 text-base-content">
+        <ul className="menu w-56 bg-base-200 p-4 text-base-content">
           <div>
             <div className="flex items-center gap-2 mb-6">
               <div className="w-12 h-12 rounded-full">
@@ -109,6 +110,15 @@ export default function Navbar({ currentUser, children }: NavbarProps) {
               >
                 <IoPersonCircle className="text-xl" />
                 <div>Profile</div>
+              </Link>
+            </li>
+            <li>
+              <Link
+                href={"/about"}
+                className={pathname === "/about" ? "text-primary" : ""}
+              >
+                <FaInfoCircle className="text-xl" />
+                <div>About</div>
               </Link>
             </li>
             <li>

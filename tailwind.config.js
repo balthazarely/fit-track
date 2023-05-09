@@ -11,16 +11,16 @@ module.exports = {
   plugins: [require("daisyui")],
   daisyui: {
     themes: [
-      "winter",
+      "light",
+      // {
+      //   light: {
+      //     ...require("daisyui/src/colors/themes")["[data-theme=light]"],
+      //   },
+      // },
       {
-        light: {
-          ...require("daisyui/src/colors/themes")["[data-theme=light]"],
-        },
-      },
-      {
-        dracula: {
-          ...require("daisyui/src/colors/themes")["[data-theme=dracula]"],
-          primary: "#E2FF12",
+        halloween: {
+          ...require("daisyui/src/colors/themes")["[data-theme=halloween]"],
+          primary: "#AADD3E",
         },
       },
     ],

@@ -11,7 +11,6 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
-import moment from "moment";
 import "chartjs-adapter-moment";
 import { Line } from "react-chartjs-2";
 
@@ -53,18 +52,18 @@ export default function BestSetGraph({ data }: any) {
         type: "time",
         time: {
           tooltipFormat: "MMM DD",
-          parser: "DD-MM-YYYY",
+          parser: "MM-DD-YYYY",
         },
       },
     },
   };
 
   const chartData = {
-    labels: data.map((item: any) => item.createdAt),
+    labels: data?.map((item: any) => item.createdAt),
     datasets: [
       {
         label: `Best Set`,
-        data: data.map((item: any) => item.bestSet.weight),
+        data: data?.map((item: any) => item.bestSet.weight),
         fill: false,
         borderColor: "rgba(75,192,192,1)",
         tension: 0.2,
@@ -72,7 +71,7 @@ export default function BestSetGraph({ data }: any) {
       },
       {
         label: "Calculated 1RM",
-        data: data.map((item: any) => item.oneRepMax),
+        data: data?.map((item: any) => item.oneRepMax),
         fill: false,
         borderColor: "rgba(0,192,75,1)",
         tension: 0.2,
@@ -82,7 +81,7 @@ export default function BestSetGraph({ data }: any) {
   };
 
   return (
-    <div className="border-2 relative border-red-700 w-full">
+    <div className="relative  w-full">
       {/* @ts-ignore */}
       <Line options={options} data={chartData} />
     </div>
