@@ -1,8 +1,11 @@
-"use client";
-
 import { FieldValues, useForm } from "react-hook-form";
 
-export default function LoginForm({ onSubmit, isLoading }: any) {
+interface LoginFormProps {
+  onSubmit: any;
+  isLoading: boolean;
+}
+
+export default function LoginForm({ onSubmit, isLoading }: LoginFormProps) {
   const {
     register,
     handleSubmit,

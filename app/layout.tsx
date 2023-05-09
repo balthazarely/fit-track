@@ -1,6 +1,4 @@
 import getCurrentUser from "./actions/getCurrentUser";
-import LoginModal from "./components/modals/LoginModal";
-import RegisterModal from "./components/modals/RegisterModal";
 import Navbar from "./components/navigation/Navbar";
 import { Toaster } from "react-hot-toast";
 import "./globals.css";
@@ -22,9 +20,7 @@ export default async function RootLayout({
         ) : (
           <LoginPage />
         )}
-        <RegisterModal />
-        <LoginModal />
-        <Toaster position="top-right" toastOptions={toastConfig} />
+        <Toaster position="top-center" toastOptions={toastConfig} />
       </body>
     </html>
   );

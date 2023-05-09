@@ -1,4 +1,11 @@
-export function Loader({ className, size = "sm" }: any) {
+"use client";
+
+interface LoaderProps {
+  className?: string;
+  size?: string;
+}
+
+export function Loader({ className, size = "sm" }: LoaderProps) {
   return (
     <div className={`flex  flex-grow items-center justify-center ${className}`}>
       <div

@@ -1,4 +1,3 @@
-"use client";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -16,6 +15,13 @@ import { oneRepMaxFormula } from "@/utils/formulas";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { Loader } from "@/components/UI/Loader";
+import { Exercises } from "@/types";
+
+interface ExerciseHistoryModalProps {
+  exercisesName: string;
+  setExerciseHistoryModalOpen: (state: boolean) => void;
+  exerciseHistoryModalOpen: boolean;
+}
 
 ChartJS.register(
   CategoryScale,
@@ -32,8 +38,8 @@ export default function ExerciseHistoryModal({
   exerciseHistoryModalOpen,
   setExerciseHistoryModalOpen,
   exercisesName,
-}: any) {
-  const [fetchedData, setFetchedData] = useState<any>();
+}: ExerciseHistoryModalProps) {
+  const [fetchedData, setFetchedData] = useState<Exercises[]>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   useEffect(() => {
@@ -42,11 +48,13 @@ export default function ExerciseHistoryModal({
       axios
         .post("/api/getWorkoutHistory", { name: exercisesName })
         .then((response) => {
-          const data = response.data; // Extract the data from the response
+          const data = response.data;
+          console.log(data);
+
           setFetchedData(data);
         })
         .catch((error) => {
-          console.error(error); // Handle the error
+          console.error(error);
         })
         .finally(() => {
           setIsLoading(false);
@@ -78,8 +86,7 @@ export default function ExerciseHistoryModal({
               <HiX />
             </button>
           </div>
-          {fetchedData && fetchedData.length > 1 ? (
-            // <div className="w-full relative">
+          {fetchedData && fetchedData.length > 0 ? (
             <div className="w-full   mt-2">
               {fetchedData
                 .sort((a: any, b: any) =>
@@ -87,16 +94,16 @@ export default function ExerciseHistoryModal({
                     moment(a.createdAt, "DD-MM-YYYY")
                   )
                 )
-                .map((workout: any, idx: number) => {
+                .map((exercise: Exercises, idx: number) => {
                   return (
                     <div key={idx} className=" mb-4 py-1 pl-1 pr-4">
                       <div className="text-sm font-bold grid grid-cols-2 mb-1">
                         <div>
-                          {moment(workout.createdAt).format("MMM DD, YYYY")}
+                          {moment(exercise.createdAt).format("MMM DD, YYYY")}
                         </div>
                         <div className="text-right">1RM</div>
                       </div>
-                      <Workout workout={workout} />
+                      <ExerciseCard exercise={exercise} />
                     </div>
                   );
                 })}
@@ -117,15 +124,24 @@ export default function ExerciseHistoryModal({
   );
 }
 
-function Workout({ workout }: any) {
-  return workout.sets.map((set: any, idx: number) => (
-    <div className="grid grid-cols-2" key={idx}>
-      <div className="text-sm">
-        {idx} : {set.reps} x {set.weight}
-      </div>
-      <div className="text-sm text-right">
-        {oneRepMaxFormula(set.weight, set.reps)} 1RM
-      </div>
-    </div>
-  ));
+function ExerciseCard({
+  exercise,
+}: {
+  exercise: Exercises;
+}): JSX.Element | null {
+  return (
+    <>
+      {exercise.sets.map((set: any, idx: number) => (
+        <div className="grid grid-cols-2" key={idx}>
+          <div className="text-sm flex gap-3 items-center">
+            <span className=""> {idx + 1}</span> {set.reps} reps x {set.weight}{" "}
+            lbs
+          </div>
+          <div className="text-sm text-right">
+            {oneRepMaxFormula(set.weight, set.reps)} 1RM
+          </div>
+        </div>
+      ))}
+    </>
+  );
 }

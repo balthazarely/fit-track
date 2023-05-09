@@ -1,16 +1,18 @@
+"use client";
+
 import { muscleGroups } from "@/utils/muscleGroups";
 import React, { useEffect, useState } from "react";
 import { Loader } from "../../UI/Loader";
 import ExerciseResultCard from "./ExerciseResultCard";
 import ExerciseData from "./ExerciseData";
+import { ExerciseApiResults } from "@/types";
 
 export default function ExerciseHistoryPanel() {
   const key = process.env.NEXT_PUBLIC_API_NINJA_API_KEY;
-  const [selectedMuscleGroup, setSelectedMuscleGroups] = useState("");
-  const [selectedExercise, setSelectedExercise] = useState("");
-  const [loadingAPI, setLoadingAPI] = useState(false);
-  const [apiResults, setApiResults] = useState([]);
-  const [instructionsOpen, setInstructionsOpen] = useState(false);
+  const [selectedMuscleGroup, setSelectedMuscleGroups] = useState<string>("");
+  const [selectedExercise, setSelectedExercise] = useState<string>("");
+  const [loadingAPI, setLoadingAPI] = useState<boolean>(false);
+  const [apiResults, setApiResults] = useState<ExerciseApiResults[]>([]);
 
   function handleSelectChange(event: any) {
     setSelectedMuscleGroups(event.target.value);
@@ -31,6 +33,8 @@ export default function ExerciseHistoryPanel() {
         }
       );
       const jsonData = await response.json();
+      console.log(jsonData);
+
       setApiResults(jsonData);
       setLoadingAPI(false);
     };
@@ -62,14 +66,13 @@ export default function ExerciseHistoryPanel() {
             {loadingAPI && <Loader />}
             {!loadingAPI &&
               selectedMuscleGroup &&
-              apiResults?.map((result: any, idx: number) => (
+              apiResults?.map((result: ExerciseApiResults, idx: number) => (
                 <ExerciseResultCard
                   setSelectedExercise={setSelectedExercise}
                   selectedExercise={selectedExercise}
-                  setInstructionsOpen={setInstructionsOpen}
-                  instructionsOpen={instructionsOpen}
                   result={result}
                   idx={idx}
+                  key={idx}
                 />
               ))}
             {!selectedMuscleGroup && (

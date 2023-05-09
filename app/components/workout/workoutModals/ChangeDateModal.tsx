@@ -1,9 +1,22 @@
 import { memo } from "react";
 import { HiX } from "react-icons/hi";
 import { Calendar } from "react-date-range";
+import { Workout } from "@/types";
+
+interface ChangeDateModalProps {
+  updateWorkoutInfo: (value: any, field: string) => void;
+  setDateModalOpen: (state: boolean) => void;
+  dateModalOpen: boolean;
+  workout: Workout;
+}
 
 const ChangeDateModal = memo(
-  ({ dateModalOpen, setDateModalOpen, workout, updateWorkoutInfo }: any) => {
+  ({
+    dateModalOpen,
+    setDateModalOpen,
+    workout,
+    updateWorkoutInfo,
+  }: ChangeDateModalProps) => {
     return (
       <>
         <input

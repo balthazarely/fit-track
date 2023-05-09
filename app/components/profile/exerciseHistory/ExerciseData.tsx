@@ -5,11 +5,18 @@ import { parseExerciseDataForGraph } from "./utils";
 import ExerciseDataWorkoutCards from "./ExerciseDataWorkoutCards";
 import VolumeGraph from "./graphs/VolumeGraph.";
 import Link from "next/link";
+import { ParesedExercisesData } from "@/types";
 
-export default function ExerciseData({ selectedExercise }: any) {
-  const [fetchedExercisData, setFetcheExercisData] = useState<any>(null);
-  const [graphTabSelected, setGraphTabSelected] = useState<any>("best-set");
+interface ExerciseDataProps {
+  selectedExercise: string;
+}
+
+export default function ExerciseData({ selectedExercise }: ExerciseDataProps) {
+  const [graphTabSelected, setGraphTabSelected] = useState<string>("best-set");
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [fetchedExerciseData, setFetchedExerciseData] = useState<
+    ParesedExercisesData[] | []
+  >([]);
 
   useEffect(() => {
     if (selectedExercise === "") {
@@ -20,7 +27,8 @@ export default function ExerciseData({ selectedExercise }: any) {
       .post("/api/getWorkoutHistory", { name: selectedExercise })
       .then((response) => {
         const data = response.data;
-        setFetcheExercisData(parseExerciseDataForGraph(data));
+        setFetchedExerciseData(parseExerciseDataForGraph(data));
+        console.log(data);
       })
       .catch((error) => {
         console.error(error);
@@ -36,7 +44,7 @@ export default function ExerciseData({ selectedExercise }: any) {
         <div className="font-bold text-xl">{selectedExercise}</div>
         <div className="flex gap-1">
           <button
-            disabled={fetchedExercisData?.length < 1}
+            disabled={fetchedExerciseData?.length < 1}
             onClick={() => setGraphTabSelected("best-set")}
             className={`btn btn-xs ${
               graphTabSelected === "best-set" ? "btn-primary" : "btn-outline"
@@ -45,7 +53,7 @@ export default function ExerciseData({ selectedExercise }: any) {
             Best Set
           </button>
           <button
-            disabled={fetchedExercisData?.length < 1}
+            disabled={fetchedExerciseData?.length < 1}
             onClick={() => setGraphTabSelected("volume")}
             className={`btn btn-xs ${
               graphTabSelected === "volume" ? "btn-primary" : "btn-outline"
@@ -55,20 +63,20 @@ export default function ExerciseData({ selectedExercise }: any) {
           </button>
         </div>
       </div>
-      {fetchedExercisData?.length > 0 && !isLoading ? (
+      {fetchedExerciseData?.length > 0 && !isLoading ? (
         <div>
           <div
             className={`${graphTabSelected === "best-set" ? "flex" : "hidden"}`}
           >
-            <BestSetGraph data={fetchedExercisData} />
+            <BestSetGraph data={fetchedExerciseData} />
           </div>
           <div
             className={`${graphTabSelected === "volume" ? "flex" : "hidden"}`}
           >
-            <VolumeGraph data={fetchedExercisData} />{" "}
+            <VolumeGraph data={fetchedExerciseData} />{" "}
           </div>
           <ExerciseDataWorkoutCards
-            fetchedExercisData={fetchedExercisData}
+            fetchedExerciseData={fetchedExerciseData}
             selectedExercise={selectedExercise}
           />
         </div>

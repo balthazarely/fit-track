@@ -5,24 +5,33 @@ import Link from "next/link";
 import moment from "moment";
 import ShowWorkoutModal from "../modals/ShowWorkoutModal";
 import { useState } from "react";
+import { Exercises, Sets, Workout } from "@/types";
 
-export default function RecentWorkoutCard({ workout }: any) {
+interface RecentWorkoutCardProps {
+  workout: Workout;
+}
+
+export default function RecentWorkoutCard({ workout }: RecentWorkoutCardProps) {
   const [showWorkoutModal, setShowWorkoutModal] = useState<boolean>(false);
-
   const formattedDate = moment(workout.createdAt).format("dddd MM/DD");
-  const weightTotal = workout.exercises.reduce((total: any, exercise: any) => {
-    exercise.sets.forEach((set: any) => {
-      total += set.weight * set.reps;
-    });
-    return total;
-  }, 0);
+  const weightTotal = workout.exercises.reduce(
+    (total: number, exercise: Exercises) => {
+      exercise.sets.forEach((set: Sets) => {
+        total += set.weight * set.reps;
+      });
+      return total;
+    },
+    0
+  );
 
   return (
     <>
       <div className=" p-3 cursor-pointer rounded-lg hover:bg-base-200 ">
         <div className="flex justify-between">
           <div>
-            <div className="font-bold text-sm">{workout.title}</div>
+            <div className="font-bold text-sm text-primary">
+              {workout.title}
+            </div>
             <div className="flex gap-4">
               <div className="text-sm">{formattedDate}</div>
               <div className="text-sm flex items-center gap-1">

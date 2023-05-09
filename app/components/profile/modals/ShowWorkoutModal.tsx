@@ -1,39 +1,23 @@
-"use client";
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  TimeScale,
-  LineElement,
-  Title,
-  Tooltip,
-  Legend,
-} from "chart.js";
 import { HiX } from "react-icons/hi";
 import moment from "moment";
 import { oneRepMaxFormula } from "@/utils/formulas";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { Loader } from "@/components/UI/Loader";
+import { Exercises, Sets, Workout } from "@/types";
 
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  TimeScale,
-  PointElement,
-  LineElement,
-  Title,
-  Tooltip,
-  Legend
-);
+interface ShowWorkoutModalProps {
+  setShowWorkoutModal: (state: boolean) => void;
+  showWorkoutModal: boolean;
+  workoutId: string;
+}
 
 export default function ShowWorkoutModal({
   setShowWorkoutModal,
   showWorkoutModal,
   workoutId,
-}: any) {
-  const [fetchedData, setFetchedData] = useState<any>();
+}: ShowWorkoutModalProps) {
+  const [fetchedData, setFetchedData] = useState<Workout>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   useEffect(() => {
@@ -70,7 +54,9 @@ export default function ShowWorkoutModal({
       >
         <div className="transform relative left-0 lg:translate-x-24 modal-box">
           <div className="flex justify-between">
-            <div className="font-bold text-lg">Workout Overview</div>
+            <div className="font-bold text-lg text-primary">
+              Workout Overview
+            </div>
             <button
               className=" btn btn-sm btn-ghost"
               onClick={() => setShowWorkoutModal(false)}
@@ -86,11 +72,11 @@ export default function ShowWorkoutModal({
                   {moment(fetchedData.createdAt).format("MMM DD, YYYY")}
                 </div>
               </div>
-              {fetchedData.exercises.map((exercise: any, idx: number) => {
+              {fetchedData.exercises.map((exercise: Exercises, idx: number) => {
                 return (
                   <div className=" p-2" key={idx}>
                     <div>{exercise.name}</div>
-                    {exercise.sets.map((set: any, idx: number) => (
+                    {exercise.sets.map((set: Sets, idx: number) => (
                       <div className="grid grid-cols-2" key={idx}>
                         <div className="text-sm">
                           {idx} : {set.weight} lbs x {set.reps}
@@ -118,17 +104,4 @@ export default function ShowWorkoutModal({
       </div>
     </div>
   );
-}
-
-function Workout({ workout }: any) {
-  return workout.sets.map((set: any, idx: number) => (
-    <div className="grid grid-cols-2" key={idx}>
-      <div className="text-sm">
-        {idx} : {set.reps} x {set.weight}
-      </div>
-      <div className="text-sm text-right">
-        {oneRepMaxFormula(set.weight, set.reps)} 1RM
-      </div>
-    </div>
-  ));
 }

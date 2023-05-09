@@ -1,9 +1,23 @@
-"use client";
-
 import { useState } from "react";
 import { HiX } from "react-icons/hi";
 import ExerciseHistoryModal from "./workoutModals/ExerciseHistoryModal";
-import Link from "next/link";
+import { Exercises, Workout } from "@/types";
+
+interface ExerciseProps {
+  index: number;
+  exercises: Exercises;
+  workout: Workout;
+  setWorkout: (state: Workout) => void;
+  addSet: (index: number) => void;
+  removeSet: (idx: number, index: number) => void;
+  deleteExercise: (index: number) => void;
+}
+
+type set = {
+  reps: number;
+  weight: number;
+  rpe?: number | any;
+};
 
 export default function Exercise({
   index,
@@ -13,9 +27,10 @@ export default function Exercise({
   addSet,
   removeSet,
   deleteExercise,
-}: any) {
+}: ExerciseProps) {
   const [exerciseHistoryModalOpen, setExerciseHistoryModalOpen] =
     useState<boolean>(false);
+  console.log(workout);
 
   return (
     <>
@@ -49,7 +64,7 @@ export default function Exercise({
           <div className="w-16 text-center">rpe</div>
         </div>
 
-        {exercises.sets.map((set: any, idx: number) => (
+        {exercises.sets.map((set: set, idx: number) => (
           <div className="text-sm w-full flex gap-2 items-center " key={idx}>
             <div className="text-xs font-bold  rounded-full bg-base-100 flex justify-center items-center w-6 h-6">
               {idx + 1}

@@ -1,14 +1,27 @@
+import { ExerciseApiResults } from "@/types";
 import { muscleGroups } from "@/utils/muscleGroups";
 import { memo, useEffect, useState } from "react";
 import { HiX, HiOutlineInformationCircle } from "react-icons/hi";
 
+interface AddNewExercisesModalProps {
+  addNewExercise: (value: string) => void;
+  setExerciseModalOpen: (state: boolean) => void;
+  exerciseModalOpen: boolean;
+}
+
 const AddNewExercisesModal = memo(
-  ({ addNewExercise, setExerciseModalOpen, exerciseModalOpen }: any) => {
+  ({
+    addNewExercise,
+    setExerciseModalOpen,
+    exerciseModalOpen,
+  }: AddNewExercisesModalProps) => {
     const key = process.env.NEXT_PUBLIC_API_NINJA_API_KEY;
-    const [selectedMuscleGroup, setSelectedMuscleGroups] = useState("");
-    const [selectedExercise, setSelectedExercise] = useState();
-    const [apiResults, setApiResults] = useState([]);
-    const [instructionsOpen, setInstructionsOpen] = useState(false);
+    const [selectedMuscleGroup, setSelectedMuscleGroups] = useState<string>("");
+    const [selectedExercise, setSelectedExercise] = useState<string>("");
+    const [instructionsOpen, setInstructionsOpen] = useState<string>("");
+    const [apiResults, setApiResults] = useState<ExerciseApiResults[] | null>(
+      null
+    );
 
     function handleSelectChange(event: any) {
       setSelectedMuscleGroups(event.target.value);
@@ -66,7 +79,7 @@ const AddNewExercisesModal = memo(
               ))}
             </select>
             <div className="flex flex-col h-96 overflow-y-scroll">
-              {apiResults.map((result: any, idx: number) => (
+              {apiResults?.map((result: ExerciseApiResults, idx: number) => (
                 <Exercise
                   setSelectedExercise={setSelectedExercise}
                   selectedExercise={selectedExercise}
@@ -101,6 +114,15 @@ const AddNewExercisesModal = memo(
 
 export default AddNewExercisesModal;
 
+interface ExerciseProps {
+  setSelectedExercise: (state: string) => void;
+  selectedExercise: string;
+  instructionsOpen: string;
+  setInstructionsOpen: (state: string) => void;
+  result: ExerciseApiResults;
+  idx: number;
+}
+
 function Exercise({
   setSelectedExercise,
   selectedExercise,
@@ -108,7 +130,7 @@ function Exercise({
   setInstructionsOpen,
   result,
   idx,
-}: any) {
+}: ExerciseProps) {
   const toggleInstructionsPanel = () => {
     if (instructionsOpen === result.name) {
       setInstructionsOpen("");

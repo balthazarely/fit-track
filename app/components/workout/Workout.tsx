@@ -1,7 +1,7 @@
 "use client";
 
 import axios from "axios";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 import Exercise from "./Exercise";
 import toast from "react-hot-toast";
 import { AiTwotoneEdit, AiOutlineCheck, AiFillCalendar } from "react-icons/ai";
@@ -12,6 +12,7 @@ import ConfrimCompleteModal from "./workoutModals/ConfirmCompleteModal";
 import ConfrimDeleteModal from "./workoutModals/ConfrimDeleteModal";
 import ChangeDateModal from "./workoutModals/ChangeDateModal";
 import AddNewExercisesModal from "./workoutModals/AddNewExercisesModal";
+import { Exercises, InitialWorkout, Workout } from "@/types";
 
 const defaultWorkout = {
   title: "workout-01",
@@ -19,7 +20,7 @@ const defaultWorkout = {
 };
 
 interface WorkoutProps {
-  initlWorkout?: any;
+  initlWorkout?: Workout | InitialWorkout | any;
   editWorkout?: boolean;
 }
 
@@ -27,7 +28,7 @@ export default function Workout({
   initlWorkout = defaultWorkout,
   editWorkout = false,
 }: WorkoutProps) {
-  const [workout, setWorkout] = useState<any>(initlWorkout);
+  const [workout, setWorkout] = useState<Workout | any>(initlWorkout);
   const [nameEdit, setNameEdit] = useState<boolean>(false);
   const [dbUpdating, setDbUpdateing] = useState<boolean>(false);
   const [dbDeleting, setDbDeleting] = useState<boolean>(false);
@@ -206,7 +207,7 @@ export default function Workout({
               </button>
             </div>
           </div>
-          {workout.exercises.map((exercises: any, index: number) => {
+          {workout.exercises.map((exercises: Exercises, index: number) => {
             return (
               <Exercise
                 key={index}

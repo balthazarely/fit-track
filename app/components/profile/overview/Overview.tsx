@@ -5,14 +5,24 @@ import moment from "moment";
 import { FaRegGrinBeamSweat, FaWeightHanging } from "react-icons/fa";
 import { HiX } from "react-icons/hi";
 import { GiWeightLiftingUp } from "react-icons/gi";
+import { Exercises, Sets, Workout } from "@/types";
 
-export default function Overview({ workouts }: any) {
+interface OverviewProps {
+  workouts: Workout[];
+}
+
+type DaysWithWorkoutBoolean = {
+  dayName: string;
+  hasWorkout: boolean;
+};
+
+export default function Overview({ workouts }: OverviewProps) {
   const totalWorkouts = workouts.length;
 
-  const workoutsThisWeek = workouts.filter((workout: any) => {
+  const workoutsThisWeek = workouts.filter((workout: Workout) => {
     const workoutDate = moment(workout.createdAt);
-    const startOfWeek = moment().startOf("week").add(1, "day"); // Monday
-    const endOfWeek = moment().endOf("week").add(1, "day"); // Sunday
+    const startOfWeek = moment().startOf("week").add(1, "day");
+    const endOfWeek = moment().endOf("week").add(1, "day");
     return workoutDate.isBetween(startOfWeek, endOfWeek, null, "[]");
   });
 
@@ -26,13 +36,13 @@ export default function Overview({ workouts }: any) {
     "Sunday",
   ];
 
-  const workoutsWithDayOfWeek = workouts.map((workout: any) => ({
+  const workoutsWithDayOfWeek = workouts.map((workout: Workout) => ({
     createdAt: moment(workout.createdAt).format("dddd") || "No date available",
   }));
 
   const daysWithWorkouts = daysOfWeek.map((day) => {
     const hasWorkout = workoutsWithDayOfWeek.some(
-      (workout: any) => workout.createdAt === day
+      (workout: { createdAt: string }) => workout.createdAt === day
     );
     return {
       dayName: day,
@@ -40,11 +50,13 @@ export default function Overview({ workouts }: any) {
     };
   });
 
-  const weightTotal = (workouts: any[]) => {
+  console.log(daysWithWorkouts);
+
+  const weightTotal = (workouts: Workout[]) => {
     let total = 0;
     workouts.forEach((workout) => {
-      workout.exercises.forEach((exercise: any) => {
-        exercise.sets.forEach((set: any) => {
+      workout.exercises.forEach((exercise: Exercises) => {
+        exercise.sets.forEach((set: Sets) => {
           total += set.weight * set.reps;
         });
       });
@@ -99,19 +111,21 @@ export default function Overview({ workouts }: any) {
           <div className="stat  bg-base-200">
             <div className="stat-title">Weekly Progress</div>
             <div className="flex sm:flex-row flex-col gap-2 mt-1">
-              {daysWithWorkouts.map((day: any, idx: number) => (
-                <div
-                  className="p-1 flex justify-end flex-col items-center"
-                  key={idx}
-                >
-                  {day.hasWorkout ? (
-                    <BiDumbbell className="text-3xl text-primary" />
-                  ) : (
-                    <HiX className="text-3xl text-base-300" />
-                  )}
-                  <div className="text-xs">{day.dayName}</div>
-                </div>
-              ))}
+              {daysWithWorkouts.map(
+                (day: DaysWithWorkoutBoolean, idx: number) => (
+                  <div
+                    className="p-1 flex justify-end flex-col items-center"
+                    key={idx}
+                  >
+                    {day.hasWorkout ? (
+                      <BiDumbbell className="text-3xl text-primary" />
+                    ) : (
+                      <HiX className="text-3xl text-base-300" />
+                    )}
+                    <div className="text-xs">{day.dayName}</div>
+                  </div>
+                )
+              )}
             </div>
           </div>
         </div>

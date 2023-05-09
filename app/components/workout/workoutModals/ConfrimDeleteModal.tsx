@@ -1,8 +1,20 @@
 import { memo } from "react";
 import { HiX } from "react-icons/hi";
 
+interface ConfrimDeleteModalProps {
+  deleteWorkout: () => void;
+  setDeleteModalOpen: (state: boolean) => void;
+  deleteModalOpen: boolean;
+  dbUpdating: boolean;
+}
+
 const ConfrimDeleteModal = memo(
-  ({ deleteModalOpen, setDeleteModalOpen, dbUpdating, deleteWorkout }: any) => {
+  ({
+    deleteModalOpen,
+    setDeleteModalOpen,
+    dbUpdating,
+    deleteWorkout,
+  }: ConfrimDeleteModalProps) => {
     return (
       <>
         <input

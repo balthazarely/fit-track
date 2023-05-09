@@ -108,13 +108,3 @@ function Workout({ workout }: any) {
     </div>
   ));
 }
-
-{
-  /* <OneRepMaxGraph data={exersiceData} /> */
-}
-{
-  /* <Line options={options} data={chartData} /> */
-}
-{
-  /* <Line options={options2} data={chartData2} /> */
-}

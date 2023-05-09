@@ -3,7 +3,11 @@
 import Workout from "@/components/workout/Workout";
 import { workoutTemplates } from "@/utils/workoutTemplates";
 
-export default function NewWorkout({ params: { id } }: any) {
+type Params = {
+  id: string;
+};
+
+export default function NewWorkout({ params: { id } }: { params: Params }) {
   let selectedWorkout = null;
   for (const key in workoutTemplates) {
     if (workoutTemplates.hasOwnProperty(key)) {

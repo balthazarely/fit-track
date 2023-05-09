@@ -1,6 +1,11 @@
 "use client";
 
-export default function Modal({ children, isModalOpen, setModal }: any) {
+interface ModalProps {
+  children: React.ReactNode;
+  isModalOpen: boolean;
+}
+
+export default function Modal({ children, isModalOpen }: ModalProps) {
   return (
     <div className="">
       <input

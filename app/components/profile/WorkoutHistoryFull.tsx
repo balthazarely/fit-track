@@ -3,9 +3,16 @@
 import { useState } from "react";
 import moment from "moment";
 import WorkoutCard from "./recentWorkouts/RecentWorkoutCard";
+import { Workout } from "@/types";
 
-export default function WorkoutHistoryFull({ workouts }: any) {
-  const [selectedDay, setSelectedDay] = useState<any>("");
+interface WorkoutHistoryFullProps {
+  workouts: Workout[] | any;
+}
+
+export default function WorkoutHistoryFull({
+  workouts,
+}: WorkoutHistoryFullProps) {
+  const [selectedDay, setSelectedDay] = useState<string>("");
 
   const sortWorkouts = (workouts: any) =>
     workouts.sort((a: any, b: any) =>
@@ -29,14 +36,14 @@ export default function WorkoutHistoryFull({ workouts }: any) {
               </div>
             )}
             {sortWorkouts(workouts)
-              .filter((workout: any) => {
+              .filter((workout: Workout) => {
                 if (selectedDay !== "") {
                   return workout.createdAtFormatted === selectedDay;
                 } else {
                   return workout;
                 }
               })
-              .map((workout: any, idx: number) => {
+              .map((workout: Workout, idx: number) => {
                 return <WorkoutCard key={idx} workout={workout} />;
               })}
           </div>

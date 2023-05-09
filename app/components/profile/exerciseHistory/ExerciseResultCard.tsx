@@ -1,13 +1,18 @@
-"use client";
+import { ExerciseApiResults } from "@/types";
+
+interface ExerciseResultCardProps {
+  setSelectedExercise: (state: string) => void;
+  selectedExercise: string;
+  result: ExerciseApiResults;
+  idx: number;
+}
 
 export default function ExerciseResultCard({
   setSelectedExercise,
   selectedExercise,
-  instructionsOpen,
-  setInstructionsOpen,
   result,
   idx,
-}: any) {
+}: ExerciseResultCardProps) {
   const parseEquipmentName = (name: string) => {
     return name.replace(/_/g, " ");
   };
@@ -30,13 +35,6 @@ export default function ExerciseResultCard({
             </span>
           </div>
         </div>
-      </div>
-      <div
-        className={`${
-          instructionsOpen === result.name ? "block" : "hidden"
-        } text-left text-xs my-2`}
-      >
-        {result.instructions}
       </div>
     </button>
   );

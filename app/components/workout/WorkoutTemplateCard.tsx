@@ -1,7 +1,14 @@
 "use client";
+import { WorkoutTemplates } from "@/types";
 import { useRouter } from "next/navigation";
 
-export default function WorkoutTemplateCard({ workout }: any) {
+interface WorkoutTemplateCardProps {
+  workout: WorkoutTemplates;
+}
+
+export default function WorkoutTemplateCard({
+  workout,
+}: WorkoutTemplateCardProps) {
   const router = useRouter();
 
   const navigateToTemplateWorkout = (path: string) => {

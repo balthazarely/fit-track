@@ -1,8 +1,6 @@
 import getCurrentUser from "@/actions/getCurrentUser";
 import getWorkouts from "@/actions/getWorkouts";
 import Heading from "@/components/UI/Heading";
-import WorkoutHistory from "@/components/profile/WorkoutHistory";
-import Stats from "@/components/profile/overview/Overview";
 import WorkoutHistoryFull from "@/components/profile/WorkoutHistoryFull";
 
 export default async function Page() {

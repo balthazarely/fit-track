@@ -13,6 +13,11 @@ import {
 } from "chart.js";
 import "chartjs-adapter-moment";
 import { Line } from "react-chartjs-2";
+import { ParesedExercisesData } from "@/types";
+
+interface VolumeGraphProps {
+  data: ParesedExercisesData[];
+}
 
 ChartJS.register(
   CategoryScale,
@@ -25,7 +30,7 @@ ChartJS.register(
   Legend
 );
 
-export default function VolumeGraph({ data }: any) {
+export default function VolumeGraph({ data }: VolumeGraphProps) {
   const options = {
     responsive: true,
     plugins: {
@@ -49,11 +54,11 @@ export default function VolumeGraph({ data }: any) {
   };
 
   const chartData = {
-    labels: data?.map((item: any) => item.createdAt),
+    labels: data?.map((item: ParesedExercisesData) => item.createdAt),
     datasets: [
       {
         label: "Total Volume",
-        data: data?.map((item: any) => item.totalVolume),
+        data: data?.map((item: ParesedExercisesData) => item.totalVolume),
         fill: false,
         borderColor: "rgba(192,72,192,1)",
         tension: 0.4,

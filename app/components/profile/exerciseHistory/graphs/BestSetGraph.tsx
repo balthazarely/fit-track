@@ -13,6 +13,11 @@ import {
 } from "chart.js";
 import "chartjs-adapter-moment";
 import { Line } from "react-chartjs-2";
+import { ParesedExercisesData } from "@/types";
+
+interface BestSetGraphProps {
+  data: ParesedExercisesData[];
+}
 
 ChartJS.register(
   CategoryScale,
@@ -24,10 +29,8 @@ ChartJS.register(
   Tooltip,
   Legend
 );
-import tailwindConfig from "../../../../../tailwind.config"; // adjust the path to your actual tailwind.config.js file
-import { log } from "console";
 
-export default function BestSetGraph({ data }: any) {
+export default function BestSetGraph({ data }: BestSetGraphProps) {
   const options = {
     responsive: true,
     plugins: {
@@ -61,11 +64,11 @@ export default function BestSetGraph({ data }: any) {
   };
 
   const chartData = {
-    labels: data?.map((item: any) => item.createdAt),
+    labels: data?.map((item: ParesedExercisesData) => item.createdAt),
     datasets: [
       {
         label: `Best Set`,
-        data: data?.map((item: any) => item.bestSet.weight),
+        data: data?.map((item: ParesedExercisesData) => item.bestSet.weight),
         fill: false,
         borderColor: "rgba(169,221,61,1)",
         tension: 0.2,
@@ -73,7 +76,7 @@ export default function BestSetGraph({ data }: any) {
       },
       {
         label: "Calculated 1RM",
-        data: data?.map((item: any) => item.oneRepMax),
+        data: data?.map((item: ParesedExercisesData) => item.oneRepMax),
         fill: false,
         borderColor: "rgba(0,192,75,1)",
         tension: 0.2,

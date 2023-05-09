@@ -1,7 +1,11 @@
 import getWorkout from "@/actions/getWorkout";
 import Workout from "@/components/workout/Workout";
 
-export default async function Page({ params }: any) {
+type Params = {
+  id: string;
+};
+
+export default async function Page({ params }: { params: Params }) {
   const workout = await getWorkout(params.id);
 
   return (

@@ -6,8 +6,13 @@ import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import moment from "moment";
 import RecentWorkoutCard from "./RecentWorkoutCard";
+import { Workout } from "@prisma/client";
 
-export default function RecentWorkouts({ workouts }: any) {
+interface RecentWorkoutsProps {
+  workouts: Workout[];
+}
+
+export default function RecentWorkouts({ workouts }: RecentWorkoutsProps) {
   const [value, onChange] = useState<any>(new Date());
   const [selectedDay, setSelectedDay] = useState<any>("");
 

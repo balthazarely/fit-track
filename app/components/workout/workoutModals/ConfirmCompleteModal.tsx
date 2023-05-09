@@ -1,13 +1,20 @@
 import { memo } from "react";
 import { HiX } from "react-icons/hi";
 
+interface ConfrimCompleteModalProps {
+  saveWorkoutToDB: () => void;
+  setCompleteModalOpen: (state: boolean) => void;
+  dbUpdating: boolean;
+  completeModalOpen: boolean;
+}
+
 const ConfrimCompleteModal = memo(
   ({
     completeModalOpen,
     setCompleteModalOpen,
     dbUpdating,
     saveWorkoutToDB,
-  }: any) => {
+  }: ConfrimCompleteModalProps) => {
     return (
       <>
         <input
