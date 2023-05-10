@@ -11,6 +11,7 @@ module.exports = {
   plugins: [require("daisyui")],
   daisyui: {
     themes: [
+      "light",
       {
         halloween: {
           ...require("daisyui/src/colors/themes")["[data-theme=halloween]"],

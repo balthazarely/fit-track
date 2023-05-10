@@ -26,7 +26,7 @@ export default function RecentWorkoutCard({ workout }: RecentWorkoutCardProps) {
 
   return (
     <>
-      <div className=" p-3 cursor-pointer rounded-lg hover:bg-base-200 ">
+      <div className=" p-3  rounded-lg hover:bg-base-200 ">
         <div className="flex justify-between">
           <div>
             <div className="font-bold text-sm text-primary">

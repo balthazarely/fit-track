@@ -814,4 +814,120 @@ export const workoutDataDemo = [
       },
     ],
   },
+  {
+    createdAt: moment().subtract(0, "days"),
+    title: "Sample Workout 8",
+    exercises: [
+      {
+        name: "Dumbbell Bench Press",
+        sets: [
+          {
+            reps: 13,
+            weight: 70,
+            rpe: 8,
+          },
+          {
+            reps: 11,
+            weight: 75,
+            rpe: 8.5,
+          },
+          {
+            reps: 8,
+            weight: 80,
+            rpe: 8.5,
+          },
+          {
+            reps: 12,
+            weight: 70,
+            rpe: 9,
+          },
+        ],
+      },
+      {
+        name: "Chest dip",
+        sets: [
+          {
+            reps: 12,
+            weight: 35,
+            rpe: 8.5,
+          },
+          {
+            reps: 12,
+            weight: 35,
+            rpe: 8.5,
+          },
+          {
+            reps: 8,
+            weight: 35,
+            rpe: 9,
+          },
+        ],
+      },
+      {
+        name: "Seated Cable Rows",
+        sets: [
+          {
+            reps: 13,
+            weight: 125,
+            rpe: 8,
+          },
+          {
+            reps: 11,
+            weight: 125,
+            rpe: 8.5,
+          },
+          {
+            reps: 12,
+            weight: 125,
+            rpe: 8.5,
+          },
+          {
+            reps: 11,
+            weight: 125,
+            rpe: 10,
+          },
+        ],
+      },
+      {
+        name: "Close-grip pull-down",
+        sets: [
+          {
+            reps: 12,
+            weight: 120,
+            rpe: 9,
+          },
+          {
+            reps: 12,
+            weight: 125,
+            rpe: 9,
+          },
+          {
+            reps: 13,
+            weight: 125,
+            rpe: 9,
+          },
+        ],
+      },
+      {
+        name: "Incline Hammer Curls",
+        sets: [
+          {
+            reps: 10,
+            weight: 40,
+            rpe: 9,
+          },
+          {
+            reps: 10,
+            weight: 45,
+            rpe: 8.5,
+          },
+          {
+            reps: 13,
+            weight: 45,
+            rpe: 8.5,
+          },
+        ],
+      },
+    ],
+  },
 ];

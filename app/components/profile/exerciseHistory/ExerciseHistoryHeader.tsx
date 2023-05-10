@@ -27,8 +27,6 @@ export default function ExerciseHistoryHeader({ name, data }: any) {
     }
   );
 
-  console.log(prObject);
-
   return (
     <div className="bg-base-200 p-4 rounded-lg">
       <div className="font-bold text-2xl mb-2">{name}</div>

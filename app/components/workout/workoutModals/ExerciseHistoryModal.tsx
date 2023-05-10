@@ -16,6 +16,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { Loader } from "@/components/UI/Loader";
 import { Exercises } from "@/types";
+import { BiDumbbell } from "react-icons/bi";
 
 interface ExerciseHistoryModalProps {
   exercisesName: string;
@@ -49,6 +50,7 @@ export default function ExerciseHistoryModal({
         .post("/api/getWorkoutHistory", { name: exercisesName })
         .then((response) => {
           const data = response.data;
+          console.log(data);
 
           setFetchedData(data);
         })
@@ -60,6 +62,29 @@ export default function ExerciseHistoryModal({
         });
     }
   }, [exerciseHistoryModalOpen, exercisesName]);
+
+  const prObject = fetchedData?.reduce(
+    (maxObj, obj) => {
+      const innerMaxObject = obj.sets.reduce(
+        (innerMax, set) => {
+          const sum = set.reps + set.weight;
+          if (sum > innerMax.sum) {
+            return { ...set, sum };
+          }
+          return innerMax;
+        },
+        { sum: -Infinity }
+      );
+
+      if (innerMaxObject.sum > maxObj.sum) {
+        return innerMaxObject;
+      }
+      return maxObj;
+    },
+    { sum: -Infinity }
+  );
+
+  console.log(prObject);
 
   return (
     <div className="">
@@ -89,8 +114,8 @@ export default function ExerciseHistoryModal({
             <div className="w-full   mt-2">
               {fetchedData
                 .sort((a: any, b: any) =>
-                  moment(b.createdAt, "DD-MM-YYYY").diff(
-                    moment(a.createdAt, "DD-MM-YYYY")
+                  moment(b.createdAt, "YYYY-MM-DD").diff(
+                    moment(a.createdAt, "YYYY-MM-DD")
                   )
                 )
                 .map((exercise: Exercises, idx: number) => {
@@ -100,16 +125,15 @@ export default function ExerciseHistoryModal({
                         <div>
                           {moment(exercise.createdAt).format("MMM DD, YYYY")}
                         </div>
-                        <div className="text-right">1RM</div>
+                        <div className="text-right pr-2">1RM</div>
                       </div>
-                      <ExerciseCard exercise={exercise} />
+                      <ExerciseCard prObject={prObject} exercise={exercise} />
                     </div>
                   );
                 })}
             </div>
           ) : (
             <div className="">
-              {" "}
               {isLoading ? (
                 <Loader size="md" />
               ) : (
@@ -125,19 +149,34 @@ export default function ExerciseHistoryModal({
 
 function ExerciseCard({
   exercise,
+  prObject,
 }: {
+  prObject: any;
   exercise: Exercises;
 }): JSX.Element | null {
   return (
     <>
       {exercise.sets.map((set: any, idx: number) => (
-        <div className="grid grid-cols-2" key={idx}>
-          <div className="text-sm flex gap-3 items-center">
-            <span className=" opacity-60  font-bold w-5 h-5  rounded-full flex justify-center items-center text-xs">
+        <div
+          className={`grid grid-cols-2 px-2  rounded-md ${
+            prObject.id === set.id ? "border-[1px] border-primary" : ""
+          }`}
+          key={idx}
+        >
+          <div className="text-sm flex gap-0 items-center">
+            <span className="opacity-60 mr-2 font-bold w-5 h-5  rounded-full flex justify-center items-center text-xs">
               {" "}
               {idx + 1}
             </span>{" "}
             {set.reps} reps x {set.weight} lbs
+            {prObject.id === set.id ? (
+              <>
+                <BiDumbbell className="text-lg text-primary ml-2 mr-1" />{" "}
+                <div className="text-primary text-xs font-bold">PR</div>
+              </>
+            ) : (
+              ""
+            )}
           </div>
           <div className="text-sm text-right">
             {oneRepMaxFormula(set.weight, set.reps)} 1RM
