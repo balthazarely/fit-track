@@ -14,8 +14,10 @@ export default async function Page({ params }: { params: Params }) {
   if (!workout) {
     return (
       <div className="w-full h-96 flex justify-center items-center flex-col gap-2">
-        <div className="font-bold text-2xl">This workout doesn't exist...</div>
-        <div>Hopefully that isn't a problem...</div>
+        <div className="font-bold text-2xl">
+          This workout doesn&apos;t exist...
+        </div>
+        <div>Hopefully that isn&apos;t a problem...</div>
         <BackToWorkoutsButton />
       </div>
     );

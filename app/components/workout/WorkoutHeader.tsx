@@ -4,7 +4,11 @@ import { AiTwotoneEdit, AiOutlineCheck, AiFillCalendar } from "react-icons/ai";
 
 interface WorkoutHeaderProps {
   editWorkout: boolean;
-  useDatabase: (apiRoute: string, loadMsg: string, successMsg: string) => void;
+  modifyDatabase: (
+    apiRoute: string,
+    loadMsg: string,
+    successMsg: string
+  ) => void;
   setDeleteModalOpen: (state: boolean) => void;
   nameEdit: boolean;
   workout: Workout | any;
@@ -16,7 +20,7 @@ interface WorkoutHeaderProps {
 
 export default function WorkoutHeader({
   editWorkout,
-  useDatabase,
+  modifyDatabase,
   setDeleteModalOpen,
   nameEdit,
   workout,
@@ -46,7 +50,7 @@ export default function WorkoutHeader({
                     disabled={dbUpdating}
                     className={`btn btn-outline  btn-xs px-2 py-1  `}
                     onClick={() =>
-                      useDatabase(
+                      modifyDatabase(
                         "/api/editWorkout",
                         "Updaing workout...",
                         "Workout updated! Redirecting..."

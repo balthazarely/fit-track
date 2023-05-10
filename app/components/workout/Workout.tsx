@@ -121,7 +121,7 @@ export default function Workout({
       <div className="max-w-md mx-auto px-4">
         <WorkoutHeader
           editWorkout={editWorkout}
-          useDatabase={useDatabase}
+          modifyDatabase={useDatabase}
           setDeleteModalOpen={setDeleteModalOpen}
           nameEdit={nameEdit}
           workout={workout}
