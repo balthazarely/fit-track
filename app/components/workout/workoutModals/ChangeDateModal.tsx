@@ -1,7 +1,9 @@
 import { memo } from "react";
 import { HiX } from "react-icons/hi";
-import { Calendar } from "react-date-range";
+// import { Calendar } from "react-date-range";
 import { Workout } from "@/types";
+import Calendar from "react-calendar";
+import "react-calendar/dist/Calendar.css";
 
 interface ChangeDateModalProps {
   updateWorkoutInfo: (value: any, field: string) => void;
@@ -35,7 +37,8 @@ const ChangeDateModal = memo(
               <HiX />
             </button>
             <Calendar
-              date={workout.createdAt}
+              value={workout.createdAt}
+              // date={workout.createdAt}
               onChange={(date) => updateWorkoutInfo(date, "createdAt")}
             />
             <button

@@ -20,7 +20,7 @@ export default async function RootLayout({
         ) : (
           <LoginPage />
         )}
-        <Toaster position="top-center" toastOptions={toastConfig} />
+        <Toaster position="top-right" toastOptions={toastConfig} />
       </body>
     </html>
   );
@@ -29,8 +29,8 @@ export default async function RootLayout({
 const toastConfig = {
   success: {
     iconTheme: {
-      primary: "#a991f7",
-      secondary: "white",
+      primary: "#a9dd3d",
+      secondary: "#212121",
     },
     style: {
       background: "#3d4451",

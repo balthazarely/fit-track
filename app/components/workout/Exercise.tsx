@@ -11,6 +11,7 @@ interface ExerciseProps {
   addSet: (index: number) => void;
   removeSet: (idx: number, index: number) => void;
   deleteExercise: (index: number) => void;
+  dbUpdating: boolean;
 }
 
 type set = {
@@ -27,6 +28,7 @@ export default function Exercise({
   addSet,
   removeSet,
   deleteExercise,
+  dbUpdating,
 }: ExerciseProps) {
   const [exerciseHistoryModalOpen, setExerciseHistoryModalOpen] =
     useState<boolean>(false);
@@ -41,6 +43,7 @@ export default function Exercise({
           <div className="font-bold text-sm ">{exercises.name}</div>
           <div className="flex btn-group items-center">
             <button
+              disabled={dbUpdating}
               onClick={() => setExerciseHistoryModalOpen(true)}
               className="btn btn-xs btn-outline "
             >
@@ -48,6 +51,7 @@ export default function Exercise({
             </button>
 
             <button
+              disabled={dbUpdating}
               onClick={() => deleteExercise(index)}
               className="btn btn-xs btn-outline "
             >
@@ -125,6 +129,7 @@ export default function Exercise({
             </select>
             <div className="flex-grow flex justify-end items-end">
               <button
+                disabled={dbUpdating}
                 className="btn btn-ghost"
                 onClick={() => removeSet(idx, index)}
               >
@@ -135,6 +140,7 @@ export default function Exercise({
         ))}
 
         <button
+          disabled={dbUpdating}
           className="btn mt-2 w-full btn-sm btn-primary "
           onClick={() => addSet(index)}
         >

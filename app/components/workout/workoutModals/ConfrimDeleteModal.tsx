@@ -2,17 +2,19 @@ import { memo } from "react";
 import { HiX } from "react-icons/hi";
 
 interface ConfrimDeleteModalProps {
-  deleteWorkout: () => void;
+  deleteWorkout: (
+    apiRoute: string,
+    loadMsg: string,
+    successMsg: string
+  ) => void;
   setDeleteModalOpen: (state: boolean) => void;
   deleteModalOpen: boolean;
-  dbUpdating: boolean;
 }
 
 const ConfrimDeleteModal = memo(
   ({
     deleteModalOpen,
     setDeleteModalOpen,
-    dbUpdating,
     deleteWorkout,
   }: ConfrimDeleteModalProps) => {
     return (
@@ -36,9 +38,15 @@ const ConfrimDeleteModal = memo(
               Are you sure you want to delete this workout?{" "}
             </div>
             <button
-              className={`btn btn-primary px-2 py-1 
-                ${dbUpdating ? "loading" : ""}`}
-              onClick={deleteWorkout}
+              className={`btn btn-primary px-2 py-1`}
+              onClick={() => {
+                setDeleteModalOpen(false);
+                deleteWorkout(
+                  "/api/deleteWorkout",
+                  "Deleting workout...",
+                  "Workout deleted! Redirecting..."
+                );
+              }}
             >
               Delete
             </button>

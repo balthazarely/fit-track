@@ -1,10 +1,9 @@
 "use client";
 
 import axios from "axios";
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useState } from "react";
 import Exercise from "./Exercise";
 import toast from "react-hot-toast";
-import { AiTwotoneEdit, AiOutlineCheck, AiFillCalendar } from "react-icons/ai";
 import "react-date-range/dist/styles.css";
 import "react-date-range/dist/theme/default.css";
 import { useRouter } from "next/navigation";
@@ -13,6 +12,7 @@ import ConfrimDeleteModal from "./workoutModals/ConfrimDeleteModal";
 import ChangeDateModal from "./workoutModals/ChangeDateModal";
 import AddNewExercisesModal from "./workoutModals/AddNewExercisesModal";
 import { Exercises, InitialWorkout, Workout } from "@/types";
+import WorkoutHeader from "./WorkoutHeader";
 
 const defaultWorkout = {
   title: "workout-01",
@@ -31,7 +31,6 @@ export default function Workout({
   const [workout, setWorkout] = useState<Workout | any>(initlWorkout);
   const [nameEdit, setNameEdit] = useState<boolean>(false);
   const [dbUpdating, setDbUpdateing] = useState<boolean>(false);
-  const [dbDeleting, setDbDeleting] = useState<boolean>(false);
 
   // MODAL
   const [exerciseModalOpen, setExerciseModalOpen] = useState<boolean>(false);
@@ -40,7 +39,7 @@ export default function Workout({
   const [completeModalOpen, setCompleteModalOpen] = useState<boolean>(false);
 
   const router = useRouter();
-  const inputRef = useRef<HTMLInputElement>(null);
+  // const inputRef = useRef<HTMLInputElement>(null);
 
   const addNewExercise = (exerciseName: string) => {
     setWorkout({
@@ -83,142 +82,55 @@ export default function Workout({
     setWorkout(newWorkout);
   };
 
-  const saveWorkoutToDB = useCallback(() => {
-    setDbUpdateing(true);
-    axios
-      .post("/api/workout", workout)
-      .then(() => {
-        toast.success(`Workout Saved`);
-        router.refresh();
-      })
-      .catch(() => {
-        console.log("error");
-        toast.error("Something went wrong.");
-      })
-      .finally(() => {
-        setDbUpdateing(false);
-        setCompleteModalOpen(false);
-      });
-  }, [workout, router]);
-
-  const updateWorkoutInDb = useCallback(() => {
-    setDbUpdateing(true);
-    axios
-      .post("/api/editWorkout", workout)
-      .then(() => {
-        toast.success(`Workout Updated`);
-        router.refresh();
-      })
-      .catch(() => {
-        console.log("error");
-        toast.error("Something went wrong.");
-      })
-      .finally(() => {
-        setDbUpdateing(false);
-      });
-  }, [workout, router]);
-
-  const deleteWorkout = useCallback(() => {
-    setDbDeleting(true);
-    axios
-      .post("/api/deleteWorkout", { data: workout.id })
-      .then(() => {
-        toast.success(`Workout deleted`);
-        router.push("/profile");
-      })
-      .catch(() => {
-        console.log("error");
-      })
-      .finally(() => {
-        setDbDeleting(false);
-        setDeleteModalOpen(false);
-      });
-  }, [router]);
+  const useDatabase = useCallback(
+    (apiRoute: string, loadMsg: string, successMsg: string) => {
+      setDbUpdateing(true);
+      const promise = axios.post(apiRoute, workout);
+      toast.promise(
+        promise,
+        {
+          loading: loadMsg,
+          success: successMsg,
+          error: "Error",
+        },
+        {
+          style: {
+            background: "#3d4451",
+            color: "white",
+          },
+          success: {
+            duration: 2000,
+          },
+        }
+      );
+      promise
+        .then(() => {
+          router.refresh();
+          router.push("/profile");
+          // setDbUpdateing(false);
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    },
+    [workout, router]
+  );
 
   return (
     <>
       <div className="max-w-md mx-auto px-4">
-        <div className="flex justify-between mb-4">
-          {!editWorkout && (
-            <h1 className="font-bold text-center w-full text-2xl text-primary">
-              Create Workout
-            </h1>
-          )}
-
-          {editWorkout && (
-            <>
-              <h1 className="font-bold text-center  text-2xl ">Edit Workout</h1>
-              <div>
-                {editWorkout && (
-                  <div className="flex items-center btn-group">
-                    <button
-                      className={`btn btn-outline  btn-xs px-2 py-1 
-                    ${dbUpdating ? "loading btn-disabled" : ""}  `}
-                      onClick={updateWorkoutInDb}
-                    >
-                      Save Changes
-                    </button>
-                    <button
-                      className={`btn btn-outline btn-xs px-2 py-1  `}
-                      onClick={() => setDeleteModalOpen(true)}
-                    >
-                      Delete
-                    </button>
-                  </div>
-                )}
-              </div>
-            </>
-          )}
-        </div>
+        <WorkoutHeader
+          editWorkout={editWorkout}
+          useDatabase={useDatabase}
+          setDeleteModalOpen={setDeleteModalOpen}
+          nameEdit={nameEdit}
+          workout={workout}
+          setNameEdit={setNameEdit}
+          updateWorkoutInfo={updateWorkoutInfo}
+          setDateModalOpen={setDateModalOpen}
+          dbUpdating={dbUpdating}
+        />
         <div className="flex gap-2 flex-col">
-          <div className="flex py-2 gap-2  h-24  justify-between items-center pr-2">
-            <div className=" h-full">
-              <div className="text-xs mt-1">workout name</div>
-              {!nameEdit ? (
-                <input
-                  readOnly
-                  className="font-bold text-xl bg-base-200 input "
-                  value={workout?.title}
-                />
-              ) : (
-                <input
-                  ref={inputRef}
-                  className="font-bold text-xl bg-base-200 input input-bordered input-primary "
-                  value={workout?.title}
-                  onChange={(e) => updateWorkoutInfo(e.target.value, "title")}
-                />
-              )}
-            </div>
-            <div className="">
-              {!nameEdit ? (
-                <button
-                  className="btn btn-ghost"
-                  onClick={() => {
-                    setNameEdit(!nameEdit);
-                    if (inputRef.current) {
-                      inputRef.current.focus();
-                      inputRef.current.select();
-                    }
-                  }}
-                >
-                  <AiTwotoneEdit className="text-xl cursor-pointer" />
-                </button>
-              ) : (
-                <button
-                  className="btn btn-ghost"
-                  onClick={() => setNameEdit(!nameEdit)}
-                >
-                  <AiOutlineCheck className="text-xl cursor-pointer" />
-                </button>
-              )}
-              <button
-                className="btn btn-ghost"
-                onClick={() => setDateModalOpen(true)}
-              >
-                <AiFillCalendar className="text-xl cursor-pointer" />
-              </button>
-            </div>
-          </div>
           {workout.exercises.map((exercises: Exercises, index: number) => {
             return (
               <Exercise
@@ -230,12 +142,15 @@ export default function Workout({
                 addSet={addSet}
                 removeSet={removeSet}
                 deleteExercise={deleteExercise}
+                dbUpdating={dbUpdating}
               />
             );
           })}
         </div>
+        <div className="divider"></div>
         <div className="my-2 flex flex-col w-full gap-2">
           <button
+            disabled={dbUpdating}
             className="btn-outline btn px-2 py-1   w-full"
             onClick={() => setExerciseModalOpen(true)}
           >
@@ -243,9 +158,10 @@ export default function Workout({
           </button>
           {!editWorkout && (
             <button
+              disabled={dbUpdating}
               className={`btn btn-primary px-2 py-1  w-full ${
                 workout.exercises?.length === 0 ? "btn-disabled" : ""
-              } ${dbUpdating ? "loading btn-disabled" : ""}`}
+              } `}
               onClick={() => setCompleteModalOpen(true)}
             >
               Save Workout
@@ -266,16 +182,14 @@ export default function Workout({
         workout={workout}
       />
       <ConfrimDeleteModal
-        deleteWorkout={deleteWorkout}
+        deleteWorkout={useDatabase}
         deleteModalOpen={deleteModalOpen}
         setDeleteModalOpen={setDeleteModalOpen}
-        dbUpdating={dbDeleting}
       />
       <ConfrimCompleteModal
-        saveWorkoutToDB={saveWorkoutToDB}
+        saveWorkoutToDB={useDatabase}
         completeModalOpen={completeModalOpen}
         setCompleteModalOpen={setCompleteModalOpen}
-        dbUpdating={dbUpdating}
       />
     </>
   );

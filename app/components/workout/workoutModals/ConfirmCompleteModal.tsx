@@ -2,9 +2,12 @@ import { memo } from "react";
 import { HiX } from "react-icons/hi";
 
 interface ConfrimCompleteModalProps {
-  saveWorkoutToDB: () => void;
+  saveWorkoutToDB: (
+    apiRoute: string,
+    loadMsg: string,
+    successMsg: string
+  ) => void;
   setCompleteModalOpen: (state: boolean) => void;
-  dbUpdating: boolean;
   completeModalOpen: boolean;
 }
 
@@ -12,7 +15,6 @@ const ConfrimCompleteModal = memo(
   ({
     completeModalOpen,
     setCompleteModalOpen,
-    dbUpdating,
     saveWorkoutToDB,
   }: ConfrimCompleteModalProps) => {
     return (
@@ -36,9 +38,15 @@ const ConfrimCompleteModal = memo(
               Are you sure you want to finish this workout?
             </div>
             <button
-              className={`btn btn-primary px-2 py-1
-              ${dbUpdating ? "loading" : ""}`}
-              onClick={saveWorkoutToDB}
+              className={`btn btn-primary px-2 py-1`}
+              onClick={() => {
+                setCompleteModalOpen(false);
+                saveWorkoutToDB(
+                  "/api/createWorkout",
+                  "Saving workout...",
+                  "Workout saved! Redirecting..."
+                );
+              }}
             >
               Complete
             </button>

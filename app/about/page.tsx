@@ -22,7 +22,7 @@ export default function About() {
     });
     Promise.all(requests)
       .then(() => {
-        toast.success(`Workout Saved`);
+        toast.success(`Test data created`);
         setLoading(false);
       })
       .catch(() => {
@@ -50,11 +50,11 @@ export default function About() {
             <SiTailwindcss className="text-3xl text-primary" />
             <SiDaisyui className="text-3xl text-primary" />
           </div>
-          <button className="btn btn-primary btn-outline mt-2">
-            <a href="https://github.com/balthazarely/fit-track" target="_BLANK">
+          <a href="https://github.com/balthazarely/fit-track" target="_BLANK">
+            <button className="btn btn-primary btn-outline mt-2">
               Repo Link
-            </a>
-          </button>
+            </button>
+          </a>
           <div className="mt-16 flex justify-center items-center flex-col max-w-md">
             <div className="text-center mb-2">
               If you would just like to see data without entering workouts,

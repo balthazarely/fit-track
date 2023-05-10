@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { Loader } from "@/components/UI/Loader";
 import { Exercises, Sets, Workout } from "@/types";
+import ModalWrapper from "@/components/UI/ModalWrapper";
 
 interface ShowWorkoutModalProps {
   setShowWorkoutModal: (state: boolean) => void;
@@ -39,73 +40,61 @@ export default function ShowWorkoutModal({
   }, [showWorkoutModal, workoutId]);
 
   return (
-    <div className="">
-      <input
-        type="checkbox"
-        checked={showWorkoutModal}
-        id="my-modal-6"
-        className="modal-toggle"
-        readOnly
-      />
-
-      <div
-        className="modal modal-bottom sm:modal-middle"
-        onClick={() => setShowWorkoutModal(false)}
-      >
-        <div className="transform relative left-0 lg:translate-x-24 modal-box">
-          <div className="flex justify-between">
-            <div className="font-bold text-lg text-primary">
-              Workout Overview
-            </div>
-            <button
-              className=" btn btn-sm btn-ghost"
-              onClick={() => setShowWorkoutModal(false)}
-            >
-              <HiX />
-            </button>
-          </div>
-          {fetchedData ? (
-            <div className="w-full mt-2">
-              <div className="flex justify-between mb-2">
-                <div className="text-xl font-bold">{fetchedData.title}</div>
-                <div className="text-md font-bold">
-                  {moment(fetchedData.createdAt).format("MMM DD, YYYY")}
-                </div>
-              </div>
-              {fetchedData.exercises.map((exercise: Exercises, idx: number) => {
-                return (
-                  <div className=" p-2" key={idx}>
-                    <div>{exercise.name}</div>
-                    {exercise.sets.map((set: Sets, idx: number) => (
-                      <div className="grid grid-cols-2" key={idx}>
-                        <div className="text-sm flex gap-3 items-center">
-                          <span className="bg-base-100 text-opacity-60 text-white font-bold w-5 h-5  rounded-full flex justify-center items-center text-xs">
-                            {" "}
-                            {idx + 1}
-                          </span>{" "}
-                          {set.weight} lbs x {set.reps}
-                        </div>
-                        <div className="text-sm text-right">
-                          {oneRepMaxFormula(set.weight, set.reps)} 1RM
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                );
-              })}
-            </div>
-          ) : (
-            <div className="">
-              {" "}
-              {isLoading ? (
-                <Loader size="md" />
-              ) : (
-                <div className="text-center py-2"> No history</div>
-              )}
-            </div>
-          )}
+    <ModalWrapper
+      isModalOpen={showWorkoutModal}
+      setModalOpen={setShowWorkoutModal}
+    >
+      <div className="transform relative left-0 lg:translate-x-24 modal-box">
+        <div className="flex justify-between">
+          <div className="font-bold text-lg text-primary">Workout Overview</div>
+          <button
+            className=" btn btn-sm btn-ghost"
+            onClick={() => setShowWorkoutModal(false)}
+          >
+            <HiX />
+          </button>
         </div>
+        {fetchedData ? (
+          <div className="w-full mt-2">
+            <div className="flex justify-between mb-2">
+              <div className="text-xl font-bold">{fetchedData.title}</div>
+              <div className="text-md font-bold">
+                {moment(fetchedData.createdAt).format("MMM DD, YYYY")}
+              </div>
+            </div>
+            {fetchedData.exercises.map((exercise: Exercises, idx: number) => {
+              return (
+                <div className=" p-2" key={idx}>
+                  <div>{exercise.name}</div>
+                  {exercise.sets.map((set: Sets, idx: number) => (
+                    <div className="grid grid-cols-2" key={idx}>
+                      <div className="text-sm flex gap-3 items-center">
+                        <span className="bg-base-100 text-opacity-60 text-white font-bold w-5 h-5  rounded-full flex justify-center items-center text-xs">
+                          {" "}
+                          {idx + 1}
+                        </span>{" "}
+                        {set.weight} lbs x {set.reps}
+                      </div>
+                      <div className="text-sm text-right">
+                        {oneRepMaxFormula(set.weight, set.reps)} 1RM
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              );
+            })}
+          </div>
+        ) : (
+          <div className="">
+            {" "}
+            {isLoading ? (
+              <Loader size="md" />
+            ) : (
+              <div className="text-center py-2"> No history</div>
+            )}
+          </div>
+        )}
       </div>
-    </div>
+    </ModalWrapper>
   );
 }
