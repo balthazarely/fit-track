@@ -51,39 +51,47 @@ export default function RecentWorkouts({ workouts }: RecentWorkoutsProps) {
             tileClassName={tileClassName}
           ></Calendar>
         </div>
-        <div className="w-full flex justify-between flex-col   ">
-          <div>
-            {selectedDay !== "" && (
-              <div className="font-bold  text-sm flex justify-between p-2 mb-1">
-                {moment(selectedDay).format("dddd DD/YYYY")}
-                <button
-                  className="btn btn-xs btn-outline"
-                  onClick={() => setSelectedDay("")}
-                >
-                  clear
-                </button>
+        {workouts.length > 0 ? (
+          <>
+            <div className="w-full flex justify-between flex-col   ">
+              <div>
+                {selectedDay !== "" && (
+                  <div className="font-bold  text-sm flex justify-between p-2 mb-1">
+                    {moment(selectedDay).format("dddd DD/YYYY")}
+                    <button
+                      className="btn btn-xs btn-outline"
+                      onClick={() => setSelectedDay("")}
+                    >
+                      clear
+                    </button>
+                  </div>
+                )}
+                {limitAndSortTotalWorkouts(workouts)
+                  .filter((workout: any) => {
+                    if (selectedDay !== "") {
+                      return workout.createdAtFormatted === selectedDay;
+                    } else {
+                      return workout;
+                    }
+                  })
+                  .map((workout: any, idx: number) => {
+                    return <RecentWorkoutCard key={idx} workout={workout} />;
+                  })}
               </div>
-            )}
-            {limitAndSortTotalWorkouts(workouts)
-              .filter((workout: any) => {
-                if (selectedDay !== "") {
-                  return workout.createdAtFormatted === selectedDay;
-                } else {
-                  return workout;
-                }
-              })
-              .map((workout: any, idx: number) => {
-                return <RecentWorkoutCard key={idx} workout={workout} />;
-              })}
+              <div className="w-full flex justify-center my-4">
+                <Link href={"/profile/workouts"}>
+                  <button className="btn btn-primary btn-sm ">
+                    See all {workouts.length} workouts
+                  </button>
+                </Link>
+              </div>
+            </div>
+          </>
+        ) : (
+          <div className="w-full text-xl  h-full flex justify-center items-center">
+            No workouts yet
           </div>
-          <div className="w-full flex justify-center my-4">
-            <Link href={"/profile/workouts"}>
-              <button className="btn btn-primary btn-sm ">
-                See all {workouts.length} workouts
-              </button>
-            </Link>
-          </div>
-        </div>
+        )}
       </div>
     </div>
   );

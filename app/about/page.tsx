@@ -18,7 +18,7 @@ export default function About() {
   const saveWorkoutToDB = () => {
     setLoading(true);
     const requests = workoutDataDemo.map((demo: any, index: number) => {
-      return axios.post("/api/workout", demo);
+      return axios.post("/api/createWorkout", demo);
     });
     Promise.all(requests)
       .then(() => {
