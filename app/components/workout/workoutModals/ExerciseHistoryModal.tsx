@@ -133,7 +133,7 @@ function ExerciseCard({
       {exercise.sets.map((set: any, idx: number) => (
         <div className="grid grid-cols-2" key={idx}>
           <div className="text-sm flex gap-3 items-center">
-            <span className="bg-primary opacity-60 text-black font-bold w-5 h-5  rounded-full flex justify-center items-center text-xs">
+            <span className=" opacity-60  font-bold w-5 h-5  rounded-full flex justify-center items-center text-xs">
               {" "}
               {idx + 1}
             </span>{" "}

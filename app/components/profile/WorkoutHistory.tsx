@@ -11,21 +11,21 @@ interface WorkoutHistoryProps {
 }
 
 export default function WorkoutHistory({ workouts }: WorkoutHistoryProps) {
-  const [tabSelected, setSelectedTab] = useState("Recent Workouts");
+  const [tabSelected, setTabSelected] = useState("Recent Workouts");
   const menuTabs = ["Recent Workouts", "Stats", "Exercise History"];
 
   return (
     <div className="mt-4">
       <div className="tabs tabs-boxed">
         {menuTabs.map((item: string, idx: number) => (
-          <button key={idx} onClick={() => setSelectedTab(item)}>
-            <a
+          <button key={idx} onClick={() => setTabSelected(item)}>
+            <div
               className={`tab tab-lifted   ${
                 tabSelected === item ? "tab-active  " : ""
               }`}
             >
               {item}
-            </a>
+            </div>
           </button>
         ))}
       </div>

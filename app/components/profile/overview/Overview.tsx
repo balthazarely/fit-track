@@ -69,22 +69,26 @@ export default function Overview({ workouts }: OverviewProps) {
     <div className=" mt-4 ">
       <div className="text-xl font-bold mt-6">Recent Acomplishments</div>
       <div className="flex sm:justify-start justify-center ">
-        <div className="stats stats-vertical sm:stats-horizontal shadow ">
+        <div className=" grid md:grid-cols-3 grid-cols-2 shadow  w-full ">
           <div className="stat  bg-base-200  ">
             <div className="stat-figure text-primary">
-              <GiWeightLiftingUp className="text-2xl" />
+              <GiWeightLiftingUp className="md:text-2xl text-lg" />
             </div>
-            <div className="stat-title text-sm">Total Workouts</div>
-            <div className="stat-value text-primary">{totalWorkouts}</div>
+            <div className="stat-title text-xs md:text-sm">Total Workouts</div>
+            <div className="stat-value text-primary text-2xl md:text-3xl">
+              {totalWorkouts}
+            </div>
             {/* <div className="stat-desc">21% more than last month</div> */}
           </div>
 
           <div className="stat  bg-base-200">
             <div className="stat-figure text-primary">
-              <FaRegGrinBeamSweat className="text-2xl" />
+              <FaRegGrinBeamSweat className="md:text-2xl text-lg" />
             </div>
-            <div className="stat-title text-sm">Workouts this week</div>
-            <div className="stat-value text-primary">
+            <div className="stat-title text-xs md:text-sm">
+              Workouts this week
+            </div>
+            <div className="stat-value text-primary text-2xl md:text-3xl">
               {workoutsThisWeek.length}
             </div>
             {/* <div className="stat-desc">21% more than last month</div> */}
@@ -92,18 +96,19 @@ export default function Overview({ workouts }: OverviewProps) {
 
           <div className="stat  bg-base-200">
             <div className="stat-figure text-primary">
-              <FaWeightHanging className="text-2xl" />
+              <FaWeightHanging className="md:text-2xl text-lg" />
             </div>
-            <div className="stat-title text-sm">
+            <div className="stat-title text-xs md:text-sm">
               Total weight lifted this week
             </div>
-            <div className="stat-value text-primary">
+            <div className="stat-value text-primary text-2xl md:text-3xl">
               {weightTotal(workouts)} <span className="text-xs">lbs</span>
             </div>
             {/* <div className="stat-desc">21% more than last month</div> */}
           </div>
         </div>
       </div>
+
       <div className="flex sm:justify-start justify-center mt-3">
         <div className="stats stats-vertical sm:stats-horizontal  shadow">
           <div className="stat  bg-base-200">
@@ -112,7 +117,9 @@ export default function Overview({ workouts }: OverviewProps) {
               {daysWithWorkouts.map(
                 (day: DaysWithWorkoutBoolean, idx: number) => (
                   <div
-                    className="p-1 flex justify-end flex-col items-center"
+                    className={`${
+                      day.hasWorkout ? "bg-base-100" : "bg-none"
+                    } p-1 w-20  flex justify-end rounded-md drop-shadow-lg flex-col items-center`}
                     key={idx}
                   >
                     {day.hasWorkout ? (

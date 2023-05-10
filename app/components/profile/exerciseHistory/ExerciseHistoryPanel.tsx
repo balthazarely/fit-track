@@ -60,7 +60,11 @@ export default function ExerciseHistoryPanel() {
             ))}
           </select>
 
-          <div className="flex flex-col h-96 overflow-y-scroll  bg-base-200">
+          <div
+            className={`flex flex-col h-96  bg-base-200  ${
+              apiResults.length ? " overflow-y-scroll" : " overflow-y-hidden"
+            }`}
+          >
             {loadingAPI && <Loader />}
             {!loadingAPI &&
               selectedMuscleGroup &&

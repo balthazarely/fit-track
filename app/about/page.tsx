@@ -11,9 +11,11 @@ import {
   SiPrisma,
   SiMongodb,
 } from "react-icons/si";
+import { useRouter } from "next/navigation";
 
 export default function About() {
   const [loading, setLoading] = useState<boolean>(false);
+  const router = useRouter();
 
   const saveWorkoutToDB = () => {
     setLoading(true);
@@ -24,6 +26,7 @@ export default function About() {
       .then(() => {
         toast.success(`Test data created`);
         setLoading(false);
+        router.refresh();
       })
       .catch(() => {
         console.log("error");
@@ -50,13 +53,21 @@ export default function About() {
             <SiTailwindcss className="text-3xl text-primary" />
             <SiDaisyui className="text-3xl text-primary" />
           </div>
-          <a href="https://github.com/balthazarely/fit-track" target="_BLANK">
-            <button className="btn btn-primary btn-outline mt-2">
-              Repo Link
-            </button>
-          </a>
-          <div className="mt-16 flex justify-center items-center flex-col max-w-md">
-            <div className="text-center mb-2">
+          <div className="flex gap-2">
+            <a href="https://github.com/balthazarely/fit-track" target="_BLANK">
+              <button className="btn btn-sm btn-primary btn-outline mt-2">
+                Repo Link
+              </button>
+            </a>
+            <a href="https://balthazar-ely.com" target="_BLANK">
+              <button className="btn btn-sm btn-primary btn-outline mt-2">
+                Portfolio Link
+              </button>
+            </a>
+          </div>
+          <div className="mt-16 border-primary border-2 rounded-3xl px-4 py-6 shadow-lg bg-base-200 flex justify-center items-center flex-col max-w-md">
+            <div className="text-center mb-2 font-bold text-xl">NOTICE</div>
+            <div className="text-center mb-4">
               If you would just like to see data without entering workouts,
               click below:
             </div>

@@ -6,7 +6,7 @@ export default function NewWorkoutButton() {
   const router = useRouter();
 
   const navigateToTemplateWorkout = (path: string) => {
-    window.localStorage.removeItem("fit-track-current-workout");
+    // window.localStorage.removeItem("fit-track-current-workout");
     router.push(path);
   };
 

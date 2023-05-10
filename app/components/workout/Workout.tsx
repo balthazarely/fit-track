@@ -39,7 +39,6 @@ export default function Workout({
   const [completeModalOpen, setCompleteModalOpen] = useState<boolean>(false);
 
   const router = useRouter();
-  // const inputRef = useRef<HTMLInputElement>(null);
 
   const addNewExercise = (exerciseName: string) => {
     setWorkout({

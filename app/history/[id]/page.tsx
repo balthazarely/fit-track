@@ -9,9 +9,6 @@ export default async function Page({ params }: { params: Params }) {
   const decodedString = decodeURIComponent(params.id);
   const exerciseData = await getExerciseData(decodedString);
 
-  return (
-    <div>
-      <ExerciseHistory data={exerciseData} />
-    </div>
-  );
+  // <ExerciseHistory data={exerciseData} />;
+  return <>Hi</>;
 }

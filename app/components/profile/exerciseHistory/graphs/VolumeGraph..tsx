@@ -36,10 +36,16 @@ export default function VolumeGraph({ data }: VolumeGraphProps) {
     plugins: {
       legend: {
         position: "top" as const,
+        fontColor: "red",
       },
       title: {
         display: true,
-        text: "Total Volume",
+        text: "Total Volume Per Workout",
+        font: {
+          size: 16,
+          weight: "bold",
+        },
+        color: "#e5e7eb",
       },
     },
     scales: {

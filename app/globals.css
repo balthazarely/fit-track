@@ -2,8 +2,13 @@
 @tailwind components;
 @tailwind utilities;
 
+.react-calendar__month-view__days__day--weekend {
+  color: white !important ;
+  opacity: 0.8;
+}
+
 .highlight {
-    @apply text-primary;
+    @apply !text-primary ; 
     position: relative;
  }
  
@@ -12,15 +17,14 @@
      position: absolute;
      top: 0.25rem;
      right: 0.25rem;
-     width: 0.5rem;
-     height: 0.5rem;
+     width: 0.40rem;
+     height: 0.40rem;
      border-radius: 50%;
      @apply bg-primary
-   }
+  }
+
 
 .custom-tile {
-    /* color:  !important; */
-    /* background-color: blue !important; */
     @apply !bg-base-200 !text-base-content;
 }
 
@@ -30,30 +34,31 @@
 
 
 .react-calendar__tile--active {
-    @apply !bg-primary !text-base-100;
+    @apply !bg-white  !bg-opacity-20 ;
 }
+
 
 .react-calendar {
     @apply !bg-base-200 !text-base-content
   }
   
 
-  .bg-lifter-image-wrap {
-    position: relative;
-  }
-  
-  .bg-lifter-image-wrap:before {
-    content: ' ';
-    display: block;
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100vh;
-    opacity: 0.2;
-    background-image: url("/images/gym-stock.jpg");
-    background-repeat: no-repeat;
-    background-position: 50% 0;
-    background-size: cover;
-  }
+.bg-lifter-image-wrap {
+  position: relative;
+}
+
+.bg-lifter-image-wrap:before {
+  content: ' ';
+  display: block;
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100vh;
+  opacity: 0.2;
+  background-image: url("/images/gym-stock.jpg");
+  background-repeat: no-repeat;
+  background-position: 50% 0;
+  background-size: cover;
+}
   

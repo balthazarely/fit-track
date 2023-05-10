@@ -36,10 +36,16 @@ export default function BestSetGraph({ data }: BestSetGraphProps) {
     plugins: {
       legend: {
         position: "top" as const,
+        fontColor: "red",
       },
       title: {
         display: true,
-        text: "best set",
+        text: "Best Set",
+        font: {
+          size: 16,
+          weight: "bold",
+        },
+        color: "#e5e7eb",
       },
       tooltip: {
         callbacks: {

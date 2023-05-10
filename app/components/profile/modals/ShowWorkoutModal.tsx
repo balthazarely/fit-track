@@ -6,6 +6,7 @@ import axios from "axios";
 import { Loader } from "@/components/UI/Loader";
 import { Exercises, Sets, Workout } from "@/types";
 import ModalWrapper from "@/components/UI/ModalWrapper";
+import Link from "next/link";
 
 interface ShowWorkoutModalProps {
   setShowWorkoutModal: (state: boolean) => void;
@@ -65,7 +66,14 @@ export default function ShowWorkoutModal({
             {fetchedData.exercises.map((exercise: Exercises, idx: number) => {
               return (
                 <div className=" p-2" key={idx}>
-                  <div>{exercise.name}</div>
+                  <div className="flex justify-between mb-1">
+                    <div className="text-sm font-bold  ">{exercise.name}</div>
+                    <Link href={`/profile/history/${exercise.name}`}>
+                      <button className="btn btn-xs btn-primary btn-outline ">
+                        See Charts
+                      </button>
+                    </Link>
+                  </div>
                   {exercise.sets.map((set: Sets, idx: number) => (
                     <div className="grid grid-cols-2" key={idx}>
                       <div className="text-sm flex gap-3 items-center">
