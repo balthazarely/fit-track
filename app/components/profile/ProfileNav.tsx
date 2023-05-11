@@ -13,7 +13,7 @@ export default function ProfileNav() {
   };
 
   return (
-    <nav className="flex items-start flex-col gap-4 col-span-1 p-2">
+    <nav className="flex items-start flex-col gap-4 col-span-1 mt-4">
       <div className="tabs tabs-boxed">
         {menuTabs.map((item: string, idx: number) => (
           <button key={idx} onClick={() => navigate(item)}>

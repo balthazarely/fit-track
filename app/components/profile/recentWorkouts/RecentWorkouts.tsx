@@ -69,13 +69,15 @@ export default function RecentWorkouts({ workouts }: RecentWorkoutsProps) {
     <div className="my-6">
       <div className="text-xl font-bold flex justify-between">
         <div>Recent Workouts</div>
-        <button
-          disabled={updatingDB}
-          className="btn-outline btn btn-xs"
-          onClick={() => setDeleteAllWorkoutsModalOpen(true)}
-        >
-          Delete all workouts
-        </button>
+        {workouts.length !== 0 && (
+          <button
+            disabled={updatingDB}
+            className="btn-outline btn btn-xs"
+            onClick={() => setDeleteAllWorkoutsModalOpen(true)}
+          >
+            Delete all workouts
+          </button>
+        )}
       </div>
       <div className="my-4 flex flex-col sm:flex-row gap-4 justify-between h-72">
         <div className="flex justify-center">

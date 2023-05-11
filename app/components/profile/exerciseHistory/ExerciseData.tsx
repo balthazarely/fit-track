@@ -28,7 +28,6 @@ export default function ExerciseData({ selectedExercise }: ExerciseDataProps) {
       .then((response) => {
         const data = response.data;
         setFetchedExerciseData(parseExerciseDataForGraph(data));
-        console.log(data);
       })
       .catch((error) => {
         console.error(error);

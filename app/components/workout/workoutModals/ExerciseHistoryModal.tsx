@@ -50,8 +50,6 @@ export default function ExerciseHistoryModal({
         .post("/api/getWorkoutHistory", { name: exercisesName })
         .then((response) => {
           const data = response.data;
-          console.log(data);
-
           setFetchedData(data);
         })
         .catch((error) => {
@@ -83,8 +81,6 @@ export default function ExerciseHistoryModal({
     },
     { sum: -Infinity }
   );
-
-  console.log(prObject);
 
   return (
     <div className="">

@@ -48,7 +48,6 @@ export default function ColorModeToggle() {
         let isDark = colorMode === "light" ? false : true;
         setIsLightMode(isDark);
         setHasColorModeFetched(true);
-        console.log(colorMode);
       })
       .catch((error) => {
         console.error(error); // Handle the error

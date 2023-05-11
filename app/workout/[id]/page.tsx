@@ -9,8 +9,6 @@ type Params = {
 export default async function Page({ params }: { params: Params }) {
   const workout = await getWorkout(params.id);
 
-  console.log(workout);
-
   if (!workout) {
     return (
       <div className="w-full h-96 flex justify-center items-center flex-col gap-2">
