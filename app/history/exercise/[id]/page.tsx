@@ -18,7 +18,6 @@ export default async function Page({ params }: { params: Params }) {
   return (
     <div>
       <ExerciseHistoryHeader name={decodedString} data={data} />
-
       <div className="grid grid-cols-1 md:grid-cols-5  mt-4 gap-4 md:gap-6">
         <div className="col-span-2 order-2 ">
           <ExerciseDataWorkoutCards

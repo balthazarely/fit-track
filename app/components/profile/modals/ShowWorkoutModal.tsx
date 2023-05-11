@@ -68,7 +68,7 @@ export default function ShowWorkoutModal({
                 <div className=" p-2" key={idx}>
                   <div className="flex justify-between mb-1">
                     <div className="text-sm font-bold  ">{exercise.name}</div>
-                    <Link href={`/profile/history/${exercise.name}`}>
+                    <Link href={`/history/exercise/${exercise.name}`}>
                       <button className="btn btn-xs btn-primary btn-outline ">
                         See Charts
                       </button>

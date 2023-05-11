@@ -123,7 +123,7 @@ export default function Navbar({ currentUser, children }: NavbarProps) {
             </li>
             <li>
               <Link
-                href={"/profile"}
+                href={"/profile?tab=recent-workouts"}
                 className={
                   currentPath() === "profile" || currentPath() === "workout"
                     ? "text-primary"

@@ -115,7 +115,7 @@ export default function RecentWorkouts({ workouts }: RecentWorkoutsProps) {
                     })}
                 </div>
                 <div className="w-full flex justify-center my-4">
-                  <Link href={"/profile/workouts"}>
+                  <Link href={"/history/workout"}>
                     <button className="btn btn-primary btn-sm ">
                       See all {workoutsForHistory.length} workouts
                     </button>

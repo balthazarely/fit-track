@@ -25,21 +25,41 @@ export default async function RootLayout({
         )}
         <Toaster
           position="top-right"
-          toastOptions={{
-            success: {
-              iconTheme: {
-                primary: "#a9dd3d",
-                secondary: "#212121",
-              },
-              style: {
-                background: "#3d4451",
-                color: "white",
-                zIndex: 100,
-              },
-            },
-          }}
+          toastOptions={
+            currentUser?.colorMode === "halloween"
+              ? toastConfigDark
+              : toastConfigLight
+          }
         />
       </body>
     </html>
   );
 }
+
+const toastConfigDark = {
+  success: {
+    iconTheme: {
+      primary: "#a9dd3d",
+      secondary: "#212121",
+    },
+    style: {
+      background: "#3d4451",
+      color: "white",
+      zIndex: 100,
+    },
+  },
+};
+
+const toastConfigLight = {
+  success: {
+    iconTheme: {
+      primary: "#a9dd3d",
+      secondary: "#212121",
+    },
+    style: {
+      background: "#ededed",
+      color: "black",
+      zIndex: 100,
+    },
+  },
+};

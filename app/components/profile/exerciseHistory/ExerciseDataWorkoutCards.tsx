@@ -36,7 +36,7 @@ export default function ExerciseDataWorkoutCards({
       <div className="font-bold my-2 flex justify-between">
         Recent Sets{" "}
         {limitResults && (
-          <Link href={`/profile/history/${selectedExercise}`}>
+          <Link href={`/history/exercise/${selectedExercise}`}>
             <button className="btn btn-primary btn-xs ">
               See Full Exercise Data
             </button>

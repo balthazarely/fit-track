@@ -105,8 +105,7 @@ export default function Workout({
       promise
         .then(() => {
           router.refresh();
-          router.push("/profile");
-          // setDbUpdateing(false);
+          router.push("/profile?tab=recent-workouts");
         })
         .catch((error) => {
           console.error(error);
