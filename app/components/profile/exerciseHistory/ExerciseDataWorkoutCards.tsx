@@ -76,7 +76,7 @@ function Workout({
       {exercise.sets.map((set: any, idx: number) => (
         <div className="flex justify-between" key={idx}>
           <div className=" flex w-full  flex-grow items-center  text-sm">
-            <span className="bg-base-100 text-opacity-60 text-white font-bold w-5 h-5 mr-1  rounded-full flex justify-center items-center text-xs">
+            <span className="bg-base-100 text-opacity-60  font-bold w-5 h-5 mr-1  rounded-full flex justify-center items-center text-xs">
               {" "}
               {idx + 1}
             </span>{" "}
