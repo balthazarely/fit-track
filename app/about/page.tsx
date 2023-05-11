@@ -31,6 +31,7 @@ export default function About() {
       .catch(() => {
         console.log("error");
         toast.error("Something went wrong.");
+
         setLoading(false);
       });
   };
@@ -45,7 +46,6 @@ export default function About() {
               NextJS 13 + MongoDB + Prisma + TailwindCSS + DaisyUI
             </div>
           </div>
-
           <div className="flex gap-4 z-50">
             <SiNextdotjs className="text-3xl text-primary" />
             <SiMongodb className="text-3xl text-primary" />
@@ -65,7 +65,7 @@ export default function About() {
               </button>
             </a>
           </div>
-          <div className="mt-16 border-primary border-2 rounded-3xl px-4 py-6 shadow-lg bg-base-200 flex justify-center items-center flex-col max-w-md">
+          <div className="mt-24 border-primary border-2 rounded-3xl px-4 py-6  bg-base-200 flex justify-center items-center flex-col max-w-md">
             <div className="text-center mb-2 font-bold text-xl">NOTICE</div>
             <div className="text-center mb-4">
               If you would just like to see data without entering workouts,

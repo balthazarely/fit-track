@@ -12,7 +12,10 @@ export default async function RootLayout({
   const currentUser = await getCurrentUser();
 
   return (
-    <html lang="en" data-theme="halloween">
+    <html
+      lang="en"
+      data-theme={currentUser?.colorMode ? currentUser?.colorMode : "halloween"}
+    >
       <head />
       <body>
         {currentUser ? (
@@ -20,22 +23,23 @@ export default async function RootLayout({
         ) : (
           <LoginPage />
         )}
-        <Toaster position="top-right" toastOptions={toastConfig} />
+        <Toaster
+          position="top-right"
+          toastOptions={{
+            success: {
+              iconTheme: {
+                primary: "#a9dd3d",
+                secondary: "#212121",
+              },
+              style: {
+                background: "#3d4451",
+                color: "white",
+                zIndex: 100,
+              },
+            },
+          }}
+        />
       </body>
     </html>
   );
 }
-
-const toastConfig = {
-  success: {
-    iconTheme: {
-      primary: "#a9dd3d",
-      secondary: "#212121",
-    },
-    style: {
-      background: "#3d4451",
-      color: "white",
-      zIndex: 100,
-    },
-  },
-};

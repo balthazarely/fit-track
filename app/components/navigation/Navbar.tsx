@@ -10,6 +10,7 @@ import { IoPersonCircle, IoExitOutline } from "react-icons/io5";
 import { BiDumbbell } from "react-icons/bi";
 import { usePathname } from "next/navigation";
 import { FaInfoCircle } from "react-icons/fa";
+import ColorModeToggle from "../UI/ColorModeToggle";
 
 interface NavbarProps {
   currentUser: SafeUser | null;
@@ -19,6 +20,12 @@ interface NavbarProps {
 export default function Navbar({ currentUser, children }: NavbarProps) {
   const toggleDrawer = useToggleDrawer();
   const pathname = usePathname();
+
+  const currentPath = () => {
+    const path = pathname?.substring(1).split("/")[0];
+
+    return path;
+  };
 
   const handleSignOut = async () => {
     await signOut({ redirect: true });
@@ -74,33 +81,40 @@ export default function Navbar({ currentUser, children }: NavbarProps) {
           }
           className="drawer-overlay"
         ></label>
-        <ul className="menu w-56 bg-base-200 p-4 text-base-content">
-          <div>
-            <div className="flex items-center gap-2 mb-6">
-              <div className="w-12 h-12 rounded-full">
-                {currentUser?.image ? (
-                  <Image
-                    className="rounded-full"
-                    height="50"
-                    width="50"
-                    alt="Avatar"
-                    src={currentUser?.image || "/images/placeholder.jpg"}
-                  />
-                ) : (
-                  <div className="rounded-full h-[50px] w-[50px] bg-primary flex justify-center items-center text-base-100  text-2xl">
-                    {currentUser?.name?.slice(0, 1)}
-                  </div>
-                )}
+        <ul className="menu flex flex-col justify-between w-56 bg-base-200 p-4 text-base-content">
+          <div className="">
+            <div className="flex items-center justify-between gap-2 mb-6 relative">
+              <div className="flex items-center gap-2">
+                <div className="w-12 h-12 rounded-full">
+                  {currentUser?.image ? (
+                    <Image
+                      className="rounded-full"
+                      height="50"
+                      width="50"
+                      alt="Avatar"
+                      src={currentUser?.image || "/images/placeholder.jpg"}
+                    />
+                  ) : (
+                    <div className="rounded-full h-[50px] w-[50px] bg-primary flex justify-center items-center text-base-100  text-2xl">
+                      {currentUser?.name?.slice(0, 1)}
+                    </div>
+                  )}
+                </div>
+                <div className="flex flex-col h-full justify-center">
+                  <div className="text-xs ">logged in as</div>
+                  <div className="text-xs font-bold">{currentUser?.name}</div>
+                </div>
               </div>
-              <div className="flex flex-col h-full justify-center">
-                <div className="text-xs ">logged in as</div>
-                <div className="text-xs font-bold">{currentUser?.name}</div>
-              </div>
+              <ColorModeToggle />
             </div>
             <li>
               <Link
                 href={"/"}
-                className={pathname === "/" ? "text-primary" : ""}
+                className={
+                  currentPath() === "" || currentPath() === "new-workout"
+                    ? "text-primary"
+                    : ""
+                }
                 onClick={() => toggleDrawer.onClose()}
               >
                 <BiDumbbell className="text-xl" />
@@ -110,7 +124,11 @@ export default function Navbar({ currentUser, children }: NavbarProps) {
             <li>
               <Link
                 href={"/profile"}
-                className={pathname === "/profile" ? "text-primary" : ""}
+                className={
+                  currentPath() === "profile" || currentPath() === "workout"
+                    ? "text-primary"
+                    : ""
+                }
                 onClick={() => toggleDrawer.onClose()}
               >
                 <IoPersonCircle className="text-xl" />
@@ -120,7 +138,7 @@ export default function Navbar({ currentUser, children }: NavbarProps) {
             <li>
               <Link
                 href={"/about"}
-                className={pathname === "/about" ? "text-primary" : ""}
+                className={currentPath() === "about" ? "text-primary" : ""}
                 onClick={() => toggleDrawer.onClose()}
               >
                 <FaInfoCircle className="text-xl" />
@@ -132,16 +150,6 @@ export default function Navbar({ currentUser, children }: NavbarProps) {
                 <IoExitOutline className="text-xl" />
                 <div>Sign Out</div>
               </button>
-            </li>
-
-            <li>
-              <Image
-                className="rounded-full"
-                height="30"
-                width="30"
-                alt="Avatar"
-                src={currentUser?.image || "/images/placeholder.jpg"}
-              />
             </li>
           </div>
         </ul>

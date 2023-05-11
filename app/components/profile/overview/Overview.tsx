@@ -119,7 +119,7 @@ export default function Overview({ workouts }: OverviewProps) {
                   <div
                     className={`${
                       day.hasWorkout ? "bg-base-100" : "bg-none"
-                    } p-1 w-20  flex justify-end rounded-md drop-shadow-lg flex-col items-center`}
+                    } p-1 w-20  flex justify-end rounded-md shadow-sm flex-col items-center`}
                     key={idx}
                   >
                     {day.hasWorkout ? (

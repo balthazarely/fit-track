@@ -19,6 +19,7 @@ model User {
   hashedPassword String?
   createdAt      DateTime   @default(now())
   updatedAt      DateTime   @updatedAt
+  colorMode      String?
   accounts       Account[]
   workouts       Workout[]
   Exercise       Exercise[]
