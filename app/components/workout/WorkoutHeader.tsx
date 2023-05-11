@@ -90,7 +90,7 @@ export default function WorkoutHeader({
             />
           )}
         </div>
-        <div className="">
+        <div className=" mt-4">
           {!nameEdit ? (
             <button
               disabled={dbUpdating}
