@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+.react-calendar {
+  border: none !important;
+}
+
 .react-calendar__month-view__days__day--weekend {
   color: white !important ;
   opacity: 0.8;
