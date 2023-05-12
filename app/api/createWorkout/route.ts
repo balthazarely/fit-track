@@ -33,6 +33,13 @@ export async function POST(request: Request) {
         })),
       },
     },
+    include: {
+      exercises: {
+        include: {
+          sets: true,
+        },
+      },
+    },
   });
   return NextResponse.json(workout);
 }

@@ -13,6 +13,7 @@ import ChangeDateModal from "./workoutModals/ChangeDateModal";
 import AddNewExercisesModal from "./workoutModals/AddNewExercisesModal";
 import { Exercises, InitialWorkout, Workout } from "@/types";
 import WorkoutHeader from "./WorkoutHeader";
+import ShowWorkoutModal from "../profile/modals/ShowWorkoutModal";
 
 const defaultWorkout = {
   title: "workout-01",
@@ -37,6 +38,9 @@ export default function Workout({
   const [dateModalOpen, setDateModalOpen] = useState<boolean>(false);
   const [deleteModalOpen, setDeleteModalOpen] = useState<boolean>(false);
   const [completeModalOpen, setCompleteModalOpen] = useState<boolean>(false);
+  const [workoutResults, setWorkoutResults] = useState<any>(null);
+  const [showWorkoutResultsModal, setShowWorkoutResultsModal] =
+    useState<boolean>(false);
 
   const router = useRouter();
 
@@ -103,9 +107,14 @@ export default function Workout({
         }
       );
       promise
-        .then(() => {
+        .then((data: any) => {
           router.refresh();
-          router.push("/profile?tab=recent-workouts");
+          if (editWorkout) {
+            router.push("/profile?tab=recent-workouts");
+          } else {
+            setWorkoutResults(data.data);
+            setShowWorkoutResultsModal(true);
+          }
         })
         .catch((error) => {
           console.error(error);
@@ -117,6 +126,7 @@ export default function Workout({
   return (
     <>
       <div className="max-w-md mx-auto px-4">
+        {/* {workoutResults && JSON.stringify(workoutResults)} */}
         <WorkoutHeader
           editWorkout={editWorkout}
           modifyDatabase={useDatabase}
@@ -188,6 +198,11 @@ export default function Workout({
         saveWorkoutToDB={useDatabase}
         completeModalOpen={completeModalOpen}
         setCompleteModalOpen={setCompleteModalOpen}
+      />
+      <ShowWorkoutModal
+        setShowWorkoutModal={setShowWorkoutResultsModal}
+        showWorkoutModal={showWorkoutResultsModal}
+        workout={workoutResults}
       />
     </>
   );
